@@ -139,7 +139,7 @@ create_index (char *ptr)
 
 
 int
-extract_segment (char *ptr_db, FILE * where, int chapter, int paragraph, char *comm)
+extract_segment (char *ptr_db, FILE * where, int chapter, int paragraph, char *comm, int l)
 {
   char *char_ptr;
   int  c=0;
@@ -168,6 +168,7 @@ extract_segment (char *ptr_db, FILE * where, int chapter, int paragraph, char *c
 
 	  char_ptr = (ptr_db + entry_ptr->offset);
 
+	  if(l)
 	  fprintf (where, "#line %d \"%s\"\n",entry_ptr->line,APG_DB_FILE);
 
 	  fprintf (where, "%s", char_ptr);

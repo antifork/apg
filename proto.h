@@ -41,7 +41,7 @@ void 	add_regex 	P((char *));
 
 void    check_bound     P((int, char *, int, int));
 void    check_required  P((char *));
-int 	extract_segment P((char *, FILE *, int, int, char *));
+int 	extract_segment P((char *, FILE *, int, int, char *, int));
 
 char 	*touch_db  	P((int ));
 

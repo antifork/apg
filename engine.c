@@ -431,7 +431,7 @@ fun_10 (FILE *fd, char *comm)
 {
   c_comm (fd, comm);
   add_cr (fd);
-  add_linclude (fd, apg_header);
+  add_include (fd, apg_header);
   add_cr (fd);
 }
 
@@ -514,17 +514,17 @@ tab_par_creator (void)
 	case h_rule_label:
 	  if (ptr->h_rule_chap == 0xff)
 	    {
-				/*** fun ***/
+		/*** fun ***/
 	      if (H_TEST (ptr))
 		(*fun_list[ptr->h_rule_parag]) (fd_h, ptr->h_rule_comm);
 
 	    }
 	  else
 	    {
-				/*** segment ***/
+		/*** segment ***/
 
 	      if (H_TEST (ptr))
-		extract_segment (ptr_db, fd_h, ptr->h_rule_chap, ptr->h_rule_parag, ptr->h_rule_comm);
+		extract_segment (ptr_db, fd_h, ptr->h_rule_chap, ptr->h_rule_parag, ptr->h_rule_comm,1);
 
 	    }
 	  break;
@@ -533,7 +533,7 @@ tab_par_creator (void)
 
 	  if (C_TEST (ptr))
 	    {
-	      extract_segment (ptr_db, fd_c, ptr->c_rule_chap, ptr->c_rule_parag, ptr->c_rule_comm);
+	      extract_segment (ptr_db, fd_c, ptr->c_rule_chap, ptr->c_rule_parag, ptr->c_rule_comm,1);
 
 	      if (ptr->c_rule_chap == 1 && ptr->c_rule_parag == 1)
 		add_linclude (fd_c, apg_header);
@@ -554,7 +554,7 @@ tab_par_creator (void)
 	    {
 				/*** segment ***/
 	      if (I_TEST (ptr))
-		extract_segment (ptr_db, fd_i, ptr->i_rule_chap, ptr->i_rule_parag, ptr->i_rule_comm);
+		extract_segment (ptr_db, fd_i, ptr->i_rule_chap, ptr->i_rule_parag, ptr->i_rule_comm,0);
 
 	    }
 	  break;

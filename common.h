@@ -64,7 +64,7 @@ typedef struct _index_entry_
 #define add_cr(x) 			(fprintf(x,"\n"))
 #define add_comment(fd,x)		(fprintf(fd,"/* %s */\n",x))
 #define add_define (fd,x,y)	        (fprintf(fd,"#define %s %s\n",x,y))
-#define add_include(fd,x)		(fprintf(fd,"#include <%s>\n",x))
+#define add_include(fd,x)		(fprintf(fd,"#include \"%s\"\n",x))
 #define add_linclude(fd,x)		(fprintf(fd,"#line 1 \"%s\"\n#include \"%s\"\n",apg_source,x))
 
 #define create_table(fd,name,a,b)       (fprintf(fd,"static const int %s[][%d][%d] = {\n",name,a,b))

@@ -136,7 +136,7 @@ main (int argc, char **argv)
     	  	strcpy (apg_rules, APG_AUTORULES);
   	  ptr_db = touch_db (DB_LOAD);
   	  create_index (ptr_db);
-          extract_segment (ptr_db, stderr, 0, 0, NULL);
+          extract_segment (ptr_db, stderr, 0, 0, NULL,0);
 	  touch_db (DB_DISCARD);
 	  exit (0);
 	  break;
