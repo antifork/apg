@@ -57,7 +57,7 @@ fun_1(FILE * fd, char *comm)
 	c_comm(fd, comm);
 	add_cr(fd);
 
-	for (;lp_node!=NULL;lp_node = lp_node->next_node,node_c++){
+	for (; lp_node != NULL; lp_node = lp_node->next_node, node_c++) {
 		fprintf(fd, "#define %s_label\t%d\n", lp_node->label, node_c);
 	}
 
@@ -88,7 +88,6 @@ fun_2(FILE * fd, char *comm)
 		lp_leaf = lp_node->next_leaf;
 
 		while (lp_leaf) {
-
 			switch (lp_leaf->type) {
 			case T_INT:
 				fprintf(fd, "\tint %s;\n", lp_leaf->label);
@@ -139,7 +138,6 @@ fun_3(FILE * fd, char *comm)
 	for (; lp_node != NULL; lp_node = lp_node->next_node) {
 		if (lp_node->next_leaf == NULL)
 			continue;
-
 		lp_leaf = lp_node->next_leaf;
 		while (lp_leaf != NULL) {
 			fprintf(fd, "#define %s_%s\t\tline_dun.%s_line.%s\n",
@@ -164,7 +162,7 @@ fun_4(FILE * fd, char *comm)
 	node_c = 0;
 	leaf_c = 0;
 
-	for ( ;lp_node != NULL; lp_node = lp_node->next_node) {
+	for (; lp_node != NULL; lp_node = lp_node->next_node) {
 		node_c++;
 		lp_leaf = lp_node->next_leaf;
 		while (lp_leaf) {
@@ -197,7 +195,6 @@ fun_4(FILE * fd, char *comm)
 		node_c++;
 		lp_leaf = lp_node->next_leaf;
 		fprintf(fd, "{{         0,          0,          0,          0,          0},\n");
-
 		while (lp_leaf) {
 			fprintf(fd, "{%10d, %10d, %10d, %10d, %10d},\n",
 				lp_leaf->type - T_INT + 1,
@@ -209,7 +206,6 @@ fun_4(FILE * fd, char *comm)
 			lp_leaf = lp_leaf->next_leaf;
 
 		}
-
 		for (; leaf_c < max_leaf; leaf_c++)
 			fprintf(fd, "{         0,          0,          0,          0,          0},\n");
 
@@ -223,8 +219,8 @@ fun_4(FILE * fd, char *comm)
 }
 
 static const int apg_types_size[] =
-{ 0, sizeof(int), sizeof(short), sizeof(char), sizeof(long), 
-sizeof(short), sizeof(char), sizeof(void *), sizeof(void *), sizeof(void *)
+{0, sizeof(int), sizeof(short), sizeof(char), sizeof(long),
+	sizeof(short), sizeof(char), sizeof(void *), sizeof(void *), sizeof(void *)
 };
 
 /* apg table offset */
@@ -252,11 +248,10 @@ fun_5(FILE * fd, char *comm)
 		leaf_c = 0;
 		lp_leaf = lp_node->next_leaf;
 		fprintf(fd, "{ -1, ");
-
 		while (lp_leaf) {
 			if (offset % apg_types_size[lp_leaf->type - T_INT + 1])
-				offset += (apg_types_size[lp_leaf->type - T_INT + 1] - 
-						(offset % apg_types_size[lp_leaf->type - T_INT + 1]));	/* magic padding */
+				offset += (apg_types_size[lp_leaf->type - T_INT + 1] -
+					   (offset % apg_types_size[lp_leaf->type - T_INT + 1]));	/* magic padding */
 
 			fprintf(fd, "%d, ", offset);
 			offset += apg_types_size[lp_leaf->type - T_INT + 1];
@@ -284,8 +279,9 @@ chk_collision(char *p, int n)
 	register int i;
 
 	for (i = 0; i < top; i++) {
-		if (n != collision_vector[i]) continue;
-		fatalerr("fatalerr: the '%s' id comes into collision with a previous line. Change the line_id\n",p); 
+		if (n != collision_vector[i])
+			continue;
+		fatalerr("fatalerr: the '%s' id comes into collision with a previous line. Change the line_id\n", p);
 
 	}
 	collision_vector[top++] = n;
@@ -300,8 +296,8 @@ fun_6(FILE * fd, char *comm)
 	c_comm(fd, comm);
 	add_cr(fd);
 	fprintf(fd, "static const line_t line_v[] = { { 0, NULL }, ");
-	
-	for (;lp_node != NULL;lp_node = lp_node->next_node,j++) {
+
+	for (; lp_node != NULL; lp_node = lp_node->next_node, j++) {
 		fprintf(fd, "{ %uU, \"%s\" }, ", apg_hash(lp_node->label), lp_node->label);
 	}
 
@@ -320,7 +316,7 @@ fun_7(FILE * fd, char *comm)
 	add_cr(fd);
 	fprintf(fd, "static const char * const regex_list[] = { NULL, ");
 
-	for (;lp!=NULL;lp = lp->next)
+	for (; lp != NULL; lp = lp->next)
 		fprintf(fd, "\"%s\", ", lp->regex);
 
 	fprintf(fd, "\n};\n\n");
@@ -339,7 +335,7 @@ fun_8(FILE * fd, char *comm)
 	add_cr(fd);
 	fprintf(fd, "static long rep_limits[][2] = { {0,0},\n");
 
-	for (;lp_node != NULL;lp_node = lp_node->next_node,c++) {
+	for (; lp_node != NULL; lp_node = lp_node->next_node, c++) {
 		fprintf(fd, "{ %5d, %5d },\n", lp_node->min, lp_node->max);
 	}
 
@@ -483,13 +479,10 @@ tab_par_creator(void)
 
 				}
 				break;
-
 			}
-
 		apg_free_grill(NULL);
 		apg_free_pragma();
 	}
-
 	fclose(fd_c);
 	fclose(fd_h);
 

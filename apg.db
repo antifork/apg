@@ -62,10 +62,11 @@ extern int apg_errno;
 #endif
 
 /* undef __THROW for g++ compatibility */
-#ifdef   __THROW
-#undef   __THROW
-#define  __THROW
-#endif
+//#ifdef   __THROW
+//#undef   __THROW
+//#define  __THROW
+//#endif
+
 //-[0,2
 void apg_free_grill __P((grill_t *));
 void apg_free_pragma __P((void));

@@ -22,39 +22,37 @@ Boston, MA 02111-1307, USA.  */
 #include <stdlib.h>
 
 void *
-xmalloc (size)
-     unsigned int size;
+xmalloc(size)
+	unsigned int size;
 {
-  void *result =  malloc (size);
-  if (result == 0)
-    fatalerr ("xmalloc: virtual memory exhausted");
-  return result;
+	void *result = malloc(size);
+	if (result == 0)
+		fatalerr("xmalloc: virtual memory exhausted");
+	return result;
 }
 
 
 void *
-xrealloc (ptr, size)
-     void *ptr;
-     unsigned int size;
+xrealloc(ptr, size)
+	void *ptr;
+	unsigned int size;
 {
-  void *result;
+	void *result;
 
-  /* Some older implementations of realloc() don't conform to ANSI.  */
-  result = ptr ? realloc (ptr, size) : malloc (size);
-  if (result == 0)
-    fatalerr ("xrealloc: virtual memory exhausted");
-  return result;
+	/* Some older implementations of realloc() don't conform to ANSI.  */
+	result = ptr ? realloc(ptr, size) : malloc(size);
+	if (result == 0)
+		fatalerr("xrealloc: virtual memory exhausted");
+	return result;
 }
 
 void *
-xcalloc (nelem, elsize)
-      unsigned int nelem;
-      unsigned int elsize;
+xcalloc(nelem, elsize)
+	unsigned int nelem;
+	unsigned int elsize;
 {
-  void *result = (char *) calloc (nelem,elsize);
-  if (result == 0)
-    fatalerr ("xcalloc: virtual memory exhausted");
-  return result;
+	void *result = (char *) calloc(nelem, elsize);
+	if (result == 0)
+		fatalerr("xcalloc: virtual memory exhausted");
+	return result;
 }
-
-

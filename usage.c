@@ -1,4 +1,4 @@
-/* 
+/*
  *  $Id$
  *  usage
  *
@@ -30,26 +30,25 @@
 extern char *__progname;
 
 void
-usage ()
+usage()
 {
-      fprintf (stderr, "usage: %s [option]\n", __progname);
-      fprintf (stderr,
-		"   -t  --template file.tmpl\n"
-		"   -s  --source   filename, default \'apg.par.c\'\n"
-		"   -i  --include  filename, default \'apg.tab.h\'\n"
-		"   -f  --fe[=filename] extract classic front-end, default \'apg.fe.c\'\n"
-                "   -a  --advanced (extract advanced api)\n"
-                "   -L  --sepline char, default \'=\'\n"
-                "   -T  --septoken char, default \':\'\n"
-		"   -v  --version\n"
-		"   -h  --help[=hidden] (show furter opts for developers)\n"
+	fprintf(stderr, "usage: %s [option]\n", __progname);
+	fprintf(stderr,
+		"   -t,  --template=NAME               file template\n"
+		"   -s,  --source=NAME                 filename, default \'apg.par.c\'\n"
+		"   -i,  --include=NAME                filename, default \'apg.tab.h\'\n"
+		"   -f,  --if[=filename]               extract classic front-end, default \'apg.fe.c\'\n"
+	        "   -a,  --advanced                    extract advanced api\n"
+		"   -L,  --sepline=char                separator line, default \'=\'\n"
+		"   -T,  --septoken=char               separator token, default \':\'\n"
+		"   -v,  --version\n"
+		"   -h,  --help[=hidden]               (show furter opts for developers)\n"
 		);
-		
-      if (opt_bitsfield & OPT_ADVHELP)
-      fprintf (stderr,
-                "   -d  --database filename, specify a local 'apg.db'\n"
-                "   -r  --rules filename, specify a local \'apg.rules\'\n");
-	
-     exit (0);
-}
 
+	if (opt_bitsfield & OPT_ADVHELP)
+		fprintf(stderr,
+			"   -d,  --database=NAME               specify a local 'apg.db'\n"
+			"   -r,  --rules=NAME                  specify a local \'apg.rules\'\n");
+
+	exit(0);
+}

@@ -28,18 +28,19 @@
 
 t_leaf *ptr_leaf;
 
+
 void
 check_uinode(t_node * f_root_node, char *f_label)
 {
 	if (f_root_node == NULL)
 		return;
-
 	for (; f_root_node->next_node; f_root_node = f_root_node->next_node) {
-		if (!strcmp(f_root_node->label, f_label))
-			fatalerr("%s:%d: node identifier {%s} must be unique", filein, lineno, f_label);
+		if (strcmp(f_root_node->label, f_label))
+			continue;
+		fatalerr("%s:%d: node identifier {%s} must be unique", filein, lineno, f_label);
 	}
-	return;
 }
+
 
 void
 check_uileaf(t_node * f_node, char *f_label)
@@ -48,12 +49,11 @@ check_uileaf(t_node * f_node, char *f_label)
 
 	if (ptr_leaf == NULL)
 		return;
-
-	for (;ptr_leaf->next_leaf;ptr_leaf = ptr_leaf->next_leaf) {
-		if (!strcmp(ptr_leaf->label, f_label))
-			fatalerr("%s:%d: leaf-identifier {%s} must be unique", filein, lineno - 1, f_label); 
+	for (; ptr_leaf->next_leaf; ptr_leaf = ptr_leaf->next_leaf) {
+		if (strcmp(ptr_leaf->label, f_label))
+			continue;
+		fatalerr("%s:%d: leaf-identifier {%s} must be unique", filein, lineno - 1, f_label);
 	}
-	return;
 }
 
 
@@ -66,15 +66,10 @@ add_regex(char *r)
 	new_ptr->regex = (char *) xmalloc(sizeof(r) + 1);
 	strcpy(new_ptr->regex, r);
 	new_ptr->next = NULL;
-
 	for (; p_ptr != NULL && p_ptr->next != NULL; p_ptr = p_ptr->next);
 
-	if (p_ptr != NULL)
-		p_ptr->next = new_ptr;
-	else
-		root_regex = new_ptr;
+	(p_ptr != NULL ? p_ptr->next : root_regex) = new_ptr;
 }
-
 
 
 t_node *
@@ -82,10 +77,9 @@ create_node(t_node * ptr, char *f_label, int min, int max)
 {
 	register t_node *lp = ptr;
 
-	if (lp!=NULL) {
+	if (lp != NULL) {
 		while (lp->next_node)
 			lp = lp->next_node;
-
 		lp->next_node = (t_node *) xmalloc(sizeof(t_node));
 		lp = lp->next_node;
 		lp->label = f_label;
@@ -95,7 +89,6 @@ create_node(t_node * ptr, char *f_label, int min, int max)
 		lp->next_leaf = NULL;
 
 	} else {
-
 		lp = root_node = (t_node *) xmalloc(sizeof(t_node));
 		root_node->label = f_label;
 		root_node->min = min;
@@ -105,6 +98,7 @@ create_node(t_node * ptr, char *f_label, int min, int max)
 	}
 	return lp;
 }
+
 
 t_leaf *
 create_leaf(t_node * ptr, char *f_label, int f_type, int f_minor,
@@ -148,37 +142,31 @@ isort_tree(void)
 	p = q = root_node->next_node;
 
 	/* we dont' need to sort in case of 0 or 1 node */
-
 	if (p == NULL || p->next_node == NULL)
 		return;
 
 	while (flag) {
 		flag = 0;
 		q = root_node->next_node;
+		for (p = q; q && q->next_node; p = q, q = q->next_node) {
 
-		for (p = q; q && q->next_node; q = q->next_node) {
-			/* check */
-			if ((unsigned) apg_hash(q->label) > (unsigned) apg_hash(q->next_node->label)) {
-				flag = 1;
-				if (q == root_node->next_node) {
-					/* first couple */
-					root_node->next_node = p->next_node;
-					p->next_node = q->next_node->next_node;
-					p = root_node->next_node;
-					p->next_node = q;
-
-				} else {
-					p->next_node = q->next_node;
-					q->next_node = q->next_node->next_node;
-					p->next_node->next_node = q;
-					q = p->next_node;
-				}
-
+			if ((unsigned) apg_hash(q->label) <= (unsigned) apg_hash(q->next_node->label))
+				continue;
+			flag = 1;
+			if (q == root_node->next_node) {
+				/* first couple */
+				root_node->next_node = p->next_node;
+				p->next_node = q->next_node->next_node;
+				p = root_node->next_node;
+				p->next_node = q;
+			} else {
+				p->next_node = q->next_node;
+				q->next_node = q->next_node->next_node;
+				p->next_node->next_node = q;
+				q = p->next_node;
 			}
-			p = q;
 		}
 	}
-	return;
 }
 
 
@@ -188,22 +176,17 @@ print_tree(t_node * f_root)
 	register t_node *node_ptr = f_root;
 	register t_leaf *leaf_ptr = NULL;
 
-	for (;node_ptr; node_ptr = node_ptr->next_node) {
-
+	for (; node_ptr; node_ptr = node_ptr->next_node) {
 		fprintf(stderr, "node: {%s} rep (%d,%d)\n", node_ptr->label, node_ptr->min, node_ptr->max);
-		if (node_ptr->next_leaf) {
 
-			/* this branch has some leafs */
-			leaf_ptr = node_ptr->next_leaf;
+		if (!node_ptr->next_leaf)
+			continue;
 
-			while (leaf_ptr) {
-				fprintf(stderr, "  `--- {%s} %d\t[%d,%d] (%d)\n",
-					leaf_ptr->label,
-					leaf_ptr->type, leaf_ptr->minor, leaf_ptr->major,
-					leaf_ptr->regex);
-				leaf_ptr = leaf_ptr->next_leaf;
-			}
-		}
+		/* this branch has some leafs */
+		for (leaf_ptr = node_ptr->next_leaf; leaf_ptr; leaf_ptr = leaf_ptr->next_leaf)
+			fprintf(stderr, "  `--- {%s} %d\t[%d,%d] (%d)\n",
+			   leaf_ptr->label, leaf_ptr->type, leaf_ptr->minor,
+				leaf_ptr->major, leaf_ptr->regex);
+
 	}
-	return;
 }

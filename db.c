@@ -40,7 +40,6 @@ touch_db(int action)
 	struct stat lstat;
 	static char *ptr;
 
-
 	/* DB_LOAD */
 	if (action & DB_LOAD) {
 		if (stat(apg_db, &lstat) == -1)
@@ -52,13 +51,11 @@ touch_db(int action)
 		close(fd);
 		return ptr;
 	}
-
 	/* DB_DISCARD */
 	if (action & DB_DISCARD) {
 		free(ptr);
 		return (char *) NULL;
 	}
-
 	fatalerr("internal err: touch_db()");
 	return (char *) NULL;	/* this is unreachable */
 }
@@ -112,7 +109,6 @@ create_index(char *ptr)
 		entry_ptr = entry_ptr->next;
 		entry_ptr->next = (ientry *) NULL;
 	}
-	return;
 }
 
 
@@ -122,14 +118,13 @@ extract_segment(char *ptr_db, FILE * where, int chapter, int paragraph, char *co
 	char *char_ptr;
 	int c = 0;
 
-	ientry *entry_ptr = index_db;
+	ientry *entry_ptr;
 
 	if (!entry_ptr)
 		fatalerr("internal err: extract_segment() index_nb is a NULL pointer");
 
-	while (entry_ptr->next) {
+	for   (entry_ptr = index_db; entry_ptr->next ; entry_ptr = entry_ptr->next)
 		if ((entry_ptr->chapter == chapter) && (entry_ptr->paragraph == paragraph)) {
-
 			/* This points to the selected frame */
 			if (comm != NULL && *comm != '\0') {
 				add_comment(where, comm);
@@ -143,7 +138,6 @@ extract_segment(char *ptr_db, FILE * where, int chapter, int paragraph, char *co
 			fprintf(where, "%s", char_ptr);
 			return 0;
 		}
-		entry_ptr = entry_ptr->next;
 	}
 
 	fatalerr("internal err: extract_segment() index=(%d,%d) not found", chapter, paragraph);
