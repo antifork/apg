@@ -13,6 +13,7 @@ ptr = (grill_t *)apg_parser(1,"test");
 	printf("[%s] [%s]\n",ptr->line_6_a,ptr->line_6_b);
 
 apg_free_grill(ptr);
+//apg_free_pragma();
 exit(1);
 
 }
