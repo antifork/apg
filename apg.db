@@ -935,7 +935,7 @@ token_analysis (token, line_id, token_id)
 	    || 	APG_LHIGH (line_id, token_id))
 	    || 	APG_CLIMIT (	APG_LTYPE (line_id, token_id),
 			   	APG_LLOW (line_id, token_id), 
-				(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)strlen (pp),
+				(int)strlen (pp),
 			   	APG_LHIGH (line_id, token_id)))
 	  {
 	    APG_PPUSH (apg_stream, offset, pp);
