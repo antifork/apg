@@ -175,9 +175,9 @@ typedef struct __type_line__ {
 
 char 	*apg_strerror __P ((int));
 grill_t *apg_parser  __P ((int, ...));
-int 	apg_get_line __P ((grill_t **));
-void 	apg_free_grill __P ((grill_t *));
-void 	apg_free_pragma __P ((void));
+int 	 apg_get_line __P ((grill_t **));
+void 	 apg_free_grill __P ((grill_t *));
+void 	 apg_free_pragma __P ((void));
 
 /* parser header side */
 
@@ -213,15 +213,15 @@ void 	apg_free_pragma __P ((void));
 
 #line 160 "/usr/local/share/apg/apg.db"
 #ifndef _HAVE_GRAMMAR_TAB_H
-#define T_INT   	0x01
-#define T_SHORT 	0x02
-#define T_CHAR 		0x03
-#define T_U_32 		0x04
-#define T_U_16 		0x05
-#define T_U_8  		0x06
-#define T_STR  		0x07
-#define T_HOST  	0x08
-#define T_IPV4 		0x09
+#define T_INT   	1
+#define T_SHORT 	2
+#define T_CHAR 		3
+#define T_U_32 		4
+#define T_U_16 		5
+#define T_U_8  		6
+#define T_STR  		7
+#define T_HOST  	8
+#define T_IPV4 		9
 #endif
 
 /* apg type size */

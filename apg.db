@@ -121,9 +121,9 @@ extern int apg_errno;
 
 char 	*apg_strerror __P ((int));
 grill_t *apg_parser  __P ((int, ...));
-int 	apg_get_line __P ((grill_t **));
-void 	apg_free_grill __P ((grill_t *));
-void 	apg_free_pragma __P ((void));
+int 	 apg_get_line __P ((grill_t **));
+void 	 apg_free_grill __P ((grill_t *));
+void 	 apg_free_pragma __P ((void));
 
 //-[0,3
 grill_t *apg_seek __P ((int, grill_t *));
@@ -158,15 +158,15 @@ grill_t *apg_seek __P ((int, grill_t *));
 
 //-[0,7
 #ifndef _HAVE_GRAMMAR_TAB_H
-#define T_INT   	0x01
-#define T_SHORT 	0x02
-#define T_CHAR 		0x03
-#define T_U_32 		0x04
-#define T_U_16 		0x05
-#define T_U_8  		0x06
-#define T_STR  		0x07
-#define T_HOST  	0x08
-#define T_IPV4 		0x09
+#define T_INT   	1
+#define T_SHORT 	2
+#define T_CHAR 		3
+#define T_U_32 		4
+#define T_U_16 		5
+#define T_U_8  		6
+#define T_STR  		7
+#define T_HOST  	8
+#define T_IPV4 		9
 #endif
 
 //-[0,8
@@ -279,15 +279,15 @@ int apg_errno;
 
 /* msg error codes */
 
-#define APG_TYPE_ERR         0x01
-#define APG_NULL_ERR	     0x02
-#define APG_OFFSET_ERR       0x03
-#define APG_LIMIT_ERR        0x04
-#define APG_ESC_ERR          0x05
-#define APG_FEW_ERR	     0x06
-#define APG_MANY_ERR 	     0x07
-#define APG_IPV4_ERR         0x08
-#define APG_HOST_ERR         0x09
+#define APG_TYPE_ERR         1
+#define APG_NULL_ERR	     2
+#define APG_OFFSET_ERR       3
+#define APG_LIMIT_ERR        4
+#define APG_ESC_ERR          5
+#define APG_FEW_ERR	     6
+#define APG_MANY_ERR 	     7
+#define APG_IPV4_ERR         8
+#define APG_HOST_ERR         9
 
 //-[1,6
 #if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__ANSI__) && !defined(__cplusplus) 
@@ -853,7 +853,7 @@ token_analysis (AACHARx_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
   if ((offset = apg_offset[line_id][token_id]) == -1)
     token_fatalerr (APGE_ARG0);
 
-  if (token && *token == '\0')
+  if (token != NULL && *token == '\0')
     return;			/* NULL token */
 
   switch (APG_LTYPE (line_id, token_id))
@@ -1039,7 +1039,7 @@ token_analysis (AACHARx_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
 	register int t_counter = 1;
 	char *_p = (char *) token;
 
-	while (*_p)
+	while (*_p != '\0')
 	  {
 	    switch (*_p)
 	      {
@@ -1067,9 +1067,8 @@ token_analysis (AACHARx_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
 
 	  }
 
-	if (*_p || state & (APG_HERR | APG_HDOT | APG_HMIN) ||
-	    ~state & APG_H2LD || (state & APG_HALPHA
-				  && ~state & APG_HL_ALPHA))
+	if ( *_p != '\0' || state & (APG_HERR | APG_HDOT | APG_HMIN) ||
+	     ~state & APG_H2LD || (state & APG_HALPHA && ~state & APG_HL_ALPHA))
 	  {
 	    token_fatalerr (APGE_ARG4);
 	    return;
@@ -1091,7 +1090,7 @@ token_analysis (AACHARx_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
 	register int t_byte = 0;
 	char *_p = (char *) token;
 
-	while (*_p)
+	while (*_p != '\0')
 	  {
 	    switch (*_p)
 	      {
@@ -1119,7 +1118,7 @@ token_analysis (AACHARx_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
 
 	  }
 
-	if (*_p || state & (APG_HERR | APG_HDOT) || t_counter != 4)
+	if (*_p != '\0' || state & (APG_HERR | APG_HDOT) || t_counter != 4)
 	  {
 	    token_fatalerr (APGE_ARG5);
 	    return;
@@ -1226,7 +1225,7 @@ apg_get_line (AAGRILLxx_ARG apg_user_ptr)
 
   /* check if apg_stream != NULL */
 
-  if (apg_stream && (*apg_user_ptr = apg_stream = apg_stream->next))
+  if (apg_stream != NULL && (*apg_user_ptr = apg_stream = apg_stream->next))
     return apg_stream->type_line;
   else
     {
@@ -1409,7 +1408,7 @@ apg_parser (q, va_alist)
 
 	  /* shift_reg setup: (apg_token == 1 ? line_id : token_id) */
 
-	  if (*tk)
+	  if (*tk != '\0')
 	    shift_reg |= 1 << (apg_token - 1);
 
 	  token_analysis (tk, apg_stream->type_line, apg_token - 1);

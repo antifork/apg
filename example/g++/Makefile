@@ -1,4 +1,4 @@
-all: clean rebuild test-1
+all: test-1
 
 rebuild:
 	apg -f -t template
