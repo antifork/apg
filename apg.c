@@ -209,7 +209,7 @@ main (int argc, char **argv)
   create_index (ptr_db);
   tab_par_creator ();
 
-  touch_db (DB_DISCARD);
+  (void)touch_db (DB_DISCARD);
   
   exit (0);
 }

@@ -140,7 +140,7 @@ static void
 fatalerr (char *pattern, ...)
 #else
 fatalerr (pattern, va_alist)
-	char *patter;
+	char *pattern;
 	va_dcl
 #endif
 {

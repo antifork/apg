@@ -56,8 +56,8 @@ touch_db (int action)
       ptr = (char *) xrealloc (ptr, lstat.st_size + 1);
 
       fd = open (apg_db, O_RDONLY);
-      read (fd, ptr, lstat.st_size);
-      close (fd);
+      (void)read (fd, ptr, lstat.st_size);
+      (void)close (fd);
 
       return ptr;
 
@@ -160,7 +160,7 @@ extract_segment (char *ptr_db, FILE * where, int chapter, int paragraph, char *c
 	   */
 
 
-	  if (comm && *comm )
+	  if (comm != NULL  && *comm != '\0' )
 	  	{	
 		add_comment (where,comm);
        	  	add_cr(where);
