@@ -89,7 +89,7 @@ int apg_errno;
 
 /* macros */
 
-#if defined (__GNUC__) && !defined (__STRICT_ANSI__) 
+#if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__ANSI__) && !defined(__cplusplus) 
 int c_index[256] =
   {['#'] 1,[APG_SEPLINE] 2,[APG_SEPTOKEN] 3,['\''] 4,['\\'] 5,[' '] 6,
   ['\t'] 6,['\n'] 7
@@ -167,8 +167,8 @@ fatalerr (pattern, va_alist)
 /* xmalloc, xcalloc, xrealloc */
 
 static void *
-xmalloc (s)
-     u_int s;
+xmalloc ( AAUINT_ARG s)
+     AAUINT_DECL(s)
 {
   void *result;
 
@@ -180,9 +180,9 @@ xmalloc (s)
 
 
 static void *
-xrealloc (ptr, s)
-     void *ptr;
-     u_int s;
+xrealloc (AAVOID_ARG ptr, AAUINT_ARG s)
+     AAVOID_DECL(ptr)
+     AAUINT_DECL(s)
 {
   void *result;
 
@@ -194,9 +194,9 @@ xrealloc (ptr, s)
 }
 
 static void *
-xcalloc (nelem, s)
-     u_int nelem;
-     u_int s;
+xcalloc ( AAUINT_ARG nelem, AAUINT_ARG s)
+     AAUINT_DECL(nelem)
+     AAUINT_DECL(s)
 {
   void *result = (char *) calloc (nelem, s);
   if (result == 0)
@@ -206,9 +206,9 @@ xcalloc (nelem, s)
 
 
 static char *
-ioctl_buffer (fn, flag)
-     char *fn;
-     int flag;
+ioctl_buffer (AACHAR_ARG fn, AAINT_ARG flag)
+     AACHAR_DECL(fn)
+     AAINT_DECL(flag)
 {
   int fd, sz;
   struct stat f_stat;
@@ -292,7 +292,7 @@ ac_2 ()
   return 0;
 }
 
-#if defined (__GNUC__) && !defined (__STRICT_ANSI__)
+#if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__cplusplus)
 char c_escape[256] =
   {['a'] '\a',['b'] '\b',['t'] '\t',['n'] '\n',['v'] '\v',['f'] '\f',
   ['r'] '\r'
@@ -430,8 +430,8 @@ get_token ()
 /* arena menagement */
 
 static grill_t *
-alloc_segment (p)
-     grill_t *p;
+alloc_segment (AAGRILL_ARG p)
+     AAGRILL_DECL(p)
 {
 
   grill_t *q;
@@ -458,8 +458,8 @@ static
 #else
 #endif
   int
-b_search (key)
-     char *key;
+b_search (AACHAR_ARG key)
+     AACHAR_DECL(key)
 {
   register int high, i, low;
   register u_long hash;
@@ -491,14 +491,20 @@ b_search (key)
 #define APGLarg  file_name, line_v[line_id].id
 
 static void
-token_fatalerr (line_id, token_id, type, errn0, low, high, token)
-     int line_id;
-     int token_id;
-     int type;
-     int errn0;
-     int low;
-     int high;
-     char *token;
+token_fatalerr (AAINT_ARG line_id, 
+		AAINT_ARG token_id, 
+		AAINT_ARG type, 
+		AAINT_ARG errn0, 
+		AAINT_ARG low, 
+		AAINT_ARG high, 
+		AACHAR_ARG token)
+     AAINT_DECL(line_id)
+     AAINT_DECL(token_id)
+     AAINT_DECL(type)
+     AAINT_DECL(errn0)
+     AAINT_DECL(low)
+     AAINT_DECL(high)
+     AACHAR_DECL(token)
 {
   char *p = token;
 
@@ -537,8 +543,8 @@ token_fatalerr (line_id, token_id, type, errn0, low, high, token)
 /* ymalloc & seg_t */
 
 static void
-alloc_seg_t (r)
-     char *r;
+alloc_seg_t (AACHAR_ARG r)
+     AACHAR_DECL(r)
 {
   seg_t *p = tail_seg, *q;
 
@@ -556,13 +562,13 @@ alloc_seg_t (r)
 }
 
 static void *
-ymalloc (s)
-     size_t s;
+ymalloc (AASIZE_ARG s)
+     AASIZE_DECL(s)
 {
   void *p;
 
   p = (void *) xmalloc (s);
-  alloc_seg_t (p);
+  alloc_seg_t ((char *)p);
 
   return p;
 }
@@ -574,8 +580,8 @@ __inline
 #else
 #endif
 static int
-strholen (p)
-     char *p;
+strholen (AACHAR_ARG p)
+     AACHAR_DECL(p)
 {
   register int c = 1, s = 0;
   register char *_p = p;
@@ -627,10 +633,10 @@ strholen (p)
 #define APGE_ARG8 i, 0, 0, APG_FEW_ERR, rep_limits[i][0], 0, NULL
 
 static void
-token_analysis (token, line_id, token_id)
-     char *token;
-     int line_id;
-     int token_id;
+token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
+     AACHAR_DECL(token)
+     AAINT_DECL(line_id)
+     AAINT_DECL(token_id)
 
 {
   char *endptr, *pp = NULL;
@@ -777,8 +783,8 @@ static char *err_table[] = {
 };
 
 char *
-apg_strerror (errnum)
-     int errnum;
+apg_strerror (AAINT_ARG errnum)
+     AAINT_DECL(errnum)
 {
   static char *sb;
   int i = errnum;
@@ -795,19 +801,19 @@ apg_strerror (errnum)
 /* standard api */
 
 void
-apg_free_grill (p_ptr)
-     grill_t *p_ptr;
+apg_free_grill (AAGRILL_ARG p)
+     AAGRILL_DECL (p)
 {
-  grill_t *s_ptr;
+  grill_t *s;
 
-  if (p_ptr == NULL)
-    p_ptr = apg_arena;
+  if (p == NULL)
+    p = apg_arena;
 
-  while (p_ptr != NULL)
+  while (p != NULL)
     {
-      s_ptr = p_ptr->next;
-      free (p_ptr);
-      p_ptr = s_ptr;
+      s = p->next;
+      free (p);
+      p = s;
 
     }
 }
@@ -829,8 +835,8 @@ apg_free_pragma ()
 
 
 int
-apg_get_line (apg_user_ptr)
-     grill_t **apg_user_ptr;
+apg_get_line (AAGRILL__ARG apg_user_ptr)
+     AAGRILL__DECL(apg_user_ptr)
 {
   apg_errno = APG_EOK;
 
@@ -917,7 +923,7 @@ apg_parser (q, va_alist)
 
 /* ansicare vector setup */
 
-#if !defined (__GNUC__) || defined (__STRICT_ANSI__)
+#if !defined (__GNUC__) || defined (__STRICT_ANSI__) || defined (__ANSI__) || defined (__cplusplus)
 
   c_index['#'] = 1;
   c_index[APG_SEPLINE] = 2;

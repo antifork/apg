@@ -382,8 +382,7 @@ args:args ':' args | '(' T_STRING ')' T_INT
 ;
 
 %%yyerror (s)
-     char *
-       s;
+     char * s;
 {
   fatalerr ("%s:%d: %s", filein, lineno, s);
   return;

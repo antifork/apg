@@ -59,6 +59,49 @@ extern int apg_errno;
 #define u_long  unsigned long
 #endif
 
+/* functions declarations */
+
+#if defined(__cplusplus) || defined(__ANSI__) || defined (__STRICT_ANSI__) 
+
+/* g++ / ANSI */
+
+#define AAINT_ARG       int
+#define AAUINT_ARG	u_int
+#define AASIZE_ARG      size_t 
+#define AACHAR_ARG      char *
+#define AAVOID_ARG      void *
+#define AAGRILL_ARG     grill_t *
+#define AAGRILL__ARG	grill_t **
+
+#define AAINT_DECL(a)
+#define AAUINT_DECL(a)   
+#define AASIZE_DECL(a)    
+#define AACHAR_DECL(a)
+#define AAVOID_DECL(a)
+#define AAGRILL_DECL(a)
+#define AAGRILL__DECL(a)
+
+#else
+/* GNU c */
+
+#define AAINT_ARG
+#define AAUINT_ARG       
+#define AASIZE_ARG       
+#define AACHAR_ARG    
+#define AAVOID_ARG      
+#define AAGRILL_ARG     
+#define AAGRILL__ARG 
+
+#define AAINT_DECL(a)   int a;
+#define AAUINT_DECL(a)   u_int a; 
+#define AASIZE_DECL(a)   size_t a; 
+#define AACHAR_DECL(a)  char *a;
+#define AAVOID_DECL(a)   void *a;
+#define AAGRILL_DECL(a)  grill_t *a;
+#define AAGRILL__DECL(a) grill_t **a;
+
+#endif
+
 
 #define i_rule_label	1
 #define c_rule_label	2
@@ -112,6 +155,11 @@ typedef struct __type_line__ {
 #define h_rule_comm		line_dun.h_rule_line.comm
 
 /* prototypes */
+
+#ifdef   __THROW
+#undef   __THROW
+#define  __THROW
+#endif
 
 char 	*apg_strerror __P ((int));
 grill_t *apg_parser  __P ((int, ...));
