@@ -1,15 +1,15 @@
 #line 2 "/usr/local/share/apg/apg.db"
 /* $Id$ */
 #line 4 "/usr/local/share/apg/apg.db"
-/* 
+/*
  *  $Id$
  *  apg.tab.h
  *  Generated automatically by apg: autoparser generator.
  *
- *  Sources are available at 	
- *		ftp://ftp.antifork.org/apg/ 
+ *  Sources are available at
+ *		ftp://ftp.antifork.org/apg/
  *		cvs -d :pserver:anoncvs@cvs.antifork.org:/CVS checkout apg
- *	
+ *
  *  Copyright (c) 1999 Bonelli Nicola  <bonelli@antifork.org>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -32,7 +32,7 @@
 #define _APG_TAB_H
 
 #ifndef _APG_PARSER_C
-extern int    apg_errno;
+extern int apg_errno;
 #endif
 
 #define APG_MAXERR      3
@@ -47,11 +47,11 @@ extern int    apg_errno;
 #include <sys/cdefs.h>
 
 #if !defined (__P)
-# ifdef __STDC__
-# define __P(x) x
-# else
-# define __P(x) ()
-# endif
+#ifdef __STDC__
+#define __P(x) x
+#else
+#define __P(x) ()
+#endif
 #endif
 
 #if defined(__ANSI__) || defined (__STRICT_ANSI__)
@@ -61,57 +61,11 @@ extern int    apg_errno;
 #define u_long  unsigned long
 #endif
 
-/* functions declarations */
-
-#if defined(__cplusplus) || defined(__ANSI__) || defined (__STRICT_ANSI__)
-
-/* g++ / ANSI */
-
-#define AAINT_ARG        int
-#define AAUINT_ARG	 u_int
-#define AASIZE_ARG       size_t
-#define AACHARx_ARG      char *
-#define AAVOIDx_ARG      void *
-#define AAGRILLx_ARG     grill_t *
-#define AAGRILLxx_ARG	 grill_t **
-#define AATIMEVAL_ARG	 struct timeval
-#define AAELAPSEDx_ARG   elapsed_val *
-
-#define AAINT_DEC(a)
-#define AAUINT_DEC(a)
-#define AASIZE_DEC(a)
-#define AACHARx_DEC(a)
-#define AAVOIDx_DEC(a)
-#define AAGRILLx_DEC(a)
-#define AAGRILLxx_DEC(a)
-#define AATIMEVAL_DEC(a)
-#define AAELAPSEDx_DEC(a)
-
-#else
-/* GNU c */
-
-#define AAINT_ARG
-#define AAUINT_ARG
-#define AASIZE_ARG
-#define AACHARx_ARG
-#define AAVOIDx_ARG
-#define AAGRILLx_ARG
-#define AAGRILLxx_ARG
-#define AATIMEVAL_ARG
-#define AAELAPSEDx_ARG
-
-#define AAINT_DEC(a)      int a;
-#define AAUINT_DEC(a)     u_int a;
-#define AASIZE_DEC(a)     size_t a;
-#define AACHARx_DEC(a)    char *a;
-#define AAVOIDx_DEC(a)    void *a;
-#define AAGRILLx_DEC(a)   grill_t *a;
-#define AAGRILLxx_DEC(a)  grill_t **a;
-#define AATIMEVAL_DEC(a)  struct timeval a;
-#define AAELAPSEDx_DEC(a) elapsed_val *a;
-
+/* undef __THROW for g++ compatibility */
+#ifdef   __THROW
+#undef   __THROW
+#define  __THROW
 #endif
-
 
 #define c_rule_label	1
 #define h_rule_label	2
@@ -166,36 +120,29 @@ typedef struct __type_line__ {
 
 /* prototypes */
 
-#line 116 "/usr/local/share/apg/apg.db"
-/* We don't care about __THROW gcc 2.8.x optimizations */
-#ifdef   __THROW
-#undef   __THROW
-#define  __THROW
-#endif
-
-char         *apg_strerror __P ((int));
-grill_t      *apg_parser __P ((int, ...));
-int           apg_get_line __P ((grill_t **));
-void          apg_free_grill __P ((grill_t *));
-void          apg_free_pragma __P ((void));
-
+#line 70 "/usr/local/share/apg/apg.db"
+/* undef __THROW for g++ compatibility */
+void apg_free_grill __P((grill_t *));
+void apg_free_pragma __P((void));
+char *apg_strerror __P((int));
+int apg_get_line __P((grill_t **));
+grill_t *apg_parser __P((int,...));
 /* parser header side */
 
-#line 132 "/usr/local/share/apg/apg.db"
+#line 79 "/usr/local/share/apg/apg.db"
 #ifdef _APG_PARSER_C
 /* header */
 
-#line 134 "/usr/local/share/apg/apg.db"
-#include <stdlib.h>
-
-#ifndef _STDIO_H
-#include <stdio.h>
-#endif
-
-#include <limits.h>
+#line 81 "/usr/local/share/apg/apg.db"
 #include <sys/types.h>
 #include <sys/cdefs.h>
 #include <sys/stat.h>
+#include <sys/mman.h>
+#include <stdlib.h>
+#ifndef _STDIO_H
+#include <stdio.h>
+#endif
+#include <limits.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -208,10 +155,9 @@ void          apg_free_pragma __P ((void));
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
-
 /* apg types */
 
-#line 161 "/usr/local/share/apg/apg.db"
+#line 105 "/usr/local/share/apg/apg.db"
 #ifndef _HAVE_GRAMMAR_TAB_H
 #define T_INT   	1
 #define T_SHORT 	2
@@ -223,19 +169,18 @@ void          apg_free_pragma __P ((void));
 #define T_HOST  	8
 #define T_IPV4 		9
 #endif
-
 /* apg type size */
 
-#line 174 "/usr/local/share/apg/apg.db"
-static const int types_size[] = { 0, sizeof (int), sizeof (short), sizeof (char), sizeof (long), sizeof (short), sizeof (char), sizeof (void *), sizeof (void *), sizeof (void *)
+#line 117 "/usr/local/share/apg/apg.db"
+static const int types_size[] = {
+0, sizeof(int), sizeof(short), sizeof(char), sizeof(long), sizeof(short), sizeof(char), sizeof(void *), sizeof(void *), sizeof(void *)
 };
-
 /* apg type id */
 
-#line 178 "/usr/local/share/apg/apg.db"
-static const char *const types_id[] = { NULL, "INT", "SHORT", "CHAR", "U_32", "U_16", "U_8", "STR", "HOST", "IPV4"
+#line 121 "/usr/local/share/apg/apg.db"
+static const char *const types_id[] = {
+NULL, "INT", "SHORT", "CHAR", "U_32", "U_16", "U_8", "STR", "HOST", "IPV4"
 };
-
 /* apg table */
 
 #define APG_MAXARG 6
@@ -282,24 +227,20 @@ static int apg_offset[][APG_MAXARG]={
 
 /* typedef: seg_t and line_t */
 
-#line 182 "/usr/local/share/apg/apg.db"
-typedef struct
-{
-    u_long        hash;
-    char         *id;
+#line 125 "/usr/local/share/apg/apg.db"
+typedef struct {
+	u_long hash;
+	char *id;
 }
 line_t;
 
-typedef struct i_seg_t
-{
-    char         *ptr;
-    struct i_seg_t *next;
-}
-seg_t;
-
+typedef struct i_seg_t {
+	char *ptr;
+	struct i_seg_t *next;
+} seg_t;
 /* line_t list */
 
-static const line_t line_v[] = { { 0, NULL }, { 1240268419U, "c_rule" }, { 3061006684U, "h_rule" }, { 4226064595U, "i_rule" }, };
+static const line_t line_v[] = { { 0, NULL }, { 1389128253U, "c_rule" }, { 3608130904U, "h_rule" }, { 4012619107U, "i_rule" }, };
 
 #define QMAX_ELEM	3
 
@@ -308,7 +249,7 @@ static const line_t line_v[] = { { 0, NULL }, { 1240268419U, "c_rule" }, { 30610
 #define APG_SEPLINE  '='
 #define APG_SEPTOKEN ':'
 
-#line 197 "/usr/local/share/apg/apg.db"
-#endif /* _APG_PARSER_C */
-#endif /* _APG_TAB_H */
+#line 136 "/usr/local/share/apg/apg.db"
+#endif				/* _APG_PARSER_C */
+#endif				/* _APG_TAB_H */
 

@@ -31,16 +31,7 @@
 
 #include <regex.h>
 #include <proto.h>
-
-
-extern t_node *ptr_node, *root_node;
-
-extern char *yytext;
-extern int lineno, regno;
-extern char filein[];
-
-extern long type_bitsfield;
-extern long opt_bitsfield;
+#include <global.h>
 
 int opt;
 

@@ -39,7 +39,7 @@ line_4 = \0x34
 
 #line_1 = \056
 
-line_5 = 127.0.0.1: x.cina.org # null \
+line_5 = 127.0.0.1: www.google.com # null \
 test .. ok  .... \
 
 
@@ -50,6 +50,6 @@ line_6 =  : antiforkdotorg
 
 line_6 = test:prova
 
-line_7 = a\0x56\0x89  :  b : ds : 6
+line_7 = a\0x56 :  b : ds : 6
 
 line_1 = 10::67:2 

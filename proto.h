@@ -36,7 +36,6 @@ void    check_uileaf    P((t_node *, char *));
 void    print_tree      P((t_node *));
 void 	create_index    P((char *));
 void 	tab_par_creator P((void));
-void 	fatalerr 	P((char *, ...));
 void 	add_regex 	P((char *));
 
 void    check_bound     P((int, char *, int, int));
@@ -50,6 +49,6 @@ void    *xmalloc        P((unsigned int));
 void    *xrealloc       P((char *,unsigned int));
 void    *xcalloc        P((unsigned int, unsigned int));
 
-void 	usage      	P((char *));
+void 	usage      	P((void));
 
 #endif  /* APG_PROTO_H */

@@ -1,6 +1,6 @@
-/* 
+/*
  *  $Id$
- *  Tree headers 
+ *  Tree headers
  *
  *  Copyright (c) 1999 Bonelli Nicola <bonelli@antifork.org>
  *
@@ -23,30 +23,27 @@
 #ifndef APG_TREE_H
 #define APG_TREE_H
 
-typedef struct s_leaf
-        {
-        int            	type,regex,opt;
-	int		minor,major;
-        char            *label;
-        struct s_leaf   *next_leaf;
-        } t_leaf;
+typedef struct s_leaf {
+	int type, regex, opt;
+	int minor, major;
+	char *label;
+	struct s_leaf *next_leaf;
+}      t_leaf;
 
 
-typedef struct s_node
-	{
-	char	      *label;
-	int	       min,max;
-	struct s_leaf *next_leaf;	
+typedef struct s_node {
+	char *label;
+	int min, max;
+	struct s_leaf *next_leaf;
 	struct s_node *next_node;
 
-	} t_node;
+}      t_node;
 
-typedef struct s_regex
-	{
-	char	      *regex;
+typedef struct s_regex {
+	char *regex;
 	struct s_regex *next;
 
-	} t_regex;
+}       t_regex;
 
 
-#endif /* APG_TREE_H */
+#endif				/* APG_TREE_H */

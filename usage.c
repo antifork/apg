@@ -25,14 +25,14 @@
 #include <stdio.h>
 #include <common.h>
 #include <proto.h>
+#include <global.h>
 
-extern long opt_bitsfield;
+extern char *__progname;
 
 void
-usage (char *name)
+usage ()
 {
-      fprintf (stderr, "usage: %s [option]\n", name);
-
+      fprintf (stderr, "usage: %s [option]\n", __progname);
       fprintf (stderr,
 		"   -t  --template file.tmpl\n"
 		"   -s  --source   filename, default \'apg.par.c\'\n"
@@ -45,7 +45,6 @@ usage (char *name)
 		"   -h  --help[=hidden] (show furter opts for developers)\n"
 		);
 		
-
       if (opt_bitsfield & OPT_ADVHELP)
       fprintf (stderr,
                 "   -d  --database filename, specify a local 'apg.db'\n"

@@ -1,6 +1,6 @@
-/* 
+/*
  *  $Id$
- *  db module- 
+ *  db module-
  *
  *  Copyright (c) 1999 Bonelli Nicola <bonelli@antifork.org>
  *
@@ -23,162 +23,129 @@
 #include <locale.h>
 #include <common.h>
 #include <db.h>
-
 #include <std.h>
 #include <proto.h>
 
-void fatalerr (char *, ...);
-char *touch_db (int);
+void fatalerr(char *,...);
+char *touch_db(int);
 
 
 extern ientry *index_db;
 extern char apg_db[];
 
 char *
-touch_db (int action)
+touch_db(int action)
 {
-  int fd;
-  struct stat lstat;
-  static char *ptr;
+	int fd;
+	struct stat lstat;
+	static char *ptr;
 
 
-  if (action & DB_LOAD)
-    {
+	/* DB_LOAD */
+	if (action & DB_LOAD) {
+		if (stat(apg_db, &lstat) == -1)
+			fatalerr("fatalerr: %s no such file. apg is not installed properly",
+				 apg_db);
+		ptr = (char *) xrealloc(ptr, lstat.st_size + 1);
+		fd = open(apg_db, O_RDONLY);
+		read(fd, ptr, lstat.st_size);
+		close(fd);
+		return ptr;
+	}
 
-      if (stat (apg_db, &lstat) == -1)
-	fatalerr ("fatalerr: %s no such file. apg is not installed properly",
-		  apg_db);
+	/* DB_DISCARD */
+	if (action & DB_DISCARD) {
+		free(ptr);
+		return (char *) NULL;
+	}
 
-/* 
- * space required to load apg.db  
- */
-
-      ptr = (char *) xrealloc (ptr, lstat.st_size + 1);
-
-      fd = open (apg_db, O_RDONLY);
-      (void)read (fd, ptr, lstat.st_size);
-      (void)close (fd);
-
-      return ptr;
-
-    }
-  if (action & DB_DISCARD)
-    {
-      if (ptr)
-	free (ptr);
-      else
-	fatalerr ("internal err: space was not previously allocated");
-
-      return (char *) NULL;
-    }
-  fatalerr ("internal err: touch_db()");
-
-  return (char *) NULL;		/* 
-				 * this is unreachable 
-				 */
+	fatalerr("internal err: touch_db()");
+	return (char *) NULL;	/* this is unreachable */
 }
 
 
 void
-create_index (char *ptr)
+create_index(char *ptr)
 {
-  char *start = ptr;
-  int chapter = 0, paragraph = 0, in_line = 1 ;
-  ientry *entry_ptr = NULL;
+	char *start = ptr;
+	int chapter = 0, paragraph = 0, in_line = 1;
+	ientry *entry_ptr = NULL;
 
-  if (ptr == NULL) return;
+	if (ptr == NULL)
+		return;
 
-  index_db = entry_ptr = (ientry *) xmalloc (sizeof (ientry));
+	index_db = entry_ptr = (ientry *) xmalloc(sizeof(ientry));
 
-  while ( *ptr != '\0' && strstr (ptr, INDEX_MARK) != NULL )
-    {
+	while (*ptr != '\0' && strstr(ptr, INDEX_MARK) != NULL) {
+		while (ptr[0] && ptr[1] && ptr[2] && ptr[3]) {
+			if (ptr[0] == '/' && ptr[1] == '/' && ptr[2] == '-' && ptr[3] == '[')
+				break;
+			if (ptr[0] == '\n')
+				in_line++;
+			ptr++;
+		}
 
-      while ( ptr[0] && ptr[1] && ptr[2] && ptr[3] )
-	{
-	if ( ptr[0] == '/' && ptr[1] == '/' && ptr[2] == '-' && ptr[3] == '[' ) break; 
-	if ( ptr[0] == '\n' ) in_line++;
-	ptr++;
+		if (ptr[0] && ptr[1] && ptr[2] && ptr[3]) {
+			/* ok */
+			in_line++;
+			*(ptr) = '\0';
+			ptr += 4;
+
+		} else
+			fatalerr("internal err: apg database maybe corrupted");
+
+		/* Test for apg.db integrity */
+
+		if (sscanf(ptr, "%d,%d", &chapter, &paragraph) < 2)
+			fatalerr("internal err: apg database maybe corrupted");
+
+		if ((ptr = strstr(ptr, "\n")) == NULL)
+			fatalerr("internal err: apg database maybe corrupted");
+
+		*(ptr++) = '\0';
+
+		entry_ptr->offset = ptr - start;
+		entry_ptr->chapter = chapter;
+		entry_ptr->paragraph = paragraph;
+		entry_ptr->line = in_line;
+		entry_ptr->next = (ientry *) xmalloc(sizeof(ientry));
+		entry_ptr = entry_ptr->next;
+		entry_ptr->next = (ientry *) NULL;
 	}
-
-      if ( ptr[0] && ptr[1] && ptr[2] && ptr[3] )
-	{
-	/* ok */
-        in_line++;	
-	*(ptr) = '\0';
-      	ptr += 4;
-
-	}
-	else
-	fatalerr ("internal err: apg database maybe corrupted");
-
-      /* 
-       * Test for apg.db integrity 
-       */
-
-      if (sscanf (ptr, "%d,%d", &chapter, &paragraph) < 2)
-	fatalerr ("internal err: apg database maybe corrupted");
-
-      if ((ptr = strstr (ptr, "\n")) == NULL)
-	fatalerr ("internal err: apg database maybe corrupted");
-
-      *(ptr++) = '\0';
-
-      entry_ptr->offset    = ptr - start;
-
-      entry_ptr->chapter   = chapter;
-      entry_ptr->paragraph = paragraph;
-      entry_ptr->line	   = in_line;
-      entry_ptr->next      = (ientry *) xmalloc (sizeof (ientry));
-
-      entry_ptr = entry_ptr->next;
-      entry_ptr->next = (ientry *) NULL;
-    }
-
-  return;
+	return;
 }
 
 
 int
-extract_segment (char *ptr_db, FILE * where, int chapter, int paragraph, char *comm, int l)
+extract_segment(char *ptr_db, FILE * where, int chapter, int paragraph, char *comm, int l)
 {
-  char *char_ptr;
-  int  c=0;
+	char *char_ptr;
+	int c = 0;
 
-  ientry *entry_ptr = index_db;
+	ientry *entry_ptr = index_db;
 
-  if (!entry_ptr)
-    fatalerr ("internal err: extract_segment() index_nb is a NULL pointer");
+	if (!entry_ptr)
+		fatalerr("internal err: extract_segment() index_nb is a NULL pointer");
 
-  while (entry_ptr->next)
-    {
-      if ((entry_ptr->chapter == chapter)
-	  && (entry_ptr->paragraph == paragraph))
-	{
+	while (entry_ptr->next) {
+		if ((entry_ptr->chapter == chapter) && (entry_ptr->paragraph == paragraph)) {
 
-	  /* 
-	   * This points to the selected frame 
-	   */
+			/* This points to the selected frame */
+			if (comm != NULL && *comm != '\0') {
+				add_comment(where, comm);
+				add_cr(where);
+			}
+			char_ptr = (ptr_db + entry_ptr->offset);
 
+			if (l != 0)
+				fprintf(where, "#line %d \"%s\"\n", entry_ptr->line, APG_DB_FILE);
 
-	  if (comm != NULL  && *comm != '\0' )
-	  	{	
-		add_comment (where,comm);
-       	  	add_cr(where);
+			fprintf(where, "%s", char_ptr);
+			return 0;
 		}
-
-	  char_ptr = (ptr_db + entry_ptr->offset);
-
-	  if(l)
-	  fprintf (where, "#line %d \"%s\"\n",entry_ptr->line,APG_DB_FILE);
-
-	  fprintf (where, "%s", char_ptr);
-
-	  return 0;
+		entry_ptr = entry_ptr->next;
 	}
-      entry_ptr = entry_ptr->next;
-    }
 
-  fatalerr ("internal err: extract_segment() index=(%d,%d) not found",chapter,paragraph);
-
-  return -1;
+	fatalerr("internal err: extract_segment() index=(%d,%d) not found", chapter, paragraph);
+	return -1;
 }

@@ -1,15 +1,15 @@
 //-[0,0
 /* $Id$ */
 //-[0,1
-/* 
+/*
  *  $Id$
  *  apg.tab.h
  *  Generated automatically by apg: autoparser generator.
  *
- *  Sources are available at 	
- *		ftp://ftp.antifork.org/apg/ 
+ *  Sources are available at
+ *		ftp://ftp.antifork.org/apg/
  *		cvs -d :pserver:anoncvs@cvs.antifork.org:/CVS checkout apg
- *	
+ *
  *  Copyright (c) 1999 Bonelli Nicola  <bonelli@antifork.org>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -32,7 +32,7 @@
 #define _APG_TAB_H
 
 #ifndef _APG_PARSER_C
-extern int    apg_errno;
+extern int apg_errno;
 #endif
 
 #define APG_MAXERR      3
@@ -47,11 +47,11 @@ extern int    apg_errno;
 #include <sys/cdefs.h>
 
 #if !defined (__P)
-# ifdef __STDC__
-# define __P(x) x
-# else
-# define __P(x) ()
-# endif
+#ifdef __STDC__
+#define __P(x) x
+#else
+#define __P(x) ()
+#endif
 #endif
 
 #if defined(__ANSI__) || defined (__STRICT_ANSI__)
@@ -61,86 +61,31 @@ extern int    apg_errno;
 #define u_long  unsigned long
 #endif
 
-/* functions declarations */
-
-#if defined(__cplusplus) || defined(__ANSI__) || defined (__STRICT_ANSI__)
-
-/* g++ / ANSI */
-
-#define AAINT_ARG        int
-#define AAUINT_ARG	 u_int
-#define AASIZE_ARG       size_t
-#define AACHARx_ARG      char *
-#define AAVOIDx_ARG      void *
-#define AAGRILLx_ARG     grill_t *
-#define AAGRILLxx_ARG	 grill_t **
-#define AATIMEVAL_ARG	 struct timeval
-#define AAELAPSEDx_ARG   elapsed_val *
-
-#define AAINT_DEC(a)
-#define AAUINT_DEC(a)
-#define AASIZE_DEC(a)
-#define AACHARx_DEC(a)
-#define AAVOIDx_DEC(a)
-#define AAGRILLx_DEC(a)
-#define AAGRILLxx_DEC(a)
-#define AATIMEVAL_DEC(a)
-#define AAELAPSEDx_DEC(a)
-
-#else
-/* GNU c */
-
-#define AAINT_ARG
-#define AAUINT_ARG
-#define AASIZE_ARG
-#define AACHARx_ARG
-#define AAVOIDx_ARG
-#define AAGRILLx_ARG
-#define AAGRILLxx_ARG
-#define AATIMEVAL_ARG
-#define AAELAPSEDx_ARG
-
-#define AAINT_DEC(a)      int a;
-#define AAUINT_DEC(a)     u_int a;
-#define AASIZE_DEC(a)     size_t a;
-#define AACHARx_DEC(a)    char *a;
-#define AAVOIDx_DEC(a)    void *a;
-#define AAGRILLx_DEC(a)   grill_t *a;
-#define AAGRILLxx_DEC(a)  grill_t **a;
-#define AATIMEVAL_DEC(a)  struct timeval a;
-#define AAELAPSEDx_DEC(a) elapsed_val *a;
-
-#endif
-
-//-[0,2
-/* We don't care about __THROW gcc 2.8.x optimizations */
+/* undef __THROW for g++ compatibility */
 #ifdef   __THROW
 #undef   __THROW
 #define  __THROW
 #endif
-
-char         *apg_strerror __P ((int));
-grill_t      *apg_parser __P ((int, ...));
-int           apg_get_line __P ((grill_t **));
-void          apg_free_grill __P ((grill_t *));
-void          apg_free_pragma __P ((void));
-
+//-[0,2
+void apg_free_grill __P((grill_t *));
+void apg_free_pragma __P((void));
+char *apg_strerror __P((int));
+int apg_get_line __P((grill_t **));
+grill_t *apg_parser __P((int,...));
 //-[0,3
-grill_t      *apg_seek __P ((int, grill_t *));
-
+grill_t * apg_seek __P((int, grill_t *));
 //-[0,4
 #ifdef _APG_PARSER_C
 //-[0,5
-#include <stdlib.h>
-
-#ifndef _STDIO_H
-#include <stdio.h>
-#endif
-
-#include <limits.h>
 #include <sys/types.h>
 #include <sys/cdefs.h>
 #include <sys/stat.h>
+#include <sys/mman.h>
+#include <stdlib.h>
+#ifndef _STDIO_H
+#include <stdio.h>
+#endif
+#include <limits.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -153,10 +98,8 @@ grill_t      *apg_seek __P ((int, grill_t *));
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
-
 //-[0,6
 #include <regex.h>
-
 //-[0,7
 #ifndef _HAVE_GRAMMAR_TAB_H
 #define T_INT   	1
@@ -169,33 +112,28 @@ grill_t      *apg_seek __P ((int, grill_t *));
 #define T_HOST  	8
 #define T_IPV4 		9
 #endif
-
 //-[0,8
-static const int types_size[] = { 0, sizeof (int), sizeof (short), sizeof (char), sizeof (long), sizeof (short), sizeof (char), sizeof (void *), sizeof (void *), sizeof (void *)
+static const int types_size[] = {
+0, sizeof(int), sizeof(short), sizeof(char), sizeof(long), sizeof(short), sizeof(char), sizeof(void *), sizeof(void *), sizeof(void *)
 };
-
 //-[0,9
-static const char *const types_id[] = { NULL, "INT", "SHORT", "CHAR", "U_32", "U_16", "U_8", "STR", "HOST", "IPV4"
+static const char *const types_id[] = {
+NULL, "INT", "SHORT", "CHAR", "U_32", "U_16", "U_8", "STR", "HOST", "IPV4"
 };
-
 //-[0,10
-typedef struct
-{
-    u_long        hash;
-    char         *id;
+typedef struct {
+	u_long hash;
+	char *id;
 }
 line_t;
 
-typedef struct i_seg_t
-{
-    char         *ptr;
-    struct i_seg_t *next;
-}
-seg_t;
-
+typedef struct i_seg_t {
+	char *ptr;
+	struct i_seg_t *next;
+} seg_t;
 //-[0,11
-#endif /* _APG_PARSER_C */
-#endif /* _APG_TAB_H */
+#endif				/* _APG_PARSER_C */
+#endif				/* _APG_TAB_H */
 
 //-[1,0
 /*
@@ -203,7 +141,7 @@ seg_t;
  *  apg.par.c
  *  Generated automatically by apg: autoparser generator.
  *
- *  Sources are available at 	
+ *  Sources are available at
  *		ftp://ftp.antifork.org/apg/
  *		cvs -d :pserver:anoncvs@cvs.antifork.org:/CVS checkout apg
  *
@@ -229,47 +167,39 @@ seg_t;
 #define _APG_PARSER_C
 //-[1,2
 //-[1,3
-static int ac_0 __P ((void));
-static int ac_1 __P ((void));
-static int ac_2 __P ((void));
-static int ac_3 __P ((void));
-static int ac_4 __P ((void));
-
+static int ac_0 __P((void));
+static int ac_1 __P((void));
+static int ac_2 __P((void));
+static int ac_3 __P((void));
+static int ac_4 __P((void));
 //-[1,4
-static char  *file_name;
-static char  *file_image;
-
-static int    apg_flags;
-static int    apg_currentline;
-static int    apg_buffline;
-static int    apg_statecode;
-static int    apg_inputcode;
-static int    apg_tokenid;
+static char *file_name;
+static char *file_image;
+static int apg_flags;
+static int apg_currentline;
+static int apg_buffline;
+static int apg_statecode;
+static int apg_inputcode;
+static int apg_tokenid;
+static int apg_stream_len;
 
 #ifdef APG_PERF
-static int    apg_global;
+static int apg_global;
 #endif
-
 static u_char *b_token;
 static u_char *p_token;
 static u_char *p_stream;
-
 static grill_t *g_stream;
 static grill_t *g_arena;
-
 static seg_t *head_seg;
 static seg_t *tail_seg;
-
-int           apg_errno;
-
-//-[1,5
+int apg_errno;
+//-[1,5 
 #define APG_OPEN                0
 #define APG_CLOSE               1
-
 #define APG_ACK          	0x06
 
 /* general flags */
-
 #define APG_PARSED		0x01
 #define APG_RESET		0x02
 #define APG_OCTT		0x04
@@ -277,7 +207,6 @@ int           apg_errno;
 #define APG_FATAL		0x10
 
 /* msg error codes */
-
 #define APG_ETYPE		1
 #define APG_ENULL		2
 #define APG_EOFFSET		3
@@ -290,549 +219,502 @@ int           apg_errno;
 
 //-[1,6
 #if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__ANSI__) && !defined(__cplusplus)
-int           c_index[256] = {['#'] 1,[APG_SEPLINE] 2,[APG_SEPTOKEN] 3,['\''] 4,['\\'] 5,[' '] 6,['\t'] 6,['\n'] 7
+static int c_index[256] = { ['#'] 1,[APG_SEPLINE] 2,[APG_SEPTOKEN] 3,['\''] 4,['\\'] 5,[' '] 6,['\t'] 6,['\n'] 7
 };
 #else
-int           c_index[256];
+static int c_index[256];
 #endif
 
 /* Macro */
+#define MAX(x,y) ( (x)>(y) ? (x) : (y) )
+#define MIN(x,y) ( (x)<(y) ? (x) : (y) )
 
-#define MAX(x,y) ( x>y ? x : y )
-#define MIN(x,y) ( x<y ? x : y )
-#define O_PUSH(base, offset, obj ,t) ( *(t *)((u_char *)base+offset+sizeof(u_long)) = (t)*obj)
-#define P_PUSH(base, offset, ptr) ( *(u_long *)((u_char *)base+offset+sizeof(u_long))=(u_long)ptr)
-#define O_DIGIT(x) ( '0' <= x && x <= '3' ? 2 : ( '4' <= x && x <= '7' ? 1 : 0 ) )
-#define C_LIMIT(t,x,v,y) ( (x|y) ? ((t == T_U_32) ? ((u_int)x<=(u_int)v ) && ((u_int)v<=(u_int)y) : ((x<=v) && (v<=y))) : (1) )
-#define M_STRTOL(token,addr_endptr) ( apg_flags &  (APG_OCTT |APG_HEXT) ? strtol(token,addr_endptr,0) :  strtol(token,addr_endptr,10))
+#define O_PUSH(base, offset, obj ,t) 	\
+( *(t *)((u_char *)base+offset+sizeof(u_long)) = (t)*obj)
+
+#define P_PUSH(base, offset, ptr) 	\
+( *(u_long *)((u_char *)base+offset+sizeof(u_long))=(u_long)ptr)
+
+#define O_DIGIT(x) 			\
+( '0' <= x && x <= '3' ? 2 : ( '4' <= x && x <= '7' ? 1 : 0 ) )
+
+#define C_LIMIT(t,x,v,y) 		\
+( (x|y) ? ((t == T_U_32) ? ((u_int)x<=(u_int)v ) && ((u_int)v<=(u_int)y) : ((x<=v) && (v<=y))) : (1) )
+
+#define M_STRTOL(token,addr_endptr) 	\
+( apg_flags & (APG_OCTT|APG_HEXT) ? strtol(token,addr_endptr,0) :  strtol(token,addr_endptr,10))
 
 //-[1,7
-static void
 #if __STDC__
-fatalerr (char *pattern, ...)
+static void fatalerr(char *pattern,...) __attribute__((noreturn));
+static void
+fatalerr(char *pattern,...)
 #else
-fatalerr (pattern, va_alist)
-     char         *pattern;
-     va_dcl
+static void
+fatalerr(pattern, va_alist)
+char *pattern;
+va_dcl
 #endif
 {
-    va_list       ap;
+	va_list ap;
 
 #if __STDC__
-    va_start (ap, pattern);
+	va_start(ap, pattern);
 #else
-    va_start (ap);
+	va_start(ap);
 #endif
-
-    vfprintf (stderr, pattern, ap);
-    fprintf (stderr, "; exit forced.\n");
-    va_end (ap);
-    exit (-1);
-
+	vfprintf(stderr, pattern, ap);
+	fprintf(stderr, "; exit forced.\n");
+	va_end(ap);
+	exit(1);
 }
 
 /* xmalloc, xcalloc, xrealloc */
-
-static void  *
-xmalloc (AAUINT_ARG s)
-AAUINT_DEC (s)
+static void *
+xmalloc(u_int s)
 {
-    void         *result;
+	void *result;
 
-    result = malloc (s);
-    if (result == 0)
-	fatalerr ("xmalloc: virtual memory exhausted");
-    return result;
+	result = malloc(s);
+	if (result == 0)
+		fatalerr("xmalloc: virtual memory exhausted");
+	return result;
 }
 
-
-static void  *
-xrealloc (AAVOIDx_ARG ptr, AAUINT_ARG s)
-AAVOIDx_DEC (ptr)
-AAUINT_DEC (s)
+static void *
+xrealloc(void *ptr, u_int s)
 {
-    void         *result;
+	void *result;
 
-    /* Some older implementations of realloc() don't conform to ANSI.  */
-    result = ptr ? realloc (ptr, s) : malloc (s);
+	/* Some older implementations of realloc() don't conform to ANSI.  */
+	result = ptr ? realloc(ptr, s) : malloc(s);
 
-    if (result == 0)
-	fatalerr ("xrealloc: virtual memory exhausted");
-
-    return result;
+	if (result == 0)
+		fatalerr("xrealloc: virtual memory exhausted");
+	return result;
 }
 
-static void  *
-xcalloc (AAUINT_ARG nelem, AAUINT_ARG s)
-AAUINT_DEC (nelem)
-AAUINT_DEC (s)
+static void *
+xcalloc(u_int nelem, u_int s)
 {
-    void         *result = (char *) calloc (nelem, s);
+	void *result = (char *) calloc(nelem, s);
 
-    if (result == 0)
-	fatalerr ("xcalloc: virtual memory exhausted");
-
-    return result;
+	if (result == 0)
+		fatalerr("xcalloc: virtual memory exhausted");
+	return result;
 }
-
 
 static char *
-strprg (AACHARx_ARG p, AAINT_ARG i)
-AACHARx_DEC (p)
-AAINT_DEC   (i)
+strprg(char * p, int i)
 {
-    register int  l;
-    register char *q;
+	register int l;
+	register char *q;
 
-    if (p == NULL) return NULL;
+	if (p == NULL)
+		return NULL;
 
-    l = MIN (i, (int)strlen (p));
-    q = p;
+	l = MIN(i, (int) strlen(p));
+	q = p;
 
-    while (*(q + l) != 0)
-        {
-            *q = *(q + l);
-            q++;
-        }
-
-    *q = 0;
-
-    return p;
-}
-
-
-static char  *
-ioctl_buffer (AACHARx_ARG fn, AAINT_ARG flag)
-AACHARx_DEC (fn)
-AAINT_DEC (flag)
-{
-    int           fd;
-    int           sz;
-
-    struct stat   f_stat;
-
-    switch (flag)
-	{
-	 case APG_OPEN:
-
-	     file_name = (char *) xmalloc (strlen (fn) + 1);
-	     strcpy (file_name, fn);
-
-	     /* no TOCTOU */
-
-	     if (stat (fn, &f_stat) == -1)
-		 return (char *) NULL;
-
-	     sz = (int) f_stat.st_size;
-
-	     file_image = (char *) xrealloc (file_image, sz + 1);
-
-
-	     if ((fd = open (fn, O_RDONLY)) == -1)
-		 fatalerr ("err: %s", strerror (errno));
-
-
-	     if ((sz = read (fd, file_image, sz)) == -1)
-		 fatalerr ("err: %s", strerror (errno));
-
-	     *(file_image + sz) = 0;
-
-	     close (fd);
-
-	     return file_image;
-	     break;
-
-	 case APG_CLOSE:
-
-	     if (file_name != NULL)
-		 free (file_name);
-
-	     if (file_image == NULL)
-		 fatalerr ("err: apg_buffer already closed");
-
-	     free (file_image);
-
-	     return file_image = (char *) NULL;
-	     break;
+	while (*(q + l) != 0) {
+		*q = *(q + l);
+		q++;
 	}
 
-    return (char *) NULL;	/* unreachable */
+	*q = 0;
+	return p;
+}
+
+static char *
+mmap_ctrl(char * fn, int flag)
+{
+        struct stat f_stat;
+	int fd;
+
+	switch (flag) {
+	case APG_OPEN:
+		file_name = (char *) xmalloc(strlen(fn) + 1);
+		strcpy(file_name, fn);
+
+		/* no TOCTOU */
+		if (stat(fn, &f_stat) == -1)
+			return (char *) NULL;
+
+		apg_stream_len = (int) f_stat.st_size;
+		if ((fd = open(fn, O_RDONLY)) == -1)
+			fatalerr("err: %s", strerror(errno));
+
+		file_image=(char *)mmap(NULL, apg_stream_len, PROT_READ, MAP_PRIVATE, fd, 0);
+		if (file_image == NULL)
+			fatalerr("err: mmap error?!");
+
+		close(fd);
+		return file_image;
+	case APG_CLOSE:
+		if (file_name != NULL)
+			free(file_name);
+		if (file_image == NULL || apg_stream_len == 0)
+			fatalerr("err: apg_buffer already closed/not open yet");
+
+		munmap(file_image, apg_stream_len);
+		apg_stream_len = 0;
+
+		return file_image = NULL;
+	}
+
+	return (char *) NULL;	/* unreachable */
 }
 
 static int
-ac_0 ()
+ac_0()
 {
-    if (*p_stream   == '\\') p_stream++;
-    if (*p_stream++ == '\n') apg_buffline++;
+	if (*p_stream == '\\')
+		p_stream++;
+	if (*p_stream++ == '\n')
+		apg_buffline++;
 
-    return 1;
+	return 1;
 }
 
 static int
-ac_1 ()
+ac_1()
 {
-    *(p_token++) = *(p_stream++);
-
-    return 1;
+	*(p_token++) = *(p_stream++);
+	return 1;
 }
 
 static int
-ac_2 ()
+ac_2()
 {
-    if (*p_stream == '\n') apg_buffline++;
+	if (*p_stream == '\n')
+		apg_buffline++;
 
-    *p_token++ = '\0';
+	*p_token++ = '\0';
+	p_stream++;
+	apg_tokenid++;
 
-    p_stream++;
-    apg_tokenid++;
-
-    return 0;
+	return 0;
 }
 
 #if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__cplusplus)
-char          c_escape[256] = {['a'] '\a',['b'] '\b',['t'] '\t',['n'] '\n',['v'] '\v',['f'] '\f',['r'] '\r' };
+static char c_escape[256] = {['a'] '\a',['b'] '\b',['t'] '\t',['n'] '\n',['v'] '\v',['f'] '\f',['r'] '\r'};
 #else
-int           c_escape[256];
+static char c_escape[256];
 #endif
 
 static int
-ac_3 ()
+ac_3()
 {
-    register char c;
+	register char c;
 
-    p_stream++;
+	p_stream++;
 
-    if ((c = c_escape[*p_stream]))
-	{
-	    /* escape */
-	    *p_token = c;
-	}
-    else
-	{
-	    switch (*p_stream)
-		{
+	if ((c = c_escape[*p_stream])) {
+		/* escape */
+		*p_token = c;
+	} else {
+		switch (*p_stream) {
+		case '\n':
+			strprg((char *) p_stream, 1);
+			*p_token = *p_stream;
+			break;
+		case '0':
+			if (*(p_stream + 1) == 'x' || *(p_stream + 1) == 'X')
+				apg_flags |= APG_HEXT;
+			else
+				apg_flags |= APG_OCTT;
 
-		 case '\n':
-		     strprg ((char *)p_stream, 1);
-		     *p_token = *p_stream;
-
-		     break;
-		 case '0':
-
-		     if (*(p_stream + 1) == 'x' || *(p_stream + 1) == 'X') apg_flags |= APG_HEXT;
-		     else apg_flags |= APG_OCTT;
-
-		     *p_token = APG_ACK;
-		     p_stream--;
-
-		     break;
-
-		 default:
-		     *p_token = *p_stream;
-		     break;
+			*p_token = APG_ACK;
+			p_stream--;
+			break;
+		default:
+			*p_token = *p_stream;
+			break;
 		}
 	}
 
-    p_token++;
-    p_stream++;
-
-    return 1;
-
+	p_token++;
+	p_stream++;
+	return 1;
 }
 
 static int
-ac_4 ()
+ac_4()
 {
-    char         *eptr;
+	char *eptr;
 
-    p_stream--;
-
-    if ((eptr = strchr ((const char *) p_stream, '\n')) != NULL)
-	*eptr = '\0';
-
-    while (*p_stream != '\n' && (char *) p_stream > (char *) file_image)
 	p_stream--;
 
-    fatalerr ("%s:%d: parse error near -> \"%s\" ", file_name, apg_buffline + 1, ++p_stream);
+	if ((eptr = strchr((const char *) p_stream, '\n')) != NULL)
+		*eptr = '\0';
 
-    return 1;
+	while (*p_stream != '\n' && (char *) p_stream > (char *) file_image)
+		p_stream--;
+
+	fatalerr("%s:%d: parse error near -> \"%s\" ", file_name, apg_buffline + 1, ++p_stream);
+	return 1;
 }
 
 static const short apg_mealy_state_table[9][8] = {
-    {1, 4, 6, 6, 6, 6, 0, 0},
-    {1, 6, 2, 6, 6, 6, 7, 6},
-    {3, 4, 6, 2, 5, 3, 2, 0},
-    {3, 4, 6, 2, 5, 3, 8, 0},
-    {4, 4, 4, 4, 4, 4, 4, 0},
-    {5, 5, 5, 5, 3, 5, 5, 0},
-    {6, 6, 6, 6, 6, 6, 6, 6},
-    {6, 6, 2, 6, 6, 6, 7, 6},
-    {6, 4, 6, 2, 6, 6, 8, 0} };
+	{1, 4, 6, 6, 6, 6, 0, 0},
+	{1, 6, 2, 6, 6, 6, 7, 6},
+	{3, 4, 6, 2, 5, 3, 2, 0},
+	{3, 4, 6, 2, 5, 3, 8, 0},
+	{4, 4, 4, 4, 4, 4, 4, 0},
+	{5, 5, 5, 5, 3, 5, 5, 0},
+	{6, 6, 6, 6, 6, 6, 6, 6},
+	{6, 6, 2, 6, 6, 6, 7, 6},
+	{6, 4, 6, 2, 6, 6, 8, 0}};
 
-static int    (*apg_mealy_action_table[9][8]) () =
+static int (*apg_mealy_action_table[9][8]) () =
 {
-    { ac_1, ac_0, ac_4, ac_4, ac_4, ac_4, ac_0, ac_0} ,
-    { ac_1, ac_4, ac_2, ac_4, ac_4, ac_4, ac_0, ac_4} ,
-    { ac_1, ac_2, ac_4, ac_2, ac_0, ac_3, ac_0, ac_2} ,
-    { ac_1, ac_2, ac_4, ac_2, ac_0, ac_3, ac_0, ac_2} ,
-    { ac_0, ac_0, ac_0, ac_0, ac_0, ac_0, ac_0, ac_0} ,
-    { ac_1, ac_1, ac_1, ac_1, ac_0, ac_3, ac_1, ac_2} ,
-    { ac_4, ac_4, ac_4, ac_4, ac_4, ac_4, ac_0, ac_4} ,
-    { ac_4, ac_4, ac_2, ac_4, ac_4, ac_4, ac_0, ac_4} ,
-    { ac_4, ac_2, ac_4, ac_2, ac_4, ac_4, ac_0, ac_2} };
+	{ ac_1, ac_0, ac_4, ac_4, ac_4, ac_4, ac_0, ac_0 }, 
+	{ ac_1, ac_4, ac_2, ac_4, ac_4, ac_4, ac_0, ac_4 },
+	{ ac_1, ac_2, ac_4, ac_2, ac_0, ac_3, ac_0, ac_2 },
+	{ ac_1, ac_2, ac_4, ac_2, ac_0, ac_3, ac_0, ac_2 },
+	{ ac_0, ac_0, ac_0, ac_0, ac_0, ac_0, ac_0, ac_0 },
+	{ ac_1, ac_1, ac_1, ac_1, ac_0, ac_3, ac_1, ac_2 },
+	{ ac_4, ac_4, ac_4, ac_4, ac_4, ac_4, ac_0, ac_4 },
+	{ ac_4, ac_4, ac_2, ac_4, ac_4, ac_4, ac_0, ac_4 },
+	{ ac_4, ac_2, ac_4, ac_2, ac_4, ac_4, ac_0, ac_2 }
+};
 
-static char  *
-get_token ()
+static char *
+get_token()
 {
-    register int  reg_input;
-    register int  reg_state;
-    u_char       *c_token;
+	register int reg_input;
+	register int reg_state;
+	u_char *c_token;
 
-    c_token = p_token;
-
-    apg_currentline = apg_buffline;
+	c_token = p_token;
+	apg_currentline = apg_buffline;
 
 	/*** load registers ***/
 
-    reg_state = apg_mealy_state_table[apg_statecode][apg_inputcode];
-    reg_input = c_index[*p_stream];
+	reg_state = apg_mealy_state_table[apg_statecode][apg_inputcode];
+	reg_input = c_index[*p_stream];
 
-    while ((*apg_mealy_action_table[reg_state][reg_input]) ())
-	{
-	    if (*p_stream == 0)
-		return (char *) NULL;	/* EOF */
+	while ((*apg_mealy_action_table[reg_state][reg_input]) ()) {
+		if (*p_stream == 0)
+			return (char *) NULL;	/* EOF */
 
-	    if ((reg_state = apg_mealy_state_table[reg_state][reg_input]) == 1)
-		apg_tokenid = 0;
+		if ((reg_state = apg_mealy_state_table[reg_state][reg_input]) == 1)
+			apg_tokenid = 0;
 
-	    reg_input = c_index[*p_stream];
+		reg_input = c_index[*p_stream];
 	}
 
 	/*** save registers ***/
 
-    apg_inputcode = reg_input;
-    apg_statecode = reg_state;
+	apg_inputcode = reg_input;
+	apg_statecode = reg_state;
 
 #ifdef APG_PERF
-    apg_global++;
+	apg_global++;
 #endif
 
-    return (char *) c_token;
-
+	return (char *) c_token;
 }
 
 //-[1,8
 static grill_t *
-alloc_segment (AAGRILLx_ARG p)
-AAGRILLx_DEC (p)
+alloc_segment(grill_t * p)
 {
-    grill_t      *q;
+	grill_t *q;
 
-    /* p reasonably points to the last grill_t. In case it doesn't ... */
+	/* p reasonably points to the last grill_t. In case it doesn't ... */
+	for (q = p; q != NULL; q = q->next)
+		p = q;
 
-    for (q = p; q != NULL; q = q->next)
-	p = q;
+	/* we must be sure the segment is empty: xcalloc() is required then. */
+	q = (grill_t *) xcalloc(1, sizeof(grill_t));
 
-    /* we must be sure the segment is empty: xcalloc() is required then. */
-
-    q = (grill_t *) xcalloc (1, sizeof (grill_t));
-
-    if (p == NULL)
-	return (g_arena = g_stream = q);
-    else
-	return (g_stream = p->next = q);
+	if (p == NULL)
+		return (g_arena = g_stream = q);
+	else
+		return (g_stream = p->next = q);
 }
+
+#define FNV32_prime 16777619UL
+#define FNV32_init  2166136261UL
 
 static
-#ifdef __GNUC__
-              __inline
-#else
-#endif
-    int
-b_search (AACHARx_ARG key)
-AACHARx_DEC (key)
-{
-    register int  high;
-    register int  low; 
-    register int  i; 
- 
-    unsigned long hash;
-
-/* This is similar to the rotating hash, but it actually mixes the internal
-state. It takes 9n+9 instructions and produces a full 4-byte result.
-Preliminary analysis suggests there are no funnels.  */
-
-    for (hash = 0, i = 0; key[i]; ++i)
-	{
-	    hash += key[i];
-	    hash += (hash << 10);
-	    hash ^= (hash >> 6);
-	}
-    hash += (hash << 3);
-    hash ^= (hash >> 11);
-    hash += (hash << 15);
-
-    for (low = -1, high = QMAX_ELEM + 1; high - low > 1;)
-	{
-	    i = (high + low) >> 1;
-	    if (hash <= line_v[i].hash)
-		high = i;
-	    else
-		low = i;
-	}
-
-    if (hash == line_v[high].hash)
-	return (high);
-
-    fatalerr ("%s:%d: `%s' unknown line label", file_name, apg_buffline + 1, key);
-
-    return (-1);		/* unreachable */
-
-}
-
-//-[2,0
-#define LT_	stderr, "%s:%d: label=%s,token=%d {%s}"	/* label & token */
-#define LT__    file_name, apg_currentline + 1, line_v[l_id].id, t_id, token
-#define LO_	stderr, "%s: label=%s"	/* label only */
-#define LO__     file_name, line_v[l_id].id
-
-static void
-token_fatalerr (AAINT_ARG l_id, AAINT_ARG t_id, AAINT_ARG type, AAINT_ARG errn0, AAINT_ARG low, AAINT_ARG high, AACHARx_ARG token)
-AAINT_DEC (l_id)
-AAINT_DEC (t_id)
-AAINT_DEC (type)
-AAINT_DEC (errn0)
-AAINT_DEC (low)
-AAINT_DEC (high)
-AACHARx_DEC (token)
-{
-    char         *p;
-
-    p = token;
-
-    while (p && (p = strchr (p, APG_ACK)))
-	*p = '\\';
-
-    switch (errn0)
-	{
-	 case APG_ETYPE:
-	     fprintf (LT_ " is designed to be a %s type;\n", LT__, types_id[type]);
-	     break;
-
-	 case APG_ENULL:
-	     fprintf (LT_ " isn't an optional argument;\n", LT__);
-	     break;
-
-	 case APG_EOFFSET:
-	     fprintf (LT_ " too many tokens;\n", LT__);
-	     break;
-
-	 case APG_ELIMIT:
-	     fprintf (LT_ " is designed to be a %s[%d,%d]. Out of range;\n", LT__, types_id[type], low, high);
-	     break;
-
-	 case APG_EESC:
-	     fprintf (LT_ " bad escape sequence;\n", LT__);
-	     break;
-
-	 case APG_EMANY:
-	     fprintf (LO_ " is designed to occur no more than %d time;\n", LO__, high);
-	     break;
-
-	 case APG_EFEW:
-	     fprintf (LO_ " is designed to occur at least %d time;\n", LO__, low);
-	     break;
-//-[2,1
-	 case APG_EIPV4:
-	     fprintf (LO_ " is designed to be a valid ipv4;\n", LO__);
-	     break;
-//-[2,2
-	 case APG_EHOST:
-	     fprintf (LO_ " is designed to be a valid host;\n", LO__);
-	     break;
-
-//-[2,10
-	}
-
-    apg_flags |= APG_FATAL;
-}
-
-//-[3,0
-static void
-alloc_seg_t (AACHARx_ARG r)
-AACHARx_DEC (r)
-{
-    seg_t        *p;
-    seg_t        *q;
-
-    p = tail_seg;
-
-    q = (seg_t *) xmalloc (sizeof (seg_t));
-    q->ptr = r;
-    q->next = NULL;
-
-    if (p != NULL)
-	p->next = tail_seg = q;
-    else
-	{
-	    head_seg = q;
-	    tail_seg = q;
-	}
-}
-
-static void  *
-ymalloc (AASIZE_ARG s)
-AASIZE_DEC (s)
-{
-    void         *p;
-
-    p = (void *) xmalloc (s);
-    alloc_seg_t ((char *) p);
-
-    return p;
-}
-
-//-[3,1
 #ifdef __GNUC__
 __inline
 #else
 #endif
-static int
-strholen (AACHARx_ARG p)
-AACHARx_DEC (p)
+unsigned long
+fnv(char *p)
 {
-    register int  c;
-    register int  s;
-    register char *q;
+	unsigned long h = FNV32_init;
+	int i;
 
-    c = 1;
-    s = 0;
-    q = p;
-
-    if (*q++ != '0')
-	return 0;
-
-    if (*q == 'x' || *q == 'X')
-	{
-	    c++;
-	    q++;
-	    while (isxdigit (*q++) && c < 4)
-		c++;
+	for (i = 0; p[i] != 0; i++) {
+		h = h * FNV32_prime;
+		h = h ^ p[i];
 	}
-    else
-	{
-	    if ((s = O_DIGIT (*q)))
-		{
-		    q++;
-		    c++;
-		    while (O_DIGIT (*q) && c < (2 + s))
-			{
-			    q++;
-			    c++;
+
+	return h;
+}
+
+static
+#ifdef __GNUC__
+       __inline
+#else
+#endif
+int
+b_search(char * key)
+{
+	register int high;
+	register int low;
+	register int i;
+
+	unsigned long hash;
+
+	hash = fnv(key);
+
+	for (low = -1, high = QMAX_ELEM + 1; high - low > 1;) {
+		i = (high + low) >> 1;
+		if (hash <= line_v[i].hash)
+			high = i;
+		else
+			low = i;
+	}
+
+	if (hash == line_v[high].hash)
+		return (high);
+
+	fatalerr("%s:%d: `%s' unknown line label", file_name, apg_buffline + 1, key);
+
+	return (-1);		/* unreachable */
+
+}
+
+//-[2,0
+#define PREFIX1_	stderr, "%s:%d: label=%s,token=%d {%s}"	/* label & token */
+#define PREFIX2_     	stderr, "%s: label=%s"  		/* label only */
+#define ARGFIX1_	file_name, apg_currentline + 1, line_v[l_id].id, t_id, token
+#define ARGFIX2_	file_name, line_v[l_id].id
+
+static void
+token_fatalerr(int l_id, int t_id, int type, int errn0, int low, int high, char * token)
+    {
+	char *p;
+
+	p = token;
+
+	while (p && (p = strchr(p, APG_ACK)))
+		*p = '\\';
+
+	switch (errn0) {
+	case APG_ETYPE:
+		fprintf(PREFIX1_ " is designed to be a %s type;\n", ARGFIX1_ , types_id[type]);
+		break;
+
+	case APG_ENULL:
+		fprintf(PREFIX1_ " isn't an optional argument;\n", ARGFIX1_);
+		break;
+
+	case APG_EOFFSET:
+		fprintf(PREFIX1_ " too many tokens;\n", ARGFIX1_);
+		break;
+
+	case APG_ELIMIT:
+		fprintf(PREFIX1_ " is designed to be a %s[%d,%d]. Out of range;\n", ARGFIX1_, types_id[type], low, high);
+		break;
+
+	case APG_EESC:
+		fprintf(PREFIX1_ " bad escape sequence;\n", ARGFIX1_);
+		break;
+
+	case APG_EMANY:
+		fprintf(PREFIX2_ " is designed to occur no more than %d time;\n", ARGFIX2_, high);
+		break;
+
+	case APG_EFEW:
+		fprintf(PREFIX2_ " is designed to occur at least %d time;\n", ARGFIX2_, low);
+		break;
+//-[2,1
+	case APG_EIPV4:
+		fprintf(PREFIX2_ " is designed to be a valid ipv4;\n", ARGFIX2_);
+		break;
+//-[2,2
+	case APG_EHOST:
+		fprintf(PREFIX2_ " is designed to be a valid host;\n", ARGFIX2_);
+		break;
+//-[2,10
+	}
+
+	apg_flags |= APG_FATAL;
+}
+
+//-[3,0
+static void
+alloc_seg_t(char * r)
+{
+	seg_t *p;
+	seg_t *q;
+
+	p = tail_seg;
+
+	q = (seg_t *) xmalloc(sizeof(seg_t));
+	q->ptr = r;
+	q->next = NULL;
+
+	if (p != NULL)
+		p->next = tail_seg = q;
+	else {
+		head_seg = q;
+		tail_seg = q;
+	}
+}
+
+static void *
+ymalloc(size_t s)
+{
+	void *p;
+
+	p = (void *) xmalloc(s);
+	alloc_seg_t((char *) p);
+
+	return p;
+}
+
+//-[3,1
+#ifdef __GNUC__
+    __inline
+#else
+#endif
+static int
+strholen(char * p)
+{
+	register int c;
+	register int s;
+	register char *q;
+
+	c = 1;
+	s = 0;
+	q = p;
+
+	if (*q++ != '0')
+		return 0;
+
+	if (*q == 'x' || *q == 'X') {
+		c++;
+		q++;
+		while (isxdigit(*q++) && c < 4)
+			c++;
+	} else {
+		if ((s = O_DIGIT(*q))) {
+			q++;
+			c++;
+			while (O_DIGIT(*q) && c < (2 + s)) {
+				q++;
+				c++;
 			}
 		}
 	}
-    return c;
+	return c;
 }
 
 //-[3,2
@@ -844,424 +726,338 @@ AACHARx_DEC (p)
 #define LOPT(l,t)     apgtb[l][t][3]
 #define LREGEX(l,t)   apgtb[l][t][4]
 
-
-#define EARG_0	l_id, t_id,   LTYPE (l_id, t_id), APG_EOFFSET, LLOW (l_id, t_id), LHIGH (l_id, t_id), token
-#define EARG_1 	l_id, t_id,   LTYPE (l_id, t_id), APG_ELIMIT,  LLOW (l_id, t_id), LHIGH (l_id, t_id), token
-#define EARG_2 	l_id, t_id,   LTYPE (l_id, t_id), APG_ETYPE,   LLOW (l_id, t_id), LHIGH (l_id, t_id), token
-#define EARG_3 	l_id, t_id,   T_STR,              APG_EESC,    0,                 0,                  token
-
-#define EARG_4 	l_id, t_id,   T_HOST, APG_EHOST, LLOW (l_id, t_id), LHIGH (l_id, t_id), token
-#define EARG_5 	l_id, t_id,   T_IPV4, APG_EIPV4, LLOW (l_id, t_id), LHIGH (l_id, t_id), token
-
+#define EARG_0	l_id, t_id, LTYPE (l_id, t_id), APG_EOFFSET, LLOW (l_id, t_id), LHIGH (l_id, t_id), token
+#define EARG_1 	l_id, t_id, LTYPE (l_id, t_id), APG_ELIMIT,  LLOW (l_id, t_id), LHIGH (l_id, t_id), token
+#define EARG_2 	l_id, t_id, LTYPE (l_id, t_id), APG_ETYPE,   LLOW (l_id, t_id), LHIGH (l_id, t_id), token
+#define EARG_3 	l_id, t_id, T_STR, APG_EESC, 0, 0, token
+#define EARG_4 	l_id, t_id, T_HOST, APG_EHOST, LLOW (l_id, t_id), LHIGH (l_id, t_id), token
+#define EARG_5 	l_id, t_id, T_IPV4, APG_EIPV4, LLOW (l_id, t_id), LHIGH (l_id, t_id), token
 #define EARG_6 	g_stream->type, j, LTYPE (g_stream->type, j), APG_ENULL, LLOW (g_stream->type, j), LHIGH (g_stream->type, j), NULL
-
 #define EARG_7 	g_stream->type, 0, 0, APG_EMANY, 0, rep_limits[g_stream->type][1], NULL
-
 #define EARG_8 	i, 0, 0, APG_EFEW, rep_limits[i][0], 0, NULL
 
 static void
-token_analysis (AACHARx_ARG token, AAINT_ARG l_id, AAINT_ARG t_id)
-AACHARx_DEC (token)
-AAINT_DEC (l_id)
-AAINT_DEC (t_id)
+token_analysis(char * token, int l_id, int t_id)
 {
-    char         *endptr;
-    char         *pp;
-    long          sp;
-    int           offset;
+	char *endptr;
+	char *pp;
+	long sp;
+	int offset;
 
-    pp = (char *) NULL;
-    offset = 0;
+	pp = (char *) NULL;
+	offset = 0;
 
-    /* first step */
+	/* first step */
 
-    if ((offset = apg_offset[l_id][t_id]) == -1)
-	token_fatalerr (EARG_0);
+	if ((offset = apg_offset[l_id][t_id]) == -1)
+		token_fatalerr(EARG_0);
 
-    if (token != NULL && *token == '\0')
-	return;			/* NULL token */
+	if (token != NULL && *token == '\0')
+		return;		/* NULL token */
 
-    switch (LTYPE (l_id, t_id))
-	{
-	 case T_STR:
-	 case T_HOST:
-	 case T_IPV4:
-
-	     pp = (char *) ymalloc (strlen (token) + 1);
-	     break;
-
-	 default:
-	     token = APG_PROC_OBJECT (token);
-	     break;
+	switch (LTYPE(l_id, t_id)) {
+	case T_STR:
+	case T_HOST:
+	case T_IPV4:
+		pp = (char *) ymalloc(strlen(token) + 1);
+		break;
+	default:
+		token = APG_PROC_OBJECT(token);
+		break;
 	}
 
-    switch (LTYPE (l_id, t_id))
-	{
-
+	switch (LTYPE(l_id, t_id)) {
 //-[3,3
-	 case T_INT:
-	 case T_U_32:
-	 case T_SHORT:
-	 case T_U_16:
-	 case T_CHAR:
-	 case T_U_8:
+	case T_INT:
+	case T_U_32:
+	case T_SHORT:
+	case T_U_16:
+	case T_CHAR:
+	case T_U_8:
+		if (LTYPE(l_id, t_id) == T_CHAR && strlen(token) == 1) {
+			O_PUSH(g_stream, offset, token, char);
+			return;
+		}
+		sp = M_STRTOL(token, &endptr);
+		if (*endptr == '\0') {
+			if (C_LIMIT(LTYPE(l_id, t_id), LLOW(l_id, t_id), sp, LHIGH(l_id, t_id))) {
+				switch (LTYPE(l_id, t_id)) {
+				case T_INT:
+					O_PUSH(g_stream, offset, &sp, int);
+					break;
+				case T_U_32:
+					O_PUSH(g_stream, offset, &sp, u_int);
+					break;
+				case T_SHORT:
+					O_PUSH(g_stream, offset, &sp, short);
+					break;
+				case T_U_16:
+					O_PUSH(g_stream, offset, &sp, u_short);
+					break;
+				case T_CHAR:
+					O_PUSH(g_stream, offset, &sp, char);
+					break;
+				case T_U_8:
+					O_PUSH(g_stream, offset, &sp, u_char);
+					break;
+				}
+				return;
+			} else
+				token_fatalerr(EARG_1);
+		} else
+			token_fatalerr(EARG_2);
 
-	     if (LTYPE (l_id, t_id) == T_CHAR && strlen (token) == 1)
-		 {
-		     O_PUSH (g_stream, offset, token, char);
-
-		     return;
-		 }
-
-	     sp = M_STRTOL (token, &endptr);
-
-	     if (*endptr == '\0')
-		 {
-
-		     if (C_LIMIT (LTYPE (l_id, t_id), LLOW (l_id, t_id), sp, LHIGH (l_id, t_id)))
-			 {
-			     switch (LTYPE (l_id, t_id))
-				 {
-				  case T_INT:
-				      O_PUSH (g_stream, offset, &sp, int);
-
-				      break;
-				  case T_U_32:
-				      O_PUSH (g_stream, offset, &sp, u_int);
-				      break;
-				  case T_SHORT:
-				      O_PUSH (g_stream, offset, &sp, short);
-
-				      break;
-				  case T_U_16:
-				      O_PUSH (g_stream, offset, &sp, u_short);
-				      break;
-				  case T_CHAR:
-				      O_PUSH (g_stream, offset, &sp, char);
-
-				      break;
-				  case T_U_8:
-				      O_PUSH (g_stream, offset, &sp, u_char);
-				      break;
-				 }
-			     return;
-			 }
-		     else
-			 token_fatalerr (EARG_1);
-		 }
-	     else
-		 token_fatalerr (EARG_2);
-
-	     return;
-	     break;
+		return;
+		break;
 
 //-[3,4
-	 case T_STR:
-	     {
-		 strcpy (pp, token);
+	case T_STR:
+		{
+			strcpy(pp, token);
+			if (strchr(token, APG_ACK)) {
+				char *ptr = pp, bufftemp[6] = "";
+				while ((ptr = (char *) strchr(ptr, APG_ACK))) {
+					int i;
 
-		 if (strchr (token, APG_ACK))
-		     {
-			 char         *ptr = pp,
-			               bufftemp[6] = "";
+					i = strholen(ptr + 1);
 
-			 while ((ptr = (char *) strchr (ptr, APG_ACK)))
-			     {
-				 int           i;
+					strncpy(bufftemp, ptr + 1, i);
+					bufftemp[i] = 0;
 
-				 i = strholen (ptr + 1);
+					*ptr = (char) strtol(bufftemp, NULL, 0);
 
-				 strncpy (bufftemp, ptr + 1, i);
-				 bufftemp[i] = 0;
+					if (*ptr == '\0' || i == 0)
+						token_fatalerr(EARG_3);
 
-				 *ptr = (char) strtol (bufftemp, NULL, 0);
+					strprg((char *) ptr + 1, i);
+					ptr++;
 
-				 if (*ptr == '\0' || i == 0) token_fatalerr (EARG_3);
-
-				 strprg( (char *)ptr+1, i );
-
-				 ptr++;
-
-			     }
-		     }
-
+				}
+		}
 //-[3,5
-		 {
-		     int           i = 0;
-		     char          err_msg[100] = "";
-		     regmatch_t    pmatch[1] = { {0, 0} };
-		     size_t        nmatch = 1;
-		     regex_t      *p;
+		{
+			char err_msg[128]="";
+			regmatch_t pmatch[1] = {{0, 0}};
+			size_t nmatch = 1;
+			regex_t *p;
+			int i=0;
 
-		     if (LREGEX (l_id, t_id))
-			 {
-			     p = (regex_t *) xmalloc (sizeof (regex_t));
+			if (LREGEX(l_id, t_id)) {
+				p = (regex_t *) xmalloc(sizeof(regex_t));
 
-			     if ((i = regcomp (p, regex_list[LREGEX (l_id, t_id)], REG_NOSUB | REG_EXTENDED)))
-				 {
-				     regerror (i, p, err_msg, 99);
-				     fprintf (stderr, "apg:regcomp() fatalerr `%s': %s\n", regex_list[LREGEX (l_id, t_id)], err_msg);
-				     fprintf (stderr,
-					      "The template file contains a regexp that the local implementation is not able to compile successfuly.\n"
-					      "Contact the author reporting this bug occurred.");
-				     exit (69);
-				 }
-			     if ((i = regexec (p, pp, nmatch, pmatch, 0)))
-				 {
-				     fprintf (stderr,
-					      "%s:%d: label=%s,token=%d -> {%s} doesn't match with `%s' regexp;\n",
-					      file_name, apg_currentline + 1, line_v[l_id].id, t_id, token, regex_list[LREGEX (l_id, t_id)]);
-
-				     apg_flags |= APG_FATAL;
-
-				 }
-			     regfree (p);
-			 }
-		 }
+				if ((i = regcomp(p, regex_list[LREGEX(l_id, t_id)], REG_NOSUB | REG_EXTENDED))) {
+					regerror(i, p, err_msg, 99);
+					fprintf(stderr, "apg:regcomp() fatalerr `%s': %s\n", regex_list[LREGEX(l_id, t_id)], err_msg);
+					exit(69);
+				}
+				if ((i = regexec(p, pp, nmatch, pmatch, 0))) {
+					fprintf(stderr, "%s:%d: label=%s,token=%d -> {%s} doesn't match with `%s' regexp;\n",
+						file_name, apg_currentline + 1, line_v[l_id].id, t_id, token, regex_list[LREGEX(l_id, t_id)]);
+						apg_flags |= APG_FATAL;
+				}
+				regfree(p);
+			}
+		}
 
 //-[3,6
-		 if (!(LLOW (l_id, t_id) || LHIGH (l_id, t_id)) || C_LIMIT (LTYPE (l_id, t_id), LLOW (l_id, t_id), (int) strlen (pp), LHIGH (l_id, t_id)))
-		     {
-			 P_PUSH (g_stream, offset, pp);
-			 return;
-		     }
+		if (!(LLOW(l_id, t_id) || 
+			LHIGH(l_id, t_id)) || 
+			C_LIMIT(LTYPE(l_id, t_id), LLOW(l_id, t_id), (int) strlen(pp), LHIGH(l_id, t_id))) {
+			P_PUSH(g_stream, offset, pp);
+			return;
+		}
+		else
+			token_fatalerr(EARG_1);
 
-		 else
-		     token_fatalerr (EARG_1);
-
-		 return;
-	     }
-	     break;
+		return;
+	}
+	break;
 
 //-[3,7
-#define R09(x)      ( '0' <= x && x <= '9' )
-#define RAZ(x)      ( 'A' <= x && x <= 'Z' )
-#define Raz(x)      ( 'a' <= x && x <= 'z' )
+#define HALPHA    	0x01
+#define HDOT      	0x02
+#define HMIN      	0x04
+#define HERR      	0x08
+#define H2LD      	0x10
+#define HL_ALPHA  	0x20
 
-#define RALPHANUM(x) ( R09(x) || RAZ(x) || Raz(x) )
-#define RALPHA(x)    ( RAZ(x) || Raz(x) )
-
-#define HALPHA    0x01
-#define HDOT      0x02
-#define HMIN      0x04
-#define HERR      0x08
-#define H2LD      0x10
-#define HL_ALPHA  0x20
+#define R09(x)      	( '0' <= x && x <= '9' )
+#define RAZ(x)      	( 'A' <= x && x <= 'Z' )
+#define Raz(x)      	( 'a' <= x && x <= 'z' )
+#define RALPHANUM(x) 	( R09(x) || RAZ(x) || Raz(x) )
+#define RALPHA(x)    	( RAZ(x) || Raz(x) )
 //-[3,8
-	 case T_HOST:
-	     {
-		 register int  state;
-		 register int  t_counter;
-		 char         *q;
+	case T_HOST:
+		{
+			register int state;
+			register int t_counter;
+			char *q;
 
-		 state = HDOT;
-		 t_counter = 1;
-		 q = (char *) token;
+			state = HDOT;
+			t_counter = 1;
+			q = (char *) token;
 
-		 while (*q != '\0')
-		     {
-			 switch (*q)
-			     {
-			      case '.':
-				  if (state & (HDOT | HMIN))
-				      state |= HERR;
-				  state |= (HDOT | H2LD);
-				  state &= ~(HL_ALPHA | HMIN);
-				  t_counter++;
-				  break;
-			      case '-':
-				  if (state & (HDOT | HMIN))
-				      state |= HERR;
-				  state |= HMIN;
-				  break;
-			      default:
-				  state &= ~(HDOT | HMIN);
-				  if (!RALPHANUM (*q))
-				      state |= HERR;
-				  if (RALPHA (*q))
-				      state |= (HALPHA | HL_ALPHA);
-				  break;
-			     }
-			 q++;
+			while (*q != '\0') {
+				switch (*q) {
+				case '.':
+					if (state & (HDOT | HMIN))
+						state |= HERR;
+					state |= (HDOT | H2LD);
+					state &= ~(HL_ALPHA | HMIN);
+					t_counter++;
+					break;
+				case '-':
+					if (state & (HDOT | HMIN))
+						state |= HERR;
+					state |= HMIN;
+					break;
+				default:
+					state &= ~(HDOT | HMIN);
+					if (!RALPHANUM(*q))
+						state |= HERR;
+					if (RALPHA(*q))
+						state |= (HALPHA | HL_ALPHA);
+					break;
+				}
+				q++;
+			}
 
-		     }
-
-		 if (*q != '\0' || state & (HERR | HDOT | HMIN) || ~state & H2LD || (state & HALPHA && ~state & HL_ALPHA))
-		     {
-			 token_fatalerr (EARG_4);
-			 return;
-		     }
-
-		 else if (state & HALPHA)
-		     {
-			 strcpy (pp, token);
-			 P_PUSH (g_stream, offset, pp);
-			 return;
-		     }
-
-	     }
+			if (*q != '\0' || state & (HERR | HDOT | HMIN) || ~state & H2LD || (state & HALPHA && ~state & HL_ALPHA)) {
+				token_fatalerr(EARG_4);
+				return;
+			} else if (state & HALPHA) {
+				strcpy(pp, token);
+				P_PUSH(g_stream, offset, pp);
+				return;
+			}
+		}
 //-[3,9
-	 case T_IPV4:
-	     {
-		 register int  state,
-		               t_counter,
-		               t_byte;
-		 char         *q;
+	case T_IPV4:
+		    {
+			register int state, t_counter, t_byte;
+			char *q;
 
-		 state = HDOT;
-		 t_counter = 1;
-		 t_byte = 0;
-		 q = (char *) token;
+			state = HDOT;
+			t_counter = 1;
+			t_byte = 0;
+			q = (char *) token;
 
-		 while (*q != '\0')
-		     {
-			 switch (*q)
-			     {
-			      case '.':
-				  if (state & HDOT)
-				      state |= HERR;
-				  state |= HDOT;
-				  t_counter++;
-				  t_byte = 0;
-				  break;
-			      default:
-				  state &= ~HDOT;
-				  if (!R09 (*q))
-				      state |= HERR;
+			while (*q != '\0') {
+				switch (*q) {
+				case '.':
+					if (state & HDOT)
+						state |= HERR;
+					state |= HDOT;
+					t_counter++;
+					t_byte = 0;
+					break;
+				default:
+					state &= ~HDOT;
+					if (!R09(*q))
+						state |= HERR;
 
-				  /* t_byte = t_byte * 10 + val(*q) */
+					/* t_byte = t_byte * 10 + val(*q) */
+					t_byte = (t_byte << 3) + (t_byte << 1) + (*q - '0');
+					if (t_byte & 0xffffff00U)
+						state |= HERR;
+					break;
+				}
+				q++;
+			}
 
-				  t_byte = (t_byte << 3) + (t_byte << 1) + (*q - '0');
-
-				  if (t_byte & 0xffffff00U)
-				      state |= HERR;
-				  break;
-			     }
-			 q++;
-
-		     }
-
-		 if (*q != '\0' || state & (HERR | HDOT) || t_counter != 4)
-		     {
-			 token_fatalerr (EARG_5);
-			 return;
-		     }
-
-		 else
-		     {
-			 strcpy (pp, token);
-			 P_PUSH (g_stream, offset, pp);
-			 return;
-		     }
-
-	     }
-
-	     break;
+			if (*q != '\0' || state & (HERR | HDOT) || t_counter != 4) {
+				token_fatalerr(EARG_5);
+				return;
+			} else {
+				strcpy(pp, token);
+				P_PUSH(g_stream, offset, pp);
+				return;
+			}
+		}
+		break;
 //-[3,99
 	}
-    return;
+	return;
 }
 
 //-[4,0
-static char  *err_table[] = {
-    "apg: ok",
-    "apg: grill arena is empty",
-    "apg: NULL pointer",
-    "apg: end of grill",
+static char *err_table[] = { 
+"apg: ok", "apg: grill arena is empty", "apg: NULL pointer", "apg: end of grill",
 };
 
-char         *
-apg_strerror (AAINT_ARG errnum)
-AAINT_DEC (errnum)
+char *
+apg_strerror(int errnum)
 {
-    static char  *sb;
-    int           i;
+	static char *sb;
+	int i;
 
-    i = errnum;
+	i = errnum;
+	if (errnum < 1 || errnum > APG_MAXERR)
+		i = 0;
 
-    if (errnum < 1 || errnum > APG_MAXERR)
-	i = 0;
-
-    sb = (char *) xrealloc (sb, strlen (err_table[i]) + 1);
-    strcpy (sb, err_table[i]);
-
-    return sb;
-
+	sb = (char *) xrealloc(sb, strlen(err_table[i]) + 1);
+	strcpy(sb, err_table[i]);
+	return sb;
 }
 
 //-[5,0
 void
-apg_free_grill (AAGRILLx_ARG p)
-AAGRILLx_DEC (p)
+apg_free_grill(grill_t * p)
 {
-    grill_t      *s;
+	grill_t *s;
 
-    if (p == NULL)
-	p = g_arena;
+	if (p == NULL)
+		p = g_arena;
 
-    while (p != NULL)
-	{
-	    s = p->next;
-	    free (p);
-	    p = s;
-
+	while (p != NULL) {
+		s = p->next;
+		free(p);
+		p = s;
 	}
 }
 
 void
-apg_free_pragma ()
+apg_free_pragma()
 {
-    register seg_t *p, *q;
+	register seg_t *p, *q;
 
-    q = head_seg;
+	q = head_seg;
 
-    while ((p = q))		/* its not a BUG */
-	{
-	    if (p->ptr != NULL)
-		free (p->ptr);
-
-	    q = p->next;
-
-	    free (p);
+	while ((p = q)) {	/* its not a BUG */
+		if (p->ptr != NULL)
+			free(p->ptr);
+		q = p->next;
+		free(p);
 	}
-
-    head_seg = NULL;
+	head_seg = NULL;
 }
 
 
 int
-apg_get_line (AAGRILLxx_ARG apg_user_ptr)
-AAGRILLxx_DEC (apg_user_ptr)
+apg_get_line(grill_t ** apg_user_ptr)
 {
-    apg_errno = APG_EOK;
+	apg_errno = APG_EOK;
 
-    if (!(apg_flags & APG_PARSED))
-	{
-	    apg_errno = APG_EEMPTY;
-	    return 0;
+	if (!(apg_flags & APG_PARSED)) {
+		apg_errno = APG_EEMPTY;
+		return 0;
 	}
-
-    if (*apg_user_ptr == '\0')
-	{
-	    apg_errno = APG_ENULL;
-	    return 0;
+	if (*apg_user_ptr == '\0') {
+		apg_errno = APG_ENULL;
+		return 0;
 	}
-
-    if (!(apg_flags & APG_RESET))
-	{
-	    apg_flags |= APG_RESET;
-	    g_stream = *apg_user_ptr;
-	    return g_stream->type;
+	if (!(apg_flags & APG_RESET)) {
+		apg_flags |= APG_RESET;
+		g_stream = *apg_user_ptr;
+		return g_stream->type;
 	}
+	/* check if g_stream != NULL */
 
-    /* check if g_stream != NULL */
-
-    if (g_stream != NULL && (*apg_user_ptr = g_stream = g_stream->next))
-	return g_stream->type;
-    else
-	{
-	    apg_errno = APG_EEOG;
-	    return 0;
+	if (g_stream != NULL && (*apg_user_ptr = g_stream = g_stream->next))
+		return g_stream->type;
+	else {
+		apg_errno = APG_EEOG;
+		return 0;
 	}
 
 }
@@ -1273,270 +1069,218 @@ AAGRILLxx_DEC (apg_user_ptr)
 
 typedef struct
 {
-    int           min;
-    int           sec;
-    int           dec;
+	int min;
+	int sec;
+	int dec;
 }
 elapsed_val;
 
 int
-difftimeofday (AATIMEVAL_ARG now, AATIMEVAL_ARG old, AAELAPSEDx_ARG diff)
-AATIMEVAL_DEC (now)
-AATIMEVAL_DEC (old)
-AAELAPSEDx_DEC (diff)
+difftimeofday(struct timeval now, struct timeval old, elapsed_val * diff)
 {
-    register int  r1;
-    register int  r2;
-    register int  r3;
+	int r1;
+	int r2;
+	int r3;
 
-    r1 = (now.tv_usec - old.tv_usec) / 10000;
-    r2 = (now.tv_sec  - old.tv_sec ) % 60;
-    r3 = (now.tv_sec  - old.tv_sec ) / 60;
+	r1 = (now.tv_usec - old.tv_usec) / 10000;
+	r2 = (now.tv_sec - old.tv_sec) % 60;
+	r3 = (now.tv_sec - old.tv_sec) / 60;
 
-    if (r1 < 0)
-	{
-	    r1 += 100;
-	    r2--;
-	    if (r2 < 0)
-		{
-		    r2 += 60;
-		    r3--;
+	if (r1 < 0) {
+		r1 += 100;
+		r2--;
+		if (r2 < 0) {
+			r2 += 60;
+			r3--;
 		}
 	}
-    diff->dec = r1;
-    diff->sec = r2;
-    diff->min = r3;
+	diff->dec = r1;
+	diff->sec = r2;
+	diff->min = r3;
 
-    return 0;
+	return 0;
 }
 
 #endif
 //-[5,2
-grill_t      *
+grill_t *
 #if __STDC__
-apg_parser (int q, ...)
+apg_parser(int q,...)
 #else
-apg_parser (q, va_alist)
-     int           q;
-     va_dcl
+apg_parser(q, va_alist)
+int q;
+va_dcl
 #endif
 {
-    register long shift_reg;
-
-    char	*b_stream;
-    char	*tk;
-    char	*file;
-
-    int  	i;
-    int		j;
-
-    va_list     ap;
-
+	char *tk, *file, *b_stream;
+	register long shift_reg;
+	va_list ap;
+	int i;
+	int j;
 //-[5,3
 #ifdef APG_PERF
-    struct timeval start_time, end_time;
-
-    gettimeofday (&start_time, NULL);
+	struct timeval start_time, end_time;
+	gettimeofday(&start_time, NULL);
 #endif
 //-[5,4
-
-    shift_reg  = 0;
-    i          = q;
-    j          = 0;
-
-    b_stream   = NULL;
-    tk         = NULL;
+        b_stream = tk = NULL;
+	shift_reg = 0;
+	i = q;
+	j = 0;
 
 #if __STDC__
-    va_start (ap, q);
+	va_start(ap, q);
 #else
-    va_start (ap);
+	va_start(ap);
 #endif
-    /* cleaning apg_flags */
+	/* cleaning apg_flags */
+	apg_flags = 0;
+	apg_errno = APG_EOK;
+	file = va_arg(ap, char *);
 
-    apg_flags  = 0;
-    apg_errno  = APG_EOK;
+	while (i-- && (b_stream = mmap_ctrl(file, APG_OPEN)) == NULL)
+		file = va_arg(ap, char *);
 
+	if (b_stream == NULL) {
+		i = q;
+		va_start(ap, q);
+		fprintf(stderr, "err: ");
 
-    file = va_arg (ap, char *);
+		while (i--)
+			fprintf(stderr, "%s ", va_arg(ap, char *));
 
-    while (i-- && (b_stream = ioctl_buffer (file, APG_OPEN)) == NULL)
-	file = va_arg (ap, char *);
-
-    if (b_stream == NULL)
-	{
-	    i = q;
-	    va_start (ap, q);
-
-	    fprintf (stderr, "err: ");
-	    while (i--)
-		fprintf (stderr, "%s ", va_arg (ap, char *));
-
-	    fprintf (stderr, "; no such file[s] to parse; exit forced.\n");
-
-	    exit (1);
+		fprintf(stderr, "; no such file[s] to parse; exit forced.\n");
+		exit(1);
 	}
-
-    va_end (ap);
+	va_end(ap);
 
 /* ansicare vector setup */
-
 #if !defined (__GNUC__) || defined (__STRICT_ANSI__) || defined (__ANSI__) || defined (__cplusplus)
+	c_index['#'] = 1;
+	c_index[APG_SEPLINE] = 2;
+	c_index[APG_SEPTOKEN] = 3;
+	c_index['\''] = 4;
+	c_index['\\'] = 5;
+	c_index[' '] = 6;
+	c_index['\t'] = 6;
+	c_index['\n'] = 7;
 
-    c_index['#'] = 1;
-    c_index[APG_SEPLINE] = 2;
-    c_index[APG_SEPTOKEN] = 3;
-    c_index['\''] = 4;
-    c_index['\\'] = 5;
-    c_index[' '] = 6;
-    c_index['\t'] = 6;
-    c_index['\n'] = 7;
-
-    c_escape['a'] = '\a';
-    c_escape['b'] = '\b';
-    c_escape['t'] = '\t';
-    c_escape['n'] = '\n';
-    c_escape['v'] = '\v';
-    c_escape['f'] = '\f';
-    c_escape['r'] = '\r';
-
+	c_escape['a'] = '\a';
+	c_escape['b'] = '\b';
+	c_escape['t'] = '\t';
+	c_escape['n'] = '\n';
+	c_escape['v'] = '\v';
+	c_escape['f'] = '\f';
+	c_escape['r'] = '\r';
 #endif
 
-    /* apg get token setup */
-
-    if (p_token == NULL)
-	{
-	    b_token = p_token = (u_char *) xcalloc (strlen (b_stream), sizeof (char));
-
-	    p_stream = (u_char *) b_stream;
-
-	    apg_inputcode = c_index[*p_stream];
+	/* apg get token setup */
+	if (p_token == NULL) {
+		b_token = p_token = (u_char *) xcalloc(apg_stream_len, sizeof(char));
+		p_stream = (u_char *) b_stream;
+		apg_inputcode = c_index[*p_stream];
 	}
 
-    while ((tk = get_token ()))
-	{
+	while ((tk = get_token())) {
+		switch (apg_tokenid) {
+		case 0:	/* null */
+			break;
+		case 1:	/* label line */
+			/*
+			 * before parsing the new line, we check the shift
+			 * register in order to detect which token can be
+			 * NULL
+			 */
+			for (j = 1; g_stream != NULL && j < APG_MAXARG; j++)
+				if (LOPT(g_stream->type, j) && ~shift_reg & (1 << j))
+					token_fatalerr(EARG_6);
 
-	    switch (apg_tokenid)
-		{
-
-		 case 0:	/* null */
-		     break;
-
-		 case 1:	/* label line */
-
-		     /* before parsing the new line, we check the shift register in
-		        order to detect which token can be NULL */
-
-		     if (g_stream != NULL)
-			 for (j = 1; j < APG_MAXARG; j++)
-			     if (LOPT (g_stream->type, j) && ~shift_reg & (1 << j))
-				 token_fatalerr (EARG_6);
-
-
-		     shift_reg = 0;	/* clear */
-
-		     g_stream = alloc_segment (g_stream);
-		     g_stream->type = b_search (tk);
+			shift_reg = 0;	/* clear */
+			g_stream = alloc_segment(g_stream);
+			g_stream->type = b_search(tk);
 
 //-[5,5
-		     rep_counter[g_stream->type]++;
-
-		     if (rep_limits[g_stream->type][1] != -1 && rep_counter[g_stream->type] > rep_limits[g_stream->type][1])
-			 token_fatalerr (EARG_7);
+			rep_counter[g_stream->type]++;
+			if (rep_limits[g_stream->type][1] != -1 && rep_counter[g_stream->type] > rep_limits[g_stream->type][1])
+				token_fatalerr(EARG_7);
 
 //-[5,6
-		     break;
-		 default:	/* token */
+			break;
+		default:	/* token */
 
-		     /* shift_reg setup: (apg_tokenid == 1 ? l_id : t_id) */
+			/* shift_reg setup: (apg_tokenid == 1 ? l_id : t_id) */
+			if (*tk != '\0')
+				shift_reg |= 1 << (apg_tokenid - 1);
 
-		     if (*tk != '\0')
-			 shift_reg |= 1 << (apg_tokenid - 1);
-
-		     token_analysis (tk, g_stream->type, apg_tokenid - 1);
-
-		     break;
+			token_analysis(tk, g_stream->type, apg_tokenid - 1);
+			break;
 		}
 	}
 
-    /* now we check the last line */
-
-    if (g_stream != NULL)
-	for (j = 1; j < APG_MAXARG; j++)
-	    if (LOPT (g_stream->type, j) && ~shift_reg & (1 << j))
-		token_fatalerr (EARG_6);
+	/* now we check the last line */
+	for (j = 1; g_stream != NULL && j < APG_MAXARG; j++)
+		if (LOPT(g_stream->type, j) && ~shift_reg & (1 << j))
+			token_fatalerr(EARG_6);
 
 
 //-[5,7
-    {
-	register int  i;
-	
-	for (i=1 ; i <= QMAX_ELEM; i++)
-	    if (rep_limits[i][0] != -1 && rep_counter[i] < rep_limits[i][0])
-		token_fatalerr (EARG_8);
-    }
+	{ 	register int i;
+
+		for (i = 1; i <= QMAX_ELEM; i++)
+			if (rep_limits[i][0] != -1 && rep_counter[i] < rep_limits[i][0])
+				token_fatalerr(EARG_8);
+	}
 
 //-[5,8
-    free (b_token);
+	free(b_token);
+	mmap_ctrl(NULL, APG_CLOSE);
 
-    ioctl_buffer (NULL, APG_CLOSE);
+	apg_flags |= APG_PARSED;
 
-    apg_flags |= APG_PARSED;
-
-    if (apg_flags & APG_FATAL)
-	fatalerr ("apg_parser(): encontered some errors");
+	if (apg_flags & APG_FATAL)
+		fatalerr("apg_parser(): encontered some errors");
 
 //-[5,9
 #ifdef APG_PERF
-    {
-	elapsed_val   diff;
-	double        d;
-	double        r;
+	{
+		elapsed_val diff;
 
-	d = 0;
-	r = 0;
+		double d=0;
+		double r=0;
 
-	gettimeofday (&end_time, NULL);
-	difftimeofday (end_time, start_time, &diff);
+		gettimeofday(&end_time, NULL);
+		difftimeofday(end_time, start_time, &diff);
+		d = (double) (end_time.tv_sec - start_time.tv_sec) + (double) (end_time.tv_usec - start_time.tv_usec) / 1000000;
+		r = (d ? (double) apg_global / d : UINT_MAX);
+		fprintf(stderr, "apg_parser(): token=%d overal_time=%02d:%02d,%02d tps=%d\n", apg_global, diff.min, diff.sec, diff.dec, (int) r);
 
-	d = (double) (end_time.tv_sec - start_time.tv_sec) + (double) (end_time.tv_usec - start_time.tv_usec) / 1000000;
-
-	r = (d ? (double) apg_global / d : 999999999);
-
-	fprintf (stderr, "apg_parser(): token=%d overal_time=%02d:%02d,%02d tps=%d\n", apg_global, diff.min, diff.sec, diff.dec, (int) r);
-
-    }
+	}
 #endif
 //-[5,10
 
-    return g_arena;
-
+	    return g_arena;
 }
 
 
 //-[6,0
-grill_t      *
-apg_seek (AAINT_ARG t, AAGRILLx_ARG p)
-AAINT_DEC (t)
-AAGRILLx_DEC (p)
+grill_t *
+apg_seek(int t, grill_t * p)
 {
-    register grill_t *q;
+	register grill_t *q;
 
-    q = p;
+	q = p;
+	apg_errno = APG_EOK;
 
-    apg_errno = APG_EOK;
+	if (q == NULL)
+		q = g_arena;
+	else
+		q = q->next;
+	while (q && q->type != t)
+		q = q->next;
 
-    if (q == NULL)
-	q = g_arena;
-    else
-	q = q->next;
-    while (q && q->type != t)
-	q = q->next;
-
-    if (q == NULL)
-	apg_errno = APG_EEOG;
-    return q;
-
+	if (q == NULL)
+		apg_errno = APG_EEOG;
+	return q;
 }
 
 //-[7,0
@@ -1544,23 +1288,22 @@ AAGRILLx_DEC (p)
 #include <stdio.h>
 //-[7,1
 int
-parser ()
+parser()
 {
-    int           i;
-    grill_t      *p;
+	int i;
+	grill_t *p;
 
-    p = (grill_t *) apg_parser (1, "file_to_parse");
-
-    while ((i = apg_get_line (&p)))
-	switch (i)
-	    {
-		 /* use p->line_tag to deference the token named 'tag' which belog to line 'line' */
+	p = (grill_t *) apg_parser(1, "file_to_parse");
+	while ((i = apg_get_line(&p)))
+		switch (i) {
+			/*
+			 * use p->line_tag to deference the token named 'tag'
+			 * which belog to line 'line'
+			 */
 //-[7,2
-	    }
-
-    apg_free_grill (p);
-    apg_free_pragma ();
-
+	}
+	apg_free_grill(p);
+	apg_free_pragma();
 }
 
 //-[999,999

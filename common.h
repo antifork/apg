@@ -1,6 +1,6 @@
-/* 
+/*
  *  $Id$
- *  %% apg. 
+ *  %% apg.
  *
  *  Copyright (c) 1999 Bonelli Nicola <bonelli@antifork.org>
  *
@@ -23,19 +23,18 @@
 #ifndef APG_COMMON_H
 #define APG_COMMON_H
 
-typedef struct _index_entry_
-        {
-        int chapter;
-        int paragraph;
-        int offset;
+typedef struct _index_entry_ {
+	int chapter;
+	int paragraph;
+	int offset;
 	int line;
-        struct _index_entry_ *next;
-        } ientry;
+	struct _index_entry_ *next;
+}             ientry;
 
 #define DB_LOAD		0x00001
 #define DB_DISCARD	0x00002
 
-/* option bitsfield */
+/* option bitfield */
 
 #define OPT_FDIN        0x0001
 #define OPT_FDOUT       0x0002
@@ -46,8 +45,7 @@ typedef struct _index_entry_
 #define OPT_REPLABEL	0x0040
 #define OPT_IF		0x0080
 
-/* type bitsfiled */
-
+/* type bitfiled */
 
 #define TBF_INT		0x0001
 #define TBF_U_32	0x0002
@@ -60,15 +58,16 @@ typedef struct _index_entry_
 #define TBF_IPV4	0x0100
 #define TBF_REGEX	0x8000
 
+/* macro */
+
+#define BUFFLEN		128	/* bytes */
 
 #define add_cr(x) 			(fprintf(x,"\n"))
 #define add_comment(fd,x)		(fprintf(fd,"/* %s */\n",x))
 #define add_define (fd,x,y)	        (fprintf(fd,"#define %s %s\n",x,y))
 #define add_include(fd,x)		(fprintf(fd,"#include \"%s\"\n",x))
 #define add_linclude(fd,x)		(fprintf(fd,"#line 1 \"%s\"\n#include \"%s\"\n",apg_source,x))
-
 #define create_table(fd,name,a,b)       (fprintf(fd,"static const int %s[][%d][%d] = {\n",name,a,b))
 #define close_table(x)			(fprintf(x,"};\n\n"))
 
-
-#endif /* APG_COMMON_H */
+#endif				/* APG_COMMON_H */
