@@ -5,11 +5,12 @@ your system attributes and generate the Makefile from Makefile.in.
 Next run make.  If everything goes fine, set your uid to root and
 run make install.
 
-user@localhost # ./configure
-user@localhost # make
+localhost:user {1} ./configure
+localhost:user {2} make
+localhost:user {3} su root
 
-user@localhost # su root
-root@localhost $ make install
+localhost # make install
+
 
 -[FILES:
 
@@ -18,26 +19,16 @@ COPYING                                 GPL
 CVS                                     cvs repository
 INFO                                    INFO file
 INSTALL                                 
-Make.files                              
-Make.header                             
-Makefile                                
 Makefile.in                             makefile rules
-README                                  description
 VERSION                                 
 aclocal.m4                              macro m4
-apg.1                                   man page
 apg.c                                   source code
 apg.db                                  
-apg.h                                   header file
 apg.rules                               
-auto.par.engine.rules                   
 back                                    
 common.h                                header file
-config.cache                            autoconf file
 config.guess                            autoconf file
-config.h                                autoconf file
 config.h.in                             autoconf file
-config.log                              autoconf file
 config.status                           autoconf file
 config.sub                              autoconf file
 configure                               
@@ -51,54 +42,102 @@ getopt.c                                source code
 getopt.h                                header file
 getopt1.c                               source code
 grammar.y                               bison, yacc file
+hash.c                                  source code
 install-sh                              
-lab                                     directory
 lexical.l                               flex file
 make_locale                             
+misc.c                                  source code
 par.engine.c                            source code
 par.engine.c.old                        
 parser.template                         
+proto.h                                 header file
+shtool                                  
 std.h                                   header file
 tab.engine.h                            header file
 tab.engine.h.old                        
-test                                    
 tree.c                                  source code
 tree.h                                  header file
 usage.c                                 source code
-CVS:                                    ---------------------
+./CVS:                                  ---------------------
 Entries                                 
 Repository                              
 Root                                    
-example:                                ---------------------
-ie-1                                    
-ie-2                                    
-example/ie-1:                           ---------------------
+./example:                              ---------------------
+CVS                                     cvs repository
 Makefile                                
-apg.par.c                               source code
-apg.par.o                               object
-apg.tab.h                               header file
-example                                 directory
-template                                
-test                                    
-test.c                                  source code
-test.o                                  object
-example/ie-2:                           ---------------------
+advanced                                
+ansi-care                               
+classic                                 
+debug                                   
+error                                   
+robust                                  
+./example/CVS:                          ---------------------
+Entries                                 
+Repository                              
+Root                                    
+./example/advanced:                     ---------------------
+CVS                                     cvs repository
 Makefile                                
-apg.par.c                               source code
-apg.par.o                               object
-apg.tab.h                               header file
-core                                    
-example                                 directory
 template                                
 test                                    
 test.c                                  source code
 test.conf                               
-test.o                                  object
-lab:                                    ---------------------
-apg                                     
-apg.db                                  
-apg.par.c                               source code
-apg.tab.h                               header file
-auto.par.engine.rules                   
+./example/advanced/CVS:                 ---------------------
+Entries                                 
+Repository                              
+Root                                    
+./example/ansi-care:                    ---------------------
+CVS                                     cvs repository
+Makefile                                
+template                                
 test                                    
-test_apg                                
+test.c                                  source code
+./example/ansi-care/CVS:                ---------------------
+Entries                                 
+Repository                              
+Root                                    
+./example/classic:                      ---------------------
+CVS                                     cvs repository
+Makefile                                
+gmon.out                                
+template                                
+test                                    
+test.c                                  source code
+./example/classic/CVS:                  ---------------------
+Entries                                 
+Repository                              
+Root                                    
+./example/debug:                        ---------------------
+CVS                                     cvs repository
+Makefile                                
+README                                  description
+debug.out                               
+template                                
+test                                    
+test.c                                  source code
+./example/debug/CVS:                    ---------------------
+Entries                                 
+Repository                              
+Root                                    
+./example/error:                        ---------------------
+CVS                                     cvs repository
+Makefile                                
+template                                
+test                                    
+test.c                                  source code
+./example/error/CVS:                    ---------------------
+Entries                                 
+Repository                              
+Root                                    
+./example/robust:                       ---------------------
+CVS                                     cvs repository
+Makefile                                
+gmon.out                                
+make_test                               
+template                                
+test.basic                              
+test.c                                  source code
+./example/robust/CVS:                   ---------------------
+Entries                                 
+Repository                              
+Root                                    
