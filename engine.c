@@ -87,6 +87,7 @@ fun_2 (FILE * fd, char *comm)
   c_comm (fd, comm);
   add_cr (fd);
 
+  fprintf (fd, "#include <sys/types.h>\n\n"); 
   fprintf (fd, "typedef struct __type_line__ {\n");
   fprintf (fd, "  int\ttype_line;\n");
   fprintf (fd, "  union {\n");
@@ -115,14 +116,14 @@ fun_2 (FILE * fd, char *comm)
 		  fprintf (fd, "\tchar %s;\n", lp_leaf->label);
 		  break;
 		case T_U_32:
-		  fprintf (fd, "\tunsigned int %s;\n", lp_leaf->label);
+		  fprintf (fd, "\tu_int %s;\n", lp_leaf->label);
 		  break;
 		case T_U_16:
-		  fprintf (fd, "\tunsigned short %s;\n",
+		  fprintf (fd, "\tu_short %s;\n",
 			   lp_leaf->label);
 		  break;
 		case T_U_8:
-		  fprintf (fd, "\tunsigned char %s;\n",
+		  fprintf (fd, "\tu_char %s;\n",
 			   lp_leaf->label);
 		  break;
 		default:
@@ -398,7 +399,7 @@ fun_8 (FILE * fd, char *comm)
   {
     register int i = 0;
 
-    fprintf (fd, "static unsigned long rep_counter[] ={\n");
+    fprintf (fd, "static long int rep_counter[] ={\n");
 
     for (; i < c; i++)
       fprintf (fd, " 0,");

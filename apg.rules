@@ -34,12 +34,13 @@ h_rule = 0     : 1  : \0xffff : \0xffff : ''			# header
 h_rule = \0xff : 1  : \0xffff : \0xffff : ''			# apg line labels
 h_rule = \0xff : 2  : \0xffff : \0xffff : ''			# type def grill_t
 h_rule = \0xff : 3  : \0xffff : \0xffff : ''			# symbolic links
+h_rule = 0     : 4  : \0xffff : \0xffff : 'parser header side'  # #ifdef APG_PARSER_C
+h_rule = 0     : 5  : \0xffff : \0xffff : 'header'
+h_rule = 0     : 6  : \0x8000 : \0xffff : ''                    # #include <regex.h>
+
 h_rule = 0     : 2  : \0xffff : \0xffff : 'prototypes' 
 h_rule = 0     : 3  : \0xffff : \0x04   : 'protot. advanced' 
-h_rule = 0     : 4  : \0xffff : \0xffff : 'parser header side'	# #ifdef APG_PARSER_C
 
-h_rule = 0     : 5  : \0xffff : \0xffff : 'includes'
-h_rule = 0     : 6  : \0x8000 : \0xffff : ''			# #include <regex.h>
 h_rule = 0     : 7  : \0xffff : \0xffff : 'apg types'
 h_rule = 0     : 8  : \0xffff : \0xffff : 'apg type size'
 h_rule = 0     : 9  : \0xffff : \0xffff : 'apg type id'

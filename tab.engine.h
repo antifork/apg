@@ -46,28 +46,30 @@ extern int apg_errno;
 #define h_rule_label	3
 
 
+#include <sys/types.h>
+
 typedef struct __type_line__ {
   int	type_line;
   union {
      struct {
 	int chap;
 	int parag;
-	unsigned short bit_t;
-	unsigned short bit_o;
+	u_short bit_t;
+	u_short bit_o;
 	char *comm;
         } i_rule_line;
      struct {
 	int chap;
 	int parag;
-	unsigned short bit_t;
-	unsigned short bit_o;
+	u_short bit_t;
+	u_short bit_o;
 	char *comm;
         } c_rule_line;
      struct {
 	int chap;
 	int parag;
-	unsigned short bit_t;
-	unsigned short bit_o;
+	u_short bit_t;
+	u_short bit_o;
 	char *comm;
         } h_rule_line;
     } line_dun;
@@ -92,32 +94,10 @@ typedef struct __type_line__ {
 #define h_rule_bit_o		line_dun.h_rule_line.bit_o
 #define h_rule_comm		line_dun.h_rule_line.comm
 
-/* prototypes */
-
-/* Use prototypes unless the compiler is old-fashioned.  */
-
-#ifdef __STDC__
-#define P(x) x
-#else
-#define P(x) ()
-#endif
-
-#ifndef __cplusplus
-#ifndef __STDC__
-#define const
-#endif
-#endif
-
-char *apg_strerror P ((int));
-grill_t *apg_parser P ((int, ...));
-int apg_get_line P ((grill_t **));
-void apg_free_grill P ((grill_t *));
-void apg_free_pragma P ((void));
-
 /* parser header side */
 
 #ifdef _APG_PARSER_C
-/* includes */
+/* header */
 
 #include <stdlib.h>
 
@@ -127,14 +107,44 @@ void apg_free_pragma P ((void));
 
 #include <limits.h>
 #include <sys/types.h>
+#include <sys/cdefs.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+
+#if __STDC__
 #include <stdarg.h>
+#else
+#include <varargs.h>
+#endif
 
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
+
+/* prototypes */
+
+/* Use prototypes unless the compiler is old-fashioned.  */
+
+#ifndef __P
+# ifdef __STDC__
+# define __P(x) x
+# else
+# define __P(x) ()
+# endif
+#endif
+
+#ifndef __cplusplus
+#ifndef __STDC__
+#define const
+#endif
+#endif
+
+char 	*apg_strerror __P ((int));
+grill_t *apg_parser  __P ((int, ...));
+int 	apg_get_line __P ((grill_t **));
+void 	apg_free_grill __P ((grill_t *));
+void 	apg_free_pragma __P ((void));
 
 /* apg types */
 
@@ -212,7 +222,7 @@ static int apg_offset[][APG_MAXARG]={
 
 typedef struct
 {
-  int hash;
+  u_long hash;
   char *id;
 }
 line_t;

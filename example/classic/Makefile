@@ -9,6 +9,6 @@ clean:
 
 test-1:
 	gcc -g -c  test.c   
-	gcc -g -c  -Wall apg.par.c  
+	gcc -g -c  -W -Wall -Wtraditional -Wpointer-arith -Wbad-function-cast apg.par.c  
 	gcc -g test.o apg.par.o -o classic 
 

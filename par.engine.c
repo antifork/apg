@@ -32,11 +32,11 @@
 #include "tab.engine.h"
 /* mealy prototypes */
 
-static int ac_0 P ((void));
-static int ac_1 P ((void));
-static int ac_2 P ((void));
-static int ac_3 P ((void));
-static int ac_4 P ((void));
+static int ac_0 __P ((void));
+static int ac_1 __P ((void));
+static int ac_2 __P ((void));
+static int ac_3 __P ((void));
+static int ac_4 __P ((void));
 
 /* static variables */
 
@@ -49,7 +49,7 @@ static int apg_state_code, apg_input_code;
 static int global_token;
 #endif
 
-static unsigned char *base_tokens;
+static u_char *base_tokens;
 
 static char *file_image;
 
@@ -98,19 +98,13 @@ int c_index[256] =
 int c_index[256];
 #endif
 
-#ifndef ub4
-#define ub4     unsigned long
-#define ub2     unsigned short
-#define ub1     unsigned char
-#endif
-
-#define APG_OPUSH(base_P, offset, obj_P ,t)\
+#define APG_OPUSH(base_p, offset, obj_p ,t)\
 \
-( *(t *)((ub1 *)base_P+offset+sizeof(ub4)) = (t)*obj_P )
+( *(t *)((u_char *)base_p+offset+sizeof(u_long)) = (t)*obj_p )
 
-#define APG_PPUSH(base_P, offset, ptr)\
+#define APG_PPUSH(base_p, offset, ptr)\
 \
-( *(ub4 *)((ub1 *)base_P+offset+sizeof(ub4))=(ub4)ptr)
+( *(u_long *)((u_char *)base_p+offset+sizeof(u_long))=(u_long)ptr)
 
 #define APG_ODIGIT(x)\
 \
@@ -119,7 +113,7 @@ int c_index[256];
 #define APG_CLIMIT(t,x,v,y)\
 \
 ( (x|y) ? ((t == T_U_32) ? \
-((unsigned int)x<=(unsigned int)v ) && ((unsigned int)v<=(unsigned int)y) : ((x<=v) && (v<=y))) : (1) )
+((u_int)x<=(u_int)v ) && ((u_int)v<=(u_int)y) : ((x<=v) && (v<=y))) : (1) )
 
 #define APG_MSTRTOL(token,addr_endptr)\
 \
@@ -148,10 +142,21 @@ Preliminary analysis suggests there are no funnels.  */
 /* private functions, mealy tables */
 
 static void
+#if __STDC__
 fatalerr (char *pattern, ...)
+#else
+fatalerr (pattern, va_alist)
+	char *patter;
+	va_dcl
+#endif
 {
   va_list ap;
+#if __STDC__
   va_start (ap, pattern);
+#else
+  va_start (ap);
+#endif
+
   vfprintf (stderr, pattern, ap);
   fprintf (stderr, "; exit forced.\n");
   va_end (ap);
@@ -163,9 +168,11 @@ fatalerr (char *pattern, ...)
 
 static void *
 xmalloc (size)
-     unsigned int size;
+     u_int size;
 {
-  void *result = malloc (size);
+  void *result;
+
+  result = malloc (size);
   if (result == 0)
     fatalerr ("xmalloc: virtual memory exhausted");
   return result;
@@ -175,7 +182,7 @@ xmalloc (size)
 static void *
 xrealloc (ptr, size)
      void *ptr;
-     unsigned int size;
+     u_int size;
 {
   void *result;
 
@@ -188,8 +195,8 @@ xrealloc (ptr, size)
 
 static void *
 xcalloc (nelem, elsize)
-     unsigned int nelem;
-     unsigned int elsize;
+     u_int nelem;
+     u_int elsize;
 {
   void *result = (char *) calloc (nelem, elsize);
   if (result == 0)
@@ -250,8 +257,8 @@ ioctl_buffer (fn, flag)
 }
 
 
-static unsigned char *p_token, *p_token_0;
-static unsigned char *p_stream;
+static u_char *p_token, *p_token_0;
+static u_char *p_stream;
 
 static int
 ac_0 ()
@@ -455,7 +462,7 @@ b_search (key)
      char *key;
 {
   register int high, i, low;
-  register unsigned long hash;
+  register u_long hash;
   hash = ONE_TIME_HASH (key);
 
   for (low = -1, high = QMAX_ELEM + 1; high - low > 1;)
@@ -571,27 +578,27 @@ strholen (p)
      char *p;
 {
   register int c = 1, s = 0;
-  register char *P = p;
+  register char *_p = p;
 
-  if (*P++ != '0')
+  if (*_p++ != '0')
     return 0;
 
-  if (*P == 'x' || *P == 'X')
+  if (*_p == 'x' || *_p == 'X')
     {
       c++;
-      P++;
-      while (isxdigit (*P++) && c < 4)
+      _p++;
+      while (isxdigit (*_p++) && c < 4)
 	c++;
     }
   else
     {
-      if ((s = APG_ODIGIT (*P)))
+      if ((s = APG_ODIGIT (*_p)))
 	{
-	  P++;
+	  _p++;
 	  c++;
-	  while (APG_ODIGIT (*P) && c < (2 + s))
+	  while (APG_ODIGIT (*_p) && c < (2 + s))
 	    {
-	      P++;
+	      _p++;
 	      c++;
 	    }
 	}
@@ -636,7 +643,7 @@ token_analysis (token, line_id, token_id)
   if ((offset = apg_offset[line_id][token_id]) == -1)
     token_fatalerr (APGE_ARG0);
 
-  if (token && !*token)
+  if (token && *token == '\0')
     return;			/* NULL token */
 
   switch (APG_LTYPE (line_id, token_id))
@@ -671,12 +678,13 @@ token_analysis (token, line_id, token_id)
 
       sp = APG_MSTRTOL (token, &endptr);
 
-      if (!*endptr)
+      if (*endptr=='\0')
 	{
 
-	  if (APG_CLIMIT
-	      (APG_LTYPE (line_id, token_id), APG_LLOW (line_id, token_id),
-	       sp, APG_LHIGH (line_id, token_id)))
+	  if ( APG_CLIMIT (	APG_LTYPE (line_id, token_id), 
+				APG_LLOW  (line_id, token_id),
+	       			sp, 
+				APG_LHIGH (line_id, token_id)))
 	    {
 	      switch (APG_LTYPE (line_id, token_id))
 		{
@@ -684,19 +692,19 @@ token_analysis (token, line_id, token_id)
 		  APG_OPUSH (apg_stream, offset, &sp, int);
 		  break;
 		case T_U_32:
-		  APG_OPUSH (apg_stream, offset, &sp, unsigned int);
+		  APG_OPUSH (apg_stream, offset, &sp, u_int);
 		  break;
 		case T_SHORT:
 		  APG_OPUSH (apg_stream, offset, &sp, short);
 		  break;
 		case T_U_16:
-		  APG_OPUSH (apg_stream, offset, &sp, unsigned short);
+		  APG_OPUSH (apg_stream, offset, &sp, u_short);
 		  break;
 		case T_CHAR:
 		  APG_OPUSH (apg_stream, offset, &sp, char);
 		  break;
 		case T_U_8:
-		  APG_OPUSH (apg_stream, offset, &sp, unsigned char);
+		  APG_OPUSH (apg_stream, offset, &sp, u_char);
 		  break;
 		}
 	      return;
@@ -727,7 +735,7 @@ token_analysis (token, line_id, token_id)
 		bufftemp[i] = 0;
 		*ptr = (char) strtol (bufftemp, NULL, 0);
 
-		if (!*ptr || !i)
+		if (*ptr == '\0' || i == 0)
 		  token_fatalerr (APGE_ARG3);
 
 		memmove (ptr + 1, ptr + i + 1, j);
@@ -737,11 +745,12 @@ token_analysis (token, line_id, token_id)
 	      }
 	  }
 
-	if (!(APG_LLOW (line_id, token_id)
-	      || APG_LHIGH (line_id, token_id))
-	    || APG_CLIMIT (APG_LTYPE (line_id, token_id),
-			   APG_LLOW (line_id, token_id), strlen (pp),
-			   APG_LHIGH (line_id, token_id)))
+	if (!(	APG_LLOW (line_id, token_id)
+	    || 	APG_LHIGH (line_id, token_id))
+	    || 	APG_CLIMIT (	APG_LTYPE (line_id, token_id),
+			   	APG_LLOW (line_id, token_id), 
+				(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)strlen (pp),
+			   	APG_LHIGH (line_id, token_id)))
 	  {
 	    APG_PPUSH (apg_stream, offset, pp);
 	    return;
@@ -791,7 +800,7 @@ apg_free_grill (p_ptr)
 {
   grill_t *s_ptr;
 
-  if (!p_ptr)
+  if (p_ptr == NULL)
     p_ptr = apg_arena;
 
   while (p_ptr != NULL)
@@ -831,7 +840,7 @@ apg_get_line (apg_user_ptr)
       return 0;
     }
 
-  if (!*apg_user_ptr)
+  if (*apg_user_ptr == '\0')
     {
       apg_errno = APG_ENULL;
       return 0;
@@ -858,9 +867,14 @@ apg_get_line (apg_user_ptr)
 
 /* parser */
 
-
 grill_t *
+#if __STDC__
 apg_parser (int q, ...)
+#else
+apg_parser (q, va_alist)
+	int q;
+	va_dcl
+#endif
 {
   register long shift_reg = 0;
   register int i = q, j = 0;
@@ -869,8 +883,11 @@ apg_parser (int q, ...)
   char *b_stream = NULL, *tk = NULL;
   char *file;
 
+#if __STDC__
   va_start (ap, q);
-
+#else
+  va_start (ap);
+#endif
   /* cleaning apg_flags */
 
   apg_flags = 0;
@@ -879,10 +896,10 @@ apg_parser (int q, ...)
 
   file = va_arg (ap, char *);
 
-  while (i-- && !(b_stream = ioctl_buffer (file, APG_OPEN)))
+  while (i-- && (b_stream = ioctl_buffer (file, APG_OPEN)) == NULL  )
     file = va_arg (ap, char *);
 
-  if (!b_stream)
+  if (b_stream == NULL)
     {
       i = q;
       va_start (ap, q);
@@ -926,9 +943,9 @@ apg_parser (int q, ...)
   if (p_token == NULL)
     {
       base_tokens = p_token = p_token_0 =
-	(unsigned char *) xcalloc (strlen (b_stream), sizeof (char));
+	(u_char *) xcalloc (strlen (b_stream), sizeof (char));
 
-      p_stream = (unsigned char *) b_stream;
+      p_stream = (u_char *) b_stream;
       apg_input_code = c_index[*p_stream];
     }
 
