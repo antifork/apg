@@ -89,7 +89,7 @@ int apg_errno;
 
 /* macros */
 
-#if defined (__GNUC__) && !defined (__STRICT_ANSI__)
+#if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined  __cplusplus
 int c_index[256] =
   {['#'] 1,[APG_SEPLINE] 2,[APG_SEPTOKEN] 3,['\''] 4,['\\'] 5,[' '] 6,
   ['\t'] 6,['\n'] 7
@@ -167,12 +167,12 @@ fatalerr (pattern, va_alist)
 /* xmalloc, xcalloc, xrealloc */
 
 static void *
-xmalloc (size)
-     u_int size;
+xmalloc (s)
+     u_int s;
 {
   void *result;
 
-  result = malloc (size);
+  result = malloc (s);
   if (result == 0)
     fatalerr ("xmalloc: virtual memory exhausted");
   return result;
@@ -180,25 +180,25 @@ xmalloc (size)
 
 
 static void *
-xrealloc (ptr, size)
+xrealloc (ptr, s)
      void *ptr;
-     u_int size;
+     u_int s;
 {
   void *result;
 
   /* Some older implementations of realloc() don't conform to ANSI.  */
-  result = ptr ? realloc (ptr, size) : malloc (size);
+  result = ptr ? realloc (ptr, s) : malloc (s);
   if (result == 0)
     fatalerr ("xrealloc: virtual memory exhausted");
   return result;
 }
 
 static void *
-xcalloc (nelem, elsize)
+xcalloc (nelem, s)
      u_int nelem;
-     u_int elsize;
+     u_int s;
 {
-  void *result = (char *) calloc (nelem, elsize);
+  void *result = (char *) calloc (nelem, s);
   if (result == 0)
     fatalerr ("xcalloc: virtual memory exhausted");
   return result;
@@ -556,12 +556,12 @@ alloc_seg_t (r)
 }
 
 static void *
-ymalloc (size)
-     size_t size;
+ymalloc (s)
+     size_t s;
 {
   void *p;
 
-  p = (void *) xmalloc (size);
+  p = (void *) xmalloc (s);
   alloc_seg_t (p);
 
   return p;
@@ -749,7 +749,7 @@ token_analysis (token, line_id, token_id)
 	    || 	APG_LHIGH (line_id, token_id))
 	    || 	APG_CLIMIT (	APG_LTYPE (line_id, token_id),
 			   	APG_LLOW (line_id, token_id), 
-				(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)(int)strlen (pp),
+				(int)strlen (pp),
 			   	APG_LHIGH (line_id, token_id)))
 	  {
 	    APG_PPUSH (apg_stream, offset, pp);

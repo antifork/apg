@@ -94,6 +94,30 @@ typedef struct __type_line__ {
 #define h_rule_bit_o		line_dun.h_rule_line.bit_o
 #define h_rule_comm		line_dun.h_rule_line.comm
 
+/* prototypes */
+
+/* Use prototypes unless the compiler is old-fashioned.  */
+
+#ifndef __P
+# ifdef __STDC__
+# define __P(x) x
+# else
+# define __P(x) ()
+# endif
+#endif
+
+#ifndef __cplusplus
+#ifndef __STDC__
+#define const
+#endif
+#endif
+
+char 	*apg_strerror __P ((int));
+grill_t *apg_parser  __P ((int, ...));
+int 	apg_get_line __P ((grill_t **));
+void 	apg_free_grill __P ((grill_t *));
+void 	apg_free_pragma __P ((void));
+
 /* parser header side */
 
 #ifdef _APG_PARSER_C
@@ -121,30 +145,6 @@ typedef struct __type_line__ {
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
-
-/* prototypes */
-
-/* Use prototypes unless the compiler is old-fashioned.  */
-
-#ifndef __P
-# ifdef __STDC__
-# define __P(x) x
-# else
-# define __P(x) ()
-# endif
-#endif
-
-#ifndef __cplusplus
-#ifndef __STDC__
-#define const
-#endif
-#endif
-
-char 	*apg_strerror __P ((int));
-grill_t *apg_parser  __P ((int, ...));
-int 	apg_get_line __P ((grill_t **));
-void 	apg_free_grill __P ((grill_t *));
-void 	apg_free_pragma __P ((void));
 
 /* apg types */
 
