@@ -341,7 +341,7 @@ fun_6 (FILE * fd, char *comm)
 
   while (lp_node)
     {
-      fprintf (fd, "{ %uU, \"%s\" }, ", one_at_a_time_hash(lp_node->label) ,lp_node->label);
+      fprintf (fd, "{ %uU, \"%s\" }, ", apg_one_at_a_time_hash(lp_node->label) ,lp_node->label);
       lp_node = lp_node->next_node;
       j++;
     }

@@ -191,7 +191,7 @@ isort_tree (void)
 
 	  /* check */
 
-	  if ( (unsigned)one_at_a_time_hash (q->label) > (unsigned)one_at_a_time_hash (q->next_node->label))
+	  if ( (unsigned)apg_one_at_a_time_hash (q->label) > (unsigned)apg_one_at_a_time_hash (q->next_node->label))
 	    {
 	      flag = 1;
 

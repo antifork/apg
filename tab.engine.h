@@ -147,9 +147,9 @@ void apg_free_pragma P ((void));
 /* apg type size */
 
 static const int types_size[] =
-  { 0, 	sizeof (int), 	sizeof (short), sizeof (char),
-  	sizeof (long), 	sizeof (short), sizeof (char),
-  	sizeof (void *),sizeof (void *),sizeof (void *)
+  { 0, sizeof (int), sizeof (short), sizeof (char),
+  sizeof (long), sizeof (short), sizeof (char),
+  sizeof (void *), sizeof (void *), sizeof (void *)
 };
 
 /* apg type id */

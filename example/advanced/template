@@ -7,4 +7,4 @@ line_2 = (a)short:(b)short:(c)short[0,1024]
 line_3 = (a)char:(b)char:(c)char
 line_4 = (a)u_8
 line_5 = (a)ipv4:(b)host
-line_6 = (a)str:(b)str"^[a-z]+$"
+line_6 = (a)str:(b)str"^[a-z ]+$"

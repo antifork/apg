@@ -73,7 +73,7 @@ phase-3:
 .c.o:
 	$(CC) $(CFLAGS) $(DEFS) -c $< -o $@ 
 
-SRC	= apg.c db.c tree.c engine.c par.engine.c misc.c usage.c @APC_GNU_ADDON_SRC@
+SRC	= apg.c db.c tree.c one_at_time.c engine.c par.engine.c misc.c usage.c @APC_GNU_ADDON_SRC@
 GRAMSRC = grammar.c lexical.c 
 
 OBJS 	= $(GRAMSRC:.c=.o) $(SRC:.c=.o)
