@@ -1,4 +1,6 @@
+#line 2 "/usr/local/share/apg/apg.db"
 /* $Id$ */
+#line 196 "/usr/local/share/apg/apg.db"
 /*
  *  $Id$
  *  apg.par.c
@@ -28,10 +30,14 @@
 
 /* standard includes */
 
+#line 224 "/usr/local/share/apg/apg.db"
 #define _APG_PARSER_C
+#line 1 "par.engine.c"
 #include "tab.engine.h"
+#line 226 "/usr/local/share/apg/apg.db"
 /* mealy prototypes */
 
+#line 227 "/usr/local/share/apg/apg.db"
 static int ac_0 __P ((void));
 static int ac_1 __P ((void));
 static int ac_2 __P ((void));
@@ -40,6 +46,7 @@ static int ac_4 __P ((void));
 
 /* static variables */
 
+#line 234 "/usr/local/share/apg/apg.db"
 static char *file_name;
 static int apg_flags, apg_current_line;
 static int apg_buff_line, apg_token;
@@ -62,6 +69,7 @@ int apg_errno;
 
 /* common defines and internal flags */
 
+#line 255 "/usr/local/share/apg/apg.db"
 #define APG_OPEN                0
 #define APG_CLOSE               1
 
@@ -89,6 +97,7 @@ int apg_errno;
 
 /* macros */
 
+#line 281 "/usr/local/share/apg/apg.db"
 #if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__ANSI__) && !defined(__cplusplus) 
 int c_index[256] =
   {['#'] 1,[APG_SEPLINE] 2,[APG_SEPTOKEN] 3,['\''] 4,['\\'] 5,[' '] 6,
@@ -119,28 +128,9 @@ int c_index[256];
 \
 ( apg_flags &  (APG_OCT_TOKEN|APG_HEX_TOKEN) ? strtol(token,addr_endptr,0) :  strtol(token,addr_endptr,10))
 
-/* This is similar to the rotating hash, but it actually mixes the internal
-state. It takes 9n+9 instructions and produces a full 4-byte result.
-Preliminary analysis suggests there are no funnels.  */
-
-#define ONE_TIME_HASH(key)\
-\
- ({\
-  int hash, i;\
-  for (hash = 0, i = 0; key[i]; ++i)\
-    {\
-      hash += key[i];\
-      hash += (hash << 10);\
-      hash ^= (hash >> 6);\
-    }\
-  hash += (hash << 3);\
-  hash ^= (hash >> 11);\
-  hash += (hash << 15);\
-  hash;\
-})
-
 /* private functions, mealy tables */
 
+#line 312 "/usr/local/share/apg/apg.db"
 static void
 #if __STDC__
 fatalerr (char *pattern, ...)
@@ -429,6 +419,7 @@ get_token ()
 
 /* arena menagement */
 
+#line 599 "/usr/local/share/apg/apg.db"
 static grill_t *
 alloc_segment (AAGRILL_ARG p)
      AAGRILL_DECL(p)
@@ -462,8 +453,21 @@ b_search (AACHAR_ARG key)
      AACHAR_DECL(key)
 {
   register int high, i, low;
-  register u_long hash;
-  hash = ONE_TIME_HASH (key);
+  register unsigned long hash;
+
+/* This is similar to the rotating hash, but it actually mixes the internal
+state. It takes 9n+9 instructions and produces a full 4-byte result.
+Preliminary analysis suggests there are no funnels.  */
+
+  for (hash = 0, i = 0; key[i]; ++i)
+    {
+      hash += key[i];
+      hash += (hash << 10);
+      hash ^= (hash >> 6);
+    }
+  hash += (hash << 3);
+  hash ^= (hash >> 11);
+  hash += (hash << 15);
 
   for (low = -1, high = QMAX_ELEM + 1; high - low > 1;)
     {
@@ -485,6 +489,7 @@ b_search (AACHAR_ARG key)
 
 /* token err interface */
 
+#line 667 "/usr/local/share/apg/apg.db"
 #define APGLT	"%s:%d: label=%s,token=%d {%s}"  /* label & token */
 #define APGLTarg file_name, apg_current_line + 1, line_v[line_id].id, token_id, token
 #define APGL	"%s: label=%s"			 /* label only */
@@ -535,6 +540,7 @@ token_fatalerr (AAINT_ARG line_id,
     case APG_FEW_ERR:
       fprintf (stderr, APGL " is designed to occur at least %d time;\n",  APGLarg , low);
       break;
+#line 727 "/usr/local/share/apg/apg.db"
     }
 
   apg_flags |= APG_FATALERR;
@@ -542,6 +548,7 @@ token_fatalerr (AAINT_ARG line_id,
 
 /* ymalloc & seg_t */
 
+#line 733 "/usr/local/share/apg/apg.db"
 static void
 alloc_seg_t (AACHAR_ARG r)
      AACHAR_DECL(r)
@@ -575,6 +582,7 @@ ymalloc (AASIZE_ARG s)
 
 /* strings function */
 
+#line 765 "/usr/local/share/apg/apg.db"
 #ifdef __GNUC__
 __inline
 #else
@@ -614,6 +622,7 @@ strholen (AACHAR_ARG p)
 
 /* apg type checks */
 
+#line 803 "/usr/local/share/apg/apg.db"
 #define APG_PROC_OBJECT(p) ( *p == APG_ACK_CHR ? (p+1) : (p)  )
 
 #define APG_LTYPE(l,t)    apgtb[l][t][0]
@@ -669,6 +678,7 @@ token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
   switch (APG_LTYPE (line_id, token_id))
     {
 
+#line 859 "/usr/local/share/apg/apg.db"
     case T_INT:
     case T_U_32:
     case T_SHORT:
@@ -724,6 +734,7 @@ token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
       return;
       break;
 
+#line 915 "/usr/local/share/apg/apg.db"
     case T_STR:
       {
 	strcpy (pp, token);
@@ -751,6 +762,7 @@ token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
 	      }
 	  }
 
+#line 985 "/usr/local/share/apg/apg.db"
 	if (!(	APG_LLOW (line_id, token_id)
 	    || 	APG_LHIGH (line_id, token_id))
 	    || 	APG_CLIMIT (	APG_LTYPE (line_id, token_id),
@@ -769,12 +781,14 @@ token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
       }
       break;
 
+#line 1121 "/usr/local/share/apg/apg.db"
     }
   return;
 }
 
 /* error api */
 
+#line 1126 "/usr/local/share/apg/apg.db"
 static char *err_table[] = {
   "apg: ok",
   "apg: grill arena is empty",
@@ -800,6 +814,7 @@ apg_strerror (AAINT_ARG errnum)
 
 /* standard api */
 
+#line 1150 "/usr/local/share/apg/apg.db"
 void
 apg_free_grill (AAGRILL_ARG p)
      AAGRILL_DECL (p)
@@ -873,6 +888,7 @@ apg_get_line (AAGRILL__ARG apg_user_ptr)
 
 /* parser */
 
+#line 1266 "/usr/local/share/apg/apg.db"
 grill_t *
 #if __STDC__
 apg_parser (int q, ...)
@@ -888,6 +904,7 @@ apg_parser (q, va_alist)
   va_list ap;
   char *b_stream = NULL, *tk = NULL;
   char *file;
+#line 1287 "/usr/local/share/apg/apg.db"
 
 #if __STDC__
   va_start (ap, q);
@@ -981,6 +998,7 @@ apg_parser (q, va_alist)
 	  apg_stream = alloc_segment (apg_stream);
 	  apg_stream->type_line = b_search (tk);
 
+#line 1389 "/usr/local/share/apg/apg.db"
 	  break;
 	default:		/* token */
 
@@ -1003,6 +1021,7 @@ apg_parser (q, va_alist)
 	token_fatalerr (APGE_ARG6);
 
 
+#line 1420 "/usr/local/share/apg/apg.db"
   free (base_tokens);
   ioctl_buffer (NULL, APG_CLOSE);
 
@@ -1011,6 +1030,7 @@ apg_parser (q, va_alist)
   if (apg_flags & APG_FATALERR)
     fatalerr ("apg_parser(): encontered some errors");
 
+#line 1449 "/usr/local/share/apg/apg.db"
 
   return apg_arena;
 

@@ -1,4 +1,6 @@
+#line 2 "/usr/local/share/apg/apg.db"
 /* $Id$ */
+#line 4 "/usr/local/share/apg/apg.db"
 /* 
  *  $Id$
  *  apg.tab.h
@@ -103,21 +105,14 @@ extern int apg_errno;
 #endif
 
 
-#define i_rule_label	1
-#define c_rule_label	2
-#define h_rule_label	3
+#define c_rule_label	1
+#define h_rule_label	2
+#define i_rule_label	3
 
 
 typedef struct __type_line__ {
   int	type_line;
   union {
-     struct {
-	int chap;
-	int parag;
-	u_short bit_t;
-	u_short bit_o;
-	char *comm;
-        } i_rule_line;
      struct {
 	int chap;
 	int parag;
@@ -132,17 +127,19 @@ typedef struct __type_line__ {
 	u_short bit_o;
 	char *comm;
         } h_rule_line;
+     struct {
+	int chap;
+	int parag;
+	u_short bit_t;
+	u_short bit_o;
+	char *comm;
+        } i_rule_line;
     } line_dun;
   struct __type_line__	*next;
 } grill_t;
 
 
 
-#define i_rule_chap		line_dun.i_rule_line.chap
-#define i_rule_parag		line_dun.i_rule_line.parag
-#define i_rule_bit_t		line_dun.i_rule_line.bit_t
-#define i_rule_bit_o		line_dun.i_rule_line.bit_o
-#define i_rule_comm		line_dun.i_rule_line.comm
 #define c_rule_chap		line_dun.c_rule_line.chap
 #define c_rule_parag		line_dun.c_rule_line.parag
 #define c_rule_bit_t		line_dun.c_rule_line.bit_t
@@ -153,9 +150,15 @@ typedef struct __type_line__ {
 #define h_rule_bit_t		line_dun.h_rule_line.bit_t
 #define h_rule_bit_o		line_dun.h_rule_line.bit_o
 #define h_rule_comm		line_dun.h_rule_line.comm
+#define i_rule_chap		line_dun.i_rule_line.chap
+#define i_rule_parag		line_dun.i_rule_line.parag
+#define i_rule_bit_t		line_dun.i_rule_line.bit_t
+#define i_rule_bit_o		line_dun.i_rule_line.bit_o
+#define i_rule_comm		line_dun.i_rule_line.comm
 
 /* prototypes */
 
+#line 108 "/usr/local/share/apg/apg.db"
 /* We don't care about __THROW gcc 2.8.x optimizations */
 #ifdef   __THROW
 #undef   __THROW
@@ -170,9 +173,11 @@ void 	apg_free_pragma __P ((void));
 
 /* parser header side */
 
+#line 123 "/usr/local/share/apg/apg.db"
 #ifdef _APG_PARSER_C
 /* header */
 
+#line 125 "/usr/local/share/apg/apg.db"
 #include <stdlib.h>
 
 #ifndef _STDIO_H
@@ -198,6 +203,7 @@ void 	apg_free_pragma __P ((void));
 
 /* apg types */
 
+#line 152 "/usr/local/share/apg/apg.db"
 #ifndef _HAVE_GRAMMAR_TAB_H
 #define T_INT   	0x01
 #define T_SHORT 	0x02
@@ -212,6 +218,7 @@ void 	apg_free_pragma __P ((void));
 
 /* apg type size */
 
+#line 165 "/usr/local/share/apg/apg.db"
 static const int types_size[] =
   { 0, sizeof (int), sizeof (short), sizeof (char),
   sizeof (long), sizeof (short), sizeof (char),
@@ -220,6 +227,7 @@ static const int types_size[] =
 
 /* apg type id */
 
+#line 172 "/usr/local/share/apg/apg.db"
 static const char *const types_id[] =
   { NULL, "INT", "SHORT", "CHAR", "U_32", "U_16", "U_8", "STR", "HOST", "IPV4"
 };
@@ -270,6 +278,7 @@ static int apg_offset[][APG_MAXARG]={
 
 /* typedef: seg_t and line_t */
 
+#line 177 "/usr/local/share/apg/apg.db"
 typedef struct
 {
   u_long hash;
@@ -286,7 +295,7 @@ seg_t;
 
 /* line_t list */
 
-static const line_t line_v[] = { { 0, NULL }, { 253405355U, "i_rule" }, { 2910986343U, "c_rule" }, { 4276732252U, "h_rule" }, };
+static const line_t line_v[] = { { 0, NULL }, { 1240268419U, "c_rule" }, { 3061006684U, "h_rule" }, { 4226064595U, "i_rule" }, };
 
 #define QMAX_ELEM	3
 
@@ -295,6 +304,7 @@ static const line_t line_v[] = { { 0, NULL }, { 253405355U, "i_rule" }, { 291098
 #define APG_SEPLINE  '='
 #define APG_SEPTOKEN ':'
 
+#line 192 "/usr/local/share/apg/apg.db"
 #endif /* _APG_PARSER_C */
 #endif /* _APG_TAB_H */
 

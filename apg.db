@@ -308,26 +308,6 @@ int c_index[256];
 \
 ( apg_flags &  (APG_OCT_TOKEN|APG_HEX_TOKEN) ? strtol(token,addr_endptr,0) :  strtol(token,addr_endptr,10))
 
-/* This is similar to the rotating hash, but it actually mixes the internal
-state. It takes 9n+9 instructions and produces a full 4-byte result.
-Preliminary analysis suggests there are no funnels.  */
-
-#define ONE_TIME_HASH(key)\
-\
- ({\
-  int hash, i;\
-  for (hash = 0, i = 0; key[i]; ++i)\
-    {\
-      hash += key[i];\
-      hash += (hash << 10);\
-      hash ^= (hash >> 6);\
-    }\
-  hash += (hash << 3);\
-  hash ^= (hash >> 11);\
-  hash += (hash << 15);\
-  hash;\
-})
-
 //-[1,7
 static void
 #if __STDC__
@@ -649,8 +629,21 @@ b_search (AACHAR_ARG key)
      AACHAR_DECL(key)
 {
   register int high, i, low;
-  register u_long hash;
-  hash = ONE_TIME_HASH (key);
+  register unsigned long hash;
+
+/* This is similar to the rotating hash, but it actually mixes the internal
+state. It takes 9n+9 instructions and produces a full 4-byte result.
+Preliminary analysis suggests there are no funnels.  */
+
+  for (hash = 0, i = 0; key[i]; ++i)
+    {
+      hash += key[i];
+      hash += (hash << 10);
+      hash ^= (hash >> 6);
+    }
+  hash += (hash << 3);
+  hash ^= (hash >> 11);
+  hash += (hash << 15);
 
   for (low = -1, high = QMAX_ELEM + 1; high - low > 1;)
     {

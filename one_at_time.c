@@ -30,7 +30,9 @@ Preliminary analysis suggests there are no funnels.  */
   unsigned long
 apg_one_at_a_time_hash (char *key)
 {
-  int hash, i;
+  unsigned int hash;
+  int i;
+
   for (hash = 0, i = 0; key[i]; ++i)
     {
       hash += key[i];

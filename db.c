@@ -83,23 +83,37 @@ void
 create_index (char *ptr)
 {
   char *start = ptr;
-  int chapter = 0, paragraph = 0;
-
+  int chapter = 0, paragraph = 0, in_line = 1 ;
   ientry *entry_ptr = NULL;
 
+  if (ptr == NULL) return;
 
   index_db = entry_ptr = (ientry *) xmalloc (sizeof (ientry));
 
-  while (ptr && strstr (ptr, INDEX_MARK))
+  while ( *ptr != '\0' && strstr (ptr, INDEX_MARK) != NULL )
     {
 
-      ptr = (char *) strstr (ptr, INDEX_MARK);
-      *(ptr) = '\0';
-      ptr += 4;
+      while ( ptr[0] && ptr[1] && ptr[2] && ptr[3] )
+	{
+	if ( ptr[0] == '/' && ptr[1] == '/' && ptr[2] == '-' && ptr[3] == '[' ) break; 
+	if ( ptr[0] == '\n' ) in_line++;
+	ptr++;
+	}
 
-/* 
- * Test for apg.db integrity 
- */
+      if ( ptr[0] && ptr[1] && ptr[2] && ptr[3] )
+	{
+	/* ok */
+        in_line++;	
+	*(ptr) = '\0';
+      	ptr += 4;
+
+	}
+	else
+	fatalerr ("internal err: apg database maybe corrupted");
+
+      /* 
+       * Test for apg.db integrity 
+       */
 
       if (sscanf (ptr, "%d,%d", &chapter, &paragraph) < 2)
 	fatalerr ("internal err: apg database maybe corrupted");
@@ -109,12 +123,12 @@ create_index (char *ptr)
 
       *(ptr++) = '\0';
 
-      entry_ptr->offset = ptr - start;
+      entry_ptr->offset    = ptr - start;
 
-      entry_ptr->chapter = chapter;
+      entry_ptr->chapter   = chapter;
       entry_ptr->paragraph = paragraph;
-
-      entry_ptr->next = (ientry *) xmalloc (sizeof (ientry));
+      entry_ptr->line	   = in_line;
+      entry_ptr->next      = (ientry *) xmalloc (sizeof (ientry));
 
       entry_ptr = entry_ptr->next;
       entry_ptr->next = (ientry *) NULL;
@@ -128,6 +142,7 @@ int
 extract_segment (char *ptr_db, FILE * where, int chapter, int paragraph, char *comm)
 {
   char *char_ptr;
+  int  c=0;
 
   ientry *entry_ptr = index_db;
 
@@ -136,7 +151,6 @@ extract_segment (char *ptr_db, FILE * where, int chapter, int paragraph, char *c
 
   while (entry_ptr->next)
     {
-
       if ((entry_ptr->chapter == chapter)
 	  && (entry_ptr->paragraph == paragraph))
 	{
@@ -153,6 +167,9 @@ extract_segment (char *ptr_db, FILE * where, int chapter, int paragraph, char *c
 		}
 
 	  char_ptr = (ptr_db + entry_ptr->offset);
+
+	  fprintf (where, "#line %d \"%s\"\n",entry_ptr->line,APG_DB_FILE);
+
 	  fprintf (where, "%s", char_ptr);
 
 	  return 0;
