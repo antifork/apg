@@ -84,7 +84,7 @@ apg:    locale.h $(OBJS)
 locale.o: locale.h
 locale.h: 
 	@./credits
-	@./make_locale $@ $(datadir)
+	@./makelocale $@ $(datadir)
 
 lexical.c: $(srcdir)/lexical.l
 	@rm -f $@

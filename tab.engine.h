@@ -1,5 +1,5 @@
 /* $Id$ */
-/* $Date$ */
+/* $Author$ */
 /* 
  *  $Id$
  *  apg.tab.h

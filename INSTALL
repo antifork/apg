@@ -25,15 +25,15 @@ aclocal.m4                              macro m4
 apg.c                                   source code
 apg.db                                  
 apg.rules                               
-back                                    
+back                                    ASCII text  
 common.h                                header file
 config.guess                            autoconf file
 config.h.in                             autoconf file
 config.status                           autoconf file
 config.sub                              autoconf file
-configure                               
+configure                               Bourne shell script text
 configure.in                            configure script
-credits                                 
+credits                                 Bourne shell script text
 db.c                                    source code
 db.h                                    header file
 engine.c                                source code
@@ -43,15 +43,15 @@ getopt.h                                header file
 getopt1.c                               source code
 grammar.y                               bison, yacc file
 hash.c                                  source code
-install-sh                              
+install-sh                              Bourne shell script text
 lexical.l                               flex file
-make_locale                             
+makelocale                              Bourne shell script text
 misc.c                                  source code
 par.engine.c                            source code
 par.engine.c.old                        
 parser.template                         
 proto.h                                 header file
-shtool                                  
+shtool                                  Bourne shell script text
 std.h                                   header file
 tab.engine.h                            header file
 tab.engine.h.old                        

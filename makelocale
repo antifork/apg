@@ -2,7 +2,7 @@
 #
 #  $Id$
 #
-#  Make_locale script. 
+#  makelocale script. 
 #
 #  Copyright (c) 1998, 1999,2000 <all@antifork.org>
 #
@@ -20,15 +20,28 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+CG=./config.guess
+VE=VERSION
 
-echo "making locale.h"
-rm -f $1
-echo "#ifndef APG_LOCALE_H" > $1
-echo "#define APG_LOCALE_H" >> $1
-sed -e 's/.*/#define VERSION "&"/' ./VERSION >> $1
-./config.guess | sed -e 's/.*/#define CPU_MFR_OPSYS "&"/' >> $1
-echo $2/apg/apg.db | sed -e 's/.*/#define APG_DB_FILE "&"/' >> $1
-echo $2/apg/apg.rules | sed -e 's/.*/#define APG_AUTORULES "&"/' >> $1
+test -x $CG || { echo "config.guess: file not found" ; exit 0; } 
+test -f $VE || { echo "VERSION: file not found" ; exit 0; } 
 
-echo "#endif /* APG_LOCALE_H */" >> $1
+case "$1" in
+    ""|help|-h|--help)
+    echo "Usage: makelocal <header.h> <prg>"
+    exit 1
+    ;;
+    *)
+    echo "making $1"
+    rm -f $1
+    echo "#ifndef APG_LOCALE_H" > $1
+    echo "#define APG_LOCALE_H" >> $1
+    sed -e 's/.*/#define VERSION "&"/' $VE >> $1
+    $CG | sed -e 's/.*/#define CPU_MFR_OPSYS "&"/' >> $1
+    echo $2/apg/apg.db | sed -e 's/.*/#define APG_DB_FILE "&"/' >> $1
+    echo $2/apg/apg.rules | sed -e 's/.*/#define APG_AUTORULES "&"/' >> $1
+    echo "#endif /* APG_LOCALE_H */" >> $1
+    ;;
 
+esac
+exit 0
