@@ -46,7 +46,7 @@ extern int apg_errno;
 #include <sys/types.h>
 #include <sys/cdefs.h>
 
-#ifndef __P
+#if !defined (__P)
 # ifdef __STDC__
 # define __P(x) x
 # else
@@ -163,9 +163,7 @@ grill_t *apg_seek __P ((int, grill_t *));
 
 //-[0,8
 static const int types_size[] =
-  { 0, sizeof (int), sizeof (short), sizeof (char),
-  sizeof (long), sizeof (short), sizeof (char),
-  sizeof (void *), sizeof (void *), sizeof (void *)
+  { 0, sizeof (int), sizeof (short), sizeof (char), sizeof (long), sizeof (short), sizeof (char), sizeof (void *), sizeof (void *), sizeof (void *)
 };
 
 //-[0,9
@@ -808,15 +806,24 @@ strholen (AACHAR_ARG p)
 #define APG_LOPT(l,t)     apgtb[l][t][3]
 #define APG_LREGEX(l,t)   apgtb[l][t][4]
 
-#define APGE_ARG0 line_id, token_id, APG_LTYPE (line_id, token_id), APG_OFFSET_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG1 line_id, token_id, APG_LTYPE (line_id, token_id), APG_LIMIT_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG2 line_id, token_id, APG_LTYPE (line_id, token_id), APG_TYPE_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG3 line_id, token_id, T_STR, APG_ESC_ERR, 0, 0, token
-#define APGE_ARG4 line_id, token_id, T_HOST, APG_HOST_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG5 line_id, token_id, T_IPV4, APG_IPV4_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG6 apg_stream->type_line, j, APG_LTYPE (apg_stream->type_line, j), APG_NULL_ERR, APG_LLOW (apg_stream->type_line, j), APG_LHIGH (apg_stream->type_line, j), NULL
-#define APGE_ARG7 apg_stream->type_line, 0, 0, APG_MANY_ERR, 0, rep_limits[apg_stream->type_line][1], NULL
-#define APGE_ARG8 i, 0, 0, APG_FEW_ERR, rep_limits[i][0], 0, NULL
+
+#define APGE_ARG0 	line_id, token_id, APG_LTYPE (line_id, token_id), APG_OFFSET_ERR, \
+			APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
+#define APGE_ARG1 	line_id, token_id, APG_LTYPE (line_id, token_id), APG_LIMIT_ERR, \
+			APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
+#define APGE_ARG2 	line_id, token_id, APG_LTYPE (line_id, token_id), APG_TYPE_ERR, \
+			APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
+#define APGE_ARG3 	line_id, token_id, T_STR, APG_ESC_ERR, 0, 0, token
+#define APGE_ARG4 	line_id, token_id, T_HOST, APG_HOST_ERR, APG_LLOW (line_id, token_id), \
+			APG_LHIGH (line_id, token_id), token
+#define APGE_ARG5 	line_id, token_id, T_IPV4, APG_IPV4_ERR, APG_LLOW (line_id, token_id), \
+			APG_LHIGH (line_id, token_id), token
+#define APGE_ARG6 	apg_stream->type_line, j, APG_LTYPE (apg_stream->type_line, j), \
+			APG_NULL_ERR, APG_LLOW (apg_stream->type_line, j), \
+			APG_LHIGH (apg_stream->type_line, j), NULL
+#define APGE_ARG7 	apg_stream->type_line, 0, 0, APG_MANY_ERR, 0, \
+			rep_limits[apg_stream->type_line][1], NULL
+#define APGE_ARG8 	i, 0, 0, APG_FEW_ERR, rep_limits[i][0], 0, NULL
 
 static void
 token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)

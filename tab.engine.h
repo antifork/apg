@@ -46,7 +46,7 @@ extern int apg_errno;
 #include <sys/types.h>
 #include <sys/cdefs.h>
 
-#ifndef __P
+#if !defined (__P)
 # ifdef __STDC__
 # define __P(x) x
 # else

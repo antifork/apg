@@ -631,15 +631,24 @@ strholen (AACHAR_ARG p)
 #define APG_LOPT(l,t)     apgtb[l][t][3]
 #define APG_LREGEX(l,t)   apgtb[l][t][4]
 
-#define APGE_ARG0 line_id, token_id, APG_LTYPE (line_id, token_id), APG_OFFSET_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG1 line_id, token_id, APG_LTYPE (line_id, token_id), APG_LIMIT_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG2 line_id, token_id, APG_LTYPE (line_id, token_id), APG_TYPE_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG3 line_id, token_id, T_STR, APG_ESC_ERR, 0, 0, token
-#define APGE_ARG4 line_id, token_id, T_HOST, APG_HOST_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG5 line_id, token_id, T_IPV4, APG_IPV4_ERR, APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
-#define APGE_ARG6 apg_stream->type_line, j, APG_LTYPE (apg_stream->type_line, j), APG_NULL_ERR, APG_LLOW (apg_stream->type_line, j), APG_LHIGH (apg_stream->type_line, j), NULL
-#define APGE_ARG7 apg_stream->type_line, 0, 0, APG_MANY_ERR, 0, rep_limits[apg_stream->type_line][1], NULL
-#define APGE_ARG8 i, 0, 0, APG_FEW_ERR, rep_limits[i][0], 0, NULL
+
+#define APGE_ARG0 	line_id, token_id, APG_LTYPE (line_id, token_id), APG_OFFSET_ERR, \
+			APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
+#define APGE_ARG1 	line_id, token_id, APG_LTYPE (line_id, token_id), APG_LIMIT_ERR, \
+			APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
+#define APGE_ARG2 	line_id, token_id, APG_LTYPE (line_id, token_id), APG_TYPE_ERR, \
+			APG_LLOW (line_id, token_id), APG_LHIGH (line_id, token_id), token
+#define APGE_ARG3 	line_id, token_id, T_STR, APG_ESC_ERR, 0, 0, token
+#define APGE_ARG4 	line_id, token_id, T_HOST, APG_HOST_ERR, APG_LLOW (line_id, token_id), \
+			APG_LHIGH (line_id, token_id), token
+#define APGE_ARG5 	line_id, token_id, T_IPV4, APG_IPV4_ERR, APG_LLOW (line_id, token_id), \
+			APG_LHIGH (line_id, token_id), token
+#define APGE_ARG6 	apg_stream->type_line, j, APG_LTYPE (apg_stream->type_line, j), \
+			APG_NULL_ERR, APG_LLOW (apg_stream->type_line, j), \
+			APG_LHIGH (apg_stream->type_line, j), NULL
+#define APGE_ARG7 	apg_stream->type_line, 0, 0, APG_MANY_ERR, 0, \
+			rep_limits[apg_stream->type_line][1], NULL
+#define APGE_ARG8 	i, 0, 0, APG_FEW_ERR, rep_limits[i][0], 0, NULL
 
 static void
 token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
@@ -678,7 +687,7 @@ token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
   switch (APG_LTYPE (line_id, token_id))
     {
 
-#line 859 "/usr/local/share/apg/apg.db"
+#line 868 "/usr/local/share/apg/apg.db"
     case T_INT:
     case T_U_32:
     case T_SHORT:
@@ -734,7 +743,7 @@ token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
       return;
       break;
 
-#line 915 "/usr/local/share/apg/apg.db"
+#line 924 "/usr/local/share/apg/apg.db"
     case T_STR:
       {
 	strcpy (pp, token);
@@ -762,7 +771,7 @@ token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
 	      }
 	  }
 
-#line 985 "/usr/local/share/apg/apg.db"
+#line 994 "/usr/local/share/apg/apg.db"
 	if (!(	APG_LLOW (line_id, token_id)
 	    || 	APG_LHIGH (line_id, token_id))
 	    || 	APG_CLIMIT (	APG_LTYPE (line_id, token_id),
@@ -781,14 +790,14 @@ token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
       }
       break;
 
-#line 1121 "/usr/local/share/apg/apg.db"
+#line 1130 "/usr/local/share/apg/apg.db"
     }
   return;
 }
 
 /* error api */
 
-#line 1126 "/usr/local/share/apg/apg.db"
+#line 1135 "/usr/local/share/apg/apg.db"
 static char *err_table[] = {
   "apg: ok",
   "apg: grill arena is empty",
@@ -814,7 +823,7 @@ apg_strerror (AAINT_ARG errnum)
 
 /* standard api */
 
-#line 1150 "/usr/local/share/apg/apg.db"
+#line 1159 "/usr/local/share/apg/apg.db"
 void
 apg_free_grill (AAGRILL_ARG p)
      AAGRILL_DECL (p)
@@ -888,7 +897,7 @@ apg_get_line (AAGRILL__ARG apg_user_ptr)
 
 /* parser */
 
-#line 1266 "/usr/local/share/apg/apg.db"
+#line 1275 "/usr/local/share/apg/apg.db"
 grill_t *
 #if __STDC__
 apg_parser (int q, ...)
@@ -904,7 +913,7 @@ apg_parser (q, va_alist)
   va_list ap;
   char *b_stream = NULL, *tk = NULL;
   char *file;
-#line 1287 "/usr/local/share/apg/apg.db"
+#line 1296 "/usr/local/share/apg/apg.db"
 
 #if __STDC__
   va_start (ap, q);
@@ -998,7 +1007,7 @@ apg_parser (q, va_alist)
 	  apg_stream = alloc_segment (apg_stream);
 	  apg_stream->type_line = b_search (tk);
 
-#line 1389 "/usr/local/share/apg/apg.db"
+#line 1398 "/usr/local/share/apg/apg.db"
 	  break;
 	default:		/* token */
 
@@ -1021,7 +1030,7 @@ apg_parser (q, va_alist)
 	token_fatalerr (APGE_ARG6);
 
 
-#line 1420 "/usr/local/share/apg/apg.db"
+#line 1429 "/usr/local/share/apg/apg.db"
   free (base_tokens);
   ioctl_buffer (NULL, APG_CLOSE);
 
@@ -1030,7 +1039,7 @@ apg_parser (q, va_alist)
   if (apg_flags & APG_FATALERR)
     fatalerr ("apg_parser(): encontered some errors");
 
-#line 1449 "/usr/local/share/apg/apg.db"
+#line 1458 "/usr/local/share/apg/apg.db"
 
   return apg_arena;
 
