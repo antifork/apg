@@ -70,22 +70,22 @@ extern int apg_errno;
 #define AAINT_ARG        int
 #define AAUINT_ARG	 u_int
 #define AASIZE_ARG       size_t 
-#define AACHAR$_ARG      char *
-#define AAVOID$_ARG      void *
-#define AAGRILL$_ARG     grill_t *
-#define AAGRILL$$_ARG	 grill_t **
+#define AACHARx_ARG      char *
+#define AAVOIDx_ARG      void *
+#define AAGRILLx_ARG     grill_t *
+#define AAGRILLxx_ARG	 grill_t **
 #define AATIMEVAL_ARG	 struct timeval
-#define AAELAPSED$_ARG   elapsed_val *
+#define AAELAPSEDx_ARG   elapsed_val *
 
 #define AAINT_DECL(a)
 #define AAUINT_DECL(a)   
 #define AASIZE_DECL(a)    
-#define AACHAR$_DECL(a)
-#define AAVOID$_DECL(a)
-#define AAGRILL$_DECL(a)
-#define AAGRILL$$_DECL(a)
+#define AACHARx_DECL(a)
+#define AAVOIDx_DECL(a)
+#define AAGRILLx_DECL(a)
+#define AAGRILLxx_DECL(a)
 #define AATIMEVAL_DECL(a)
-#define AAELAPSED$_DECL(a)
+#define AAELAPSEDx_DECL(a)
 
 #else
 /* GNU c */
@@ -93,22 +93,22 @@ extern int apg_errno;
 #define AAINT_ARG
 #define AAUINT_ARG       
 #define AASIZE_ARG       
-#define AACHAR$_ARG    
-#define AAVOID$_ARG      
-#define AAGRILL$_ARG     
-#define AAGRILL$$_ARG 
+#define AACHARx_ARG    
+#define AAVOIDx_ARG      
+#define AAGRILLx_ARG     
+#define AAGRILLxx_ARG 
 #define AATIMEVAL_ARG
-#define AAELAPSED$_ARG    
+#define AAELAPSEDx_ARG    
 
 #define AAINT_DECL(a)      int a;
 #define AAUINT_DECL(a)     u_int a; 
 #define AASIZE_DECL(a)     size_t a; 
-#define AACHAR$_DECL(a)    char *a;
-#define AAVOID$_DECL(a)    void *a;
-#define AAGRILL$_DECL(a)   grill_t *a;
-#define AAGRILL$$_DECL(a)  grill_t **a;
+#define AACHARx_DECL(a)    char *a;
+#define AAVOIDx_DECL(a)    void *a;
+#define AAGRILLx_DECL(a)   grill_t *a;
+#define AAGRILLxx_DECL(a)  grill_t **a;
 #define AATIMEVAL_DECL(a)  struct timeval a;
-#define AAELAPSED$_DECL(a) elapsed_val *a;
+#define AAELAPSEDx_DECL(a) elapsed_val *a;
 
 #endif
 

@@ -70,22 +70,22 @@ extern int apg_errno;
 #define AAINT_ARG        int
 #define AAUINT_ARG	 u_int
 #define AASIZE_ARG       size_t 
-#define AACHAR$_ARG      char *
-#define AAVOID$_ARG      void *
-#define AAGRILL$_ARG     grill_t *
-#define AAGRILL$$_ARG	 grill_t **
+#define AACHARx_ARG      char *
+#define AAVOIDx_ARG      void *
+#define AAGRILLx_ARG     grill_t *
+#define AAGRILLxx_ARG	 grill_t **
 #define AATIMEVAL_ARG	 struct timeval
-#define AAELAPSED$_ARG   elapsed_val *
+#define AAELAPSEDx_ARG   elapsed_val *
 
 #define AAINT_DECL(a)
 #define AAUINT_DECL(a)   
 #define AASIZE_DECL(a)    
-#define AACHAR$_DECL(a)
-#define AAVOID$_DECL(a)
-#define AAGRILL$_DECL(a)
-#define AAGRILL$$_DECL(a)
+#define AACHARx_DECL(a)
+#define AAVOIDx_DECL(a)
+#define AAGRILLx_DECL(a)
+#define AAGRILLxx_DECL(a)
 #define AATIMEVAL_DECL(a)
-#define AAELAPSED$_DECL(a)
+#define AAELAPSEDx_DECL(a)
 
 #else
 /* GNU c */
@@ -93,22 +93,22 @@ extern int apg_errno;
 #define AAINT_ARG
 #define AAUINT_ARG       
 #define AASIZE_ARG       
-#define AACHAR$_ARG    
-#define AAVOID$_ARG      
-#define AAGRILL$_ARG     
-#define AAGRILL$$_ARG 
+#define AACHARx_ARG    
+#define AAVOIDx_ARG      
+#define AAGRILLx_ARG     
+#define AAGRILLxx_ARG 
 #define AATIMEVAL_ARG
-#define AAELAPSED$_ARG    
+#define AAELAPSEDx_ARG    
 
 #define AAINT_DECL(a)      int a;
 #define AAUINT_DECL(a)     u_int a; 
 #define AASIZE_DECL(a)     size_t a; 
-#define AACHAR$_DECL(a)    char *a;
-#define AAVOID$_DECL(a)    void *a;
-#define AAGRILL$_DECL(a)   grill_t *a;
-#define AAGRILL$$_DECL(a)  grill_t **a;
+#define AACHARx_DECL(a)    char *a;
+#define AAVOIDx_DECL(a)    void *a;
+#define AAGRILLx_DECL(a)   grill_t *a;
+#define AAGRILLxx_DECL(a)  grill_t **a;
 #define AATIMEVAL_DECL(a)  struct timeval a;
-#define AAELAPSED$_DECL(a) elapsed_val *a;
+#define AAELAPSEDx_DECL(a) elapsed_val *a;
 
 #endif
 
@@ -238,17 +238,23 @@ static int ac_4 __P ((void));
 
 //-[1,4
 static char *file_name;
-static int apg_flags, apg_current_line;
-static int apg_buff_line, apg_token;
+static char *file_image;
+
+static int apg_flags;
+
+static int apg_current_line, apg_buff_line;
+
 static int apg_state_code, apg_input_code;
 
+static int apg_token;
 #ifdef APG_PERF
 static int global_token;
 #endif
 
 static u_char *base_tokens;
 
-static char *file_image;
+static u_char *p_token;
+static u_char *p_stream;
 
 static grill_t *apg_stream;
 static grill_t *apg_arena;
@@ -354,8 +360,8 @@ xmalloc ( AAUINT_ARG s)
 
 
 static void *
-xrealloc (AAVOID$_ARG ptr, AAUINT_ARG s)
-     AAVOID$_DECL(ptr)
+xrealloc (AAVOIDx_ARG ptr, AAUINT_ARG s)
+     AAVOIDx_DECL(ptr)
      AAUINT_DECL(s)
 {
   void *result;
@@ -380,8 +386,8 @@ xcalloc ( AAUINT_ARG nelem, AAUINT_ARG s)
 
 
 static char *
-ioctl_buffer (AACHAR$_ARG fn, AAINT_ARG flag)
-     AACHAR$_DECL(fn)
+ioctl_buffer (AACHARx_ARG fn, AAINT_ARG flag)
+     AACHARx_DECL(fn)
      AAINT_DECL(flag)
 {
   int fd, sz;
@@ -430,10 +436,6 @@ ioctl_buffer (AACHAR$_ARG fn, AAINT_ARG flag)
   return (char *) NULL;		/* unreachable */
 }
 
-
-static u_char *p_token, *p_token_0;
-static u_char *p_stream;
-
 static int
 ac_0 ()
 {
@@ -448,7 +450,7 @@ ac_0 ()
 static int
 ac_1 ()
 {
-  *(p_token_0++) = *(p_stream++);
+  *(p_token++) = *(p_stream++);
 
   return 1;
 }
@@ -458,7 +460,7 @@ ac_2 ()
 {
   if (*p_stream == '\n')
     apg_buff_line++;
-  *p_token_0++ = '\0';
+  *p_token++ = '\0';
 
   p_stream++;
   apg_token++;
@@ -475,7 +477,6 @@ char c_escape[256] =
 int c_escape[256];
 #endif
 
-
 static int
 ac_3 ()
 {
@@ -486,7 +487,7 @@ ac_3 ()
   if ((c = c_escape[*p_stream]))
     {
       /* escape */
-      *p_token_0 = c;
+      *p_token = c;
     }
   else
     {
@@ -495,7 +496,7 @@ ac_3 ()
 	case '\n':
 	  memmove (p_stream, p_stream + 1,
 		   strlen ((const char *) (p_stream + 1)));
-	  *p_token_0 = *p_stream;
+	  *p_token = *p_stream;
 	  break;
 	case '0':
 	  if (*(p_stream + 1) == 'x' || *(p_stream + 1) == 'X')
@@ -503,18 +504,18 @@ ac_3 ()
 	  else
 	    apg_flags |= APG_OCT_TOKEN;
 
-	  *p_token_0 = APG_ACK_CHR;
+	  *p_token = APG_ACK_CHR;
 	  p_stream--;
 	  break;
 
 	default:
-	  *p_token_0 = *p_stream;
+	  *p_token = *p_stream;
 	  break;
 
 	}
     }
 
-  p_token_0++;
+  p_token++;
   p_stream++;
 
   return 1;
@@ -568,9 +569,11 @@ static char *
 get_token ()
 {
   register int reg_input, reg_state;
+  u_char *c_token;
+  
+  c_token=p_token;
 
   apg_current_line = apg_buff_line;
-  p_token = p_token_0;
 
 	/*** load registers ***/
 
@@ -597,14 +600,14 @@ get_token ()
   global_token++;
 #endif
 
-  return (char *) p_token;
+  return (char *) c_token;
 
 }
 
 //-[1,8
 static grill_t *
-alloc_segment (AAGRILL$_ARG p)
-     AAGRILL$_DECL(p)
+alloc_segment (AAGRILLx_ARG p)
+     AAGRILLx_DECL(p)
 {
 
   grill_t *q;
@@ -631,8 +634,8 @@ static
 #else
 #endif
   int
-b_search (AACHAR$_ARG key)
-     AACHAR$_DECL(key)
+b_search (AACHARx_ARG key)
+     AACHARx_DECL(key)
 {
   register int high, i, low;
   register unsigned long hash;
@@ -682,14 +685,14 @@ token_fatalerr (AAINT_ARG line_id,
 		AAINT_ARG errn0, 
 		AAINT_ARG low, 
 		AAINT_ARG high, 
-		AACHAR$_ARG token)
+		AACHARx_ARG token)
      AAINT_DECL(line_id)
      AAINT_DECL(token_id)
      AAINT_DECL(type)
      AAINT_DECL(errn0)
      AAINT_DECL(low)
      AAINT_DECL(high)
-     AACHAR$_DECL(token)
+     AACHARx_DECL(token)
 {
   char *p = token;
 
@@ -737,8 +740,8 @@ token_fatalerr (AAINT_ARG line_id,
 
 //-[3,0
 static void
-alloc_seg_t (AACHAR$_ARG r)
-     AACHAR$_DECL(r)
+alloc_seg_t (AACHARx_ARG r)
+     AACHARx_DECL(r)
 {
   seg_t *p = tail_seg, *q;
 
@@ -773,8 +776,8 @@ __inline
 #else
 #endif
 static int
-strholen (AACHAR$_ARG p)
-     AACHAR$_DECL(p)
+strholen (AACHARx_ARG p)
+     AACHARx_DECL(p)
 {
   register int c = 1, s = 0;
   register char *_p = p;
@@ -834,8 +837,8 @@ strholen (AACHAR$_ARG p)
 #define APGE_ARG8 	i, 0, 0, APG_FEW_ERR, rep_limits[i][0], 0, NULL
 
 static void
-token_analysis (AACHAR$_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
-     AACHAR$_DECL(token)
+token_analysis (AACHARx_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
+     AACHARx_DECL(token)
      AAINT_DECL(line_id)
      AAINT_DECL(token_id)
 
@@ -1163,8 +1166,8 @@ apg_strerror (AAINT_ARG errnum)
 
 //-[5,0
 void
-apg_free_grill (AAGRILL$_ARG p)
-     AAGRILL$_DECL (p)
+apg_free_grill (AAGRILLx_ARG p)
+     AAGRILLx_DECL (p)
 {
   grill_t *s;
 
@@ -1197,8 +1200,8 @@ apg_free_pragma ()
 
 
 int
-apg_get_line (AAGRILL$$_ARG apg_user_ptr)
-     AAGRILL$$_DECL(apg_user_ptr)
+apg_get_line (AAGRILLxx_ARG apg_user_ptr)
+     AAGRILLxx_DECL(apg_user_ptr)
 {
   apg_errno = APG_EOK;
 
@@ -1247,10 +1250,10 @@ typedef struct
 elapsed_val;
 
 int
-difftimeofday (AATIMEVAL_ARG now, AATIMEVAL_ARG old, AAELAPSED$_ARG diff)
+difftimeofday (AATIMEVAL_ARG now, AATIMEVAL_ARG old, AAELAPSEDx_ARG diff)
      AATIMEVAL_DECL(now)
      AATIMEVAL_DECL(old)
-     AAELAPSED$_DECL(diff)
+     AAELAPSEDx_DECL(diff)
 
 {
   register int r1, r2, r3;
@@ -1359,7 +1362,7 @@ apg_parser (q, va_alist)
 
   if (p_token == NULL)
     {
-      base_tokens = p_token = p_token_0 =
+      base_tokens = p_token = 
 	(u_char *) xcalloc (strlen (b_stream), sizeof (char));
 
       p_stream = (u_char *) b_stream;
@@ -1469,9 +1472,9 @@ apg_parser (q, va_alist)
 
 //-[6,0
 grill_t *
-apg_seek (AAINT_ARG t, AAGRILL$_ARG p)
+apg_seek (AAINT_ARG t, AAGRILLx_ARG p)
      AAINT_DECL(t)
-     AAGRILL$_DECL(p)
+     AAGRILLx_DECL(p)
 {
   register grill_t *_p = p;
 
