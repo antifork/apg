@@ -46,14 +46,6 @@ extern int apg_errno;
 #include <sys/types.h>
 #include <sys/cdefs.h>
 
-#if !defined (__P)
-#ifdef __STDC__
-#define __P(x) x
-#else
-#define __P(x) ()
-#endif
-#endif
-
 #if defined(__ANSI__) || defined (__STRICT_ANSI__)
 #define u_char  unsigned char
 #define u_short unsigned short
@@ -61,20 +53,14 @@ extern int apg_errno;
 #define u_long  unsigned long
 #endif
 
-/* undef __THROW for g++ compatibility */
-//#ifdef   __THROW
-//#undef   __THROW
-//#define  __THROW
-//#endif
-
 //-[0,2
-void apg_free_grill __P((grill_t *));
-void apg_free_pragma __P((void));
-char *apg_strerror __P((int));
-int apg_get_line __P((grill_t **));
-grill_t *apg_parser __P((int,...));
+void apg_free_grill (grill_t *);
+void apg_free_pragma (void);
+char *apg_strerror (int);
+int apg_get_line (grill_t **);
+grill_t *apg_parser (int,...);
 //-[0,3
-grill_t * apg_seek __P((int, grill_t *));
+grill_t * apg_seek (int, grill_t *);
 //-[0,4
 #ifdef _APG_PARSER_C
 //-[0,5
@@ -168,11 +154,11 @@ typedef struct i_seg_t {
 #define _APG_PARSER_C
 //-[1,2
 //-[1,3
-static int ac_0 __P((void));
-static int ac_1 __P((void));
-static int ac_2 __P((void));
-static int ac_3 __P((void));
-static int ac_4 __P((void));
+static int ac_0 (void);
+static int ac_1 (void);
+static int ac_2 (void);
+static int ac_3 (void);
+static int ac_4 (void);
 //-[1,4
 static char *file_name;
 static char *file_image;
@@ -1157,22 +1143,22 @@ va_dcl
 
 /* ansicare vector setup */
 #if !defined (__GNUC__) || defined (__STRICT_ANSI__) || defined (__ANSI__) || defined (__cplusplus)
-	c_index['#'] = 1;
-	c_index[APG_SEPLINE] = 2;
-	c_index[APG_SEPTOKEN] = 3;
-	c_index['\''] = 4;
-	c_index['\\'] = 5;
-	c_index[' '] = 6;
-	c_index['\t'] = 6;
-	c_index['\n'] = 7;
+	c_index[(int)'#'] = 1;
+	c_index[(int)APG_SEPLINE] = 2;
+	c_index[(int)APG_SEPTOKEN] = 3;
+	c_index[(int)'\''] = 4;
+	c_index[(int)'\\'] = 5;
+	c_index[(int)' '] = 6;
+	c_index[(int)'\t'] = 6;
+	c_index[(int)'\n'] = 7;
 
-	c_escape['a'] = '\a';
-	c_escape['b'] = '\b';
-	c_escape['t'] = '\t';
-	c_escape['n'] = '\n';
-	c_escape['v'] = '\v';
-	c_escape['f'] = '\f';
-	c_escape['r'] = '\r';
+	c_escape[(int)'a'] = '\a';
+	c_escape[(int)'b'] = '\b';
+	c_escape[(int)'t'] = '\t';
+	c_escape[(int)'n'] = '\n';
+	c_escape[(int)'v'] = '\v';
+	c_escape[(int)'f'] = '\f';
+	c_escape[(int)'r'] = '\r';
 #endif
 
 	/* apg get token setup */
