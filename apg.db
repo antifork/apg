@@ -241,9 +241,7 @@ static char *file_name;
 static char *file_image;
 
 static int apg_flags;
-
 static int apg_current_line, apg_buff_line;
-
 static int apg_state_code, apg_input_code;
 
 static int apg_token;
@@ -609,7 +607,6 @@ static grill_t *
 alloc_segment (AAGRILLx_ARG p)
      AAGRILLx_DECL(p)
 {
-
   grill_t *q;
 
   /* p reasonably points to the last grill_t. In case it doesn't ... */
@@ -625,7 +622,6 @@ alloc_segment (AAGRILLx_ARG p)
     return (apg_arena = apg_stream = q);
   else
     return (apg_stream = p->next = q);
-
 }
 
 static
@@ -665,8 +661,7 @@ Preliminary analysis suggests there are no funnels.  */
   if (hash == line_v[high].hash)
     return (high);
 
-  fatalerr ("%s:%d: `%s' unknown line label", file_name, apg_buff_line + 1,
-	    key);
+  fatalerr ("%s:%d: `%s' unknown line label", file_name, apg_buff_line + 1, key);
 
   return (-1);			/* unreachable */
 
@@ -892,10 +887,10 @@ token_analysis (AACHARx_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
       if (*endptr=='\0')
 	{
 
-	  if ( APG_CLIMIT (	APG_LTYPE (line_id, token_id), 
-				APG_LLOW  (line_id, token_id),
-	       			sp, 
-				APG_LHIGH (line_id, token_id)))
+	  if ( APG_CLIMIT ( APG_LTYPE (line_id, token_id), 
+			    APG_LLOW  (line_id, token_id),
+	       		    sp, 
+			    APG_LHIGH (line_id, token_id)))
 	    {
 	      switch (APG_LTYPE (line_id, token_id))
 		{
@@ -969,18 +964,14 @@ token_analysis (AACHARx_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
 	    {
 	      p = (regex_t *) xmalloc (sizeof (regex_t));
 
-	      if (
-		  (i =
-		   regcomp (p, regex_list[APG_LREGEX (line_id, token_id)],
-			    REG_NOSUB | REG_EXTENDED)))
+	      if ( (i = regcomp (p, regex_list[APG_LREGEX (line_id, token_id)], REG_NOSUB | REG_EXTENDED)))
 		{
 		  regerror (i, p, err_msg, 99);
 		  fprintf (stderr, "apg:regcomp() fatalerr `%s': %s\n",
 			   regex_list[APG_LREGEX (line_id, token_id)],
 			   err_msg);
 		  fprintf (stderr,
-			   "Probably the template file, from which this source code has been generated,\n"
-			   "contains a regular expression that the actual regexp implementation is not able to compile successfuly.\n"
+			   "The template file contains a regexp that the local implementation is not able to compile successfuly.\n"
 			   "Contact the author reporting this bug occurred.");
 		  exit (69);
 		}
@@ -1000,12 +991,12 @@ token_analysis (AACHARx_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
 	}
 
 //-[3,6
-	if (!(	APG_LLOW (line_id, token_id)
-	    || 	APG_LHIGH (line_id, token_id))
-	    || 	APG_CLIMIT (	APG_LTYPE (line_id, token_id),
-			   	APG_LLOW (line_id, token_id), 
-				(int)strlen (pp),
-			   	APG_LHIGH (line_id, token_id)))
+	if (!( APG_LLOW  (line_id, token_id)  ||
+	       APG_LHIGH (line_id, token_id)) ||
+	       APG_CLIMIT( APG_LTYPE (line_id, token_id),
+			   APG_LLOW (line_id, token_id), 
+		      (int)strlen (pp),
+			   APG_LHIGH (line_id, token_id)))
 	  {
 	    APG_PPUSH (apg_stream, offset, pp);
 	    return;
@@ -1398,8 +1389,7 @@ apg_parser (q, va_alist)
 	  rep_counter[apg_stream->type_line]++;
 
 	  if (rep_limits[apg_stream->type_line][1] != -1 &&
-	      rep_counter[apg_stream->type_line] >
-	      rep_limits[apg_stream->type_line][1])
+	      rep_counter[apg_stream->type_line] > rep_limits[apg_stream->type_line][1] )
 	    token_fatalerr (APGE_ARG7);
 
 //-[5,6
