@@ -1,5 +1,4 @@
 /* $Id$ */
-/* $Author$ */
 /*
  *  $Id$
  *  apg.par.c
@@ -219,16 +218,21 @@ ioctl_buffer (char *fn, int flag)
       file_name = (char *) xmalloc (strlen (fn) + 1);
       strcpy (file_name, fn);
 
+      /* no TOCTOU */
+
       if (stat (fn, &f_stat) == -1)
-	return (char *) NULL;
-     
+        return (char *) NULL;
+
       sz = (int) f_stat.st_size;
 
       file_image = (char *) xrealloc (file_image, sz + 1);
 
       if ((fd = open (fn, O_RDONLY)) == -1)
+        fatalerr ("err: %s", strerror (errno));
+
+      if ((sz = read (fd, file_image, sz )) == -1 )
 	fatalerr ("err: %s", strerror (errno));
-      read (fd, file_image, sz );
+
       *(file_image + sz ) = 0;
 
       close (fd);
