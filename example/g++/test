@@ -1,0 +1,55 @@
+#
+# test: this file is parsed by test.c through apg.par.c 
+#
+
+line_1 = \0x10 : : \0x00ff : 40
+
+line_2 = \010 : \0100 : 50
+line_2 = \010 : \0100 : 50 
+line_2 = \010 : \0100 : 50
+#line_2 =  :  : 
+
+line_3 =  c : \0x5f : \0x5f
+
+line_4 = \0x34 
+#line_2 = \0x94
+
+#line_1 = \056
+
+line_5 = 127.0.0.1 # null \
+test .. ok  .... \
+
+
+ 
+
+line_6 =  : antiforkdotorg   
+
+
+line_6 = test:prova
+
+line_7 = a  :  b : ds : 6       
+line_1 = \0x10 : : \0x00ff : 40
+
+#line_2 =  :  : 
+
+line_3 =  c : \0x5f : \0x5f
+
+line_4 = \0x34
+#line_2 = \0x94
+
+#line_1 = \056
+
+line_5 = 127.0.0.1: x.cina.org # null \
+test .. ok  .... \
+
+
+
+
+line_6 =  : antiforkdotorg
+
+
+line_6 = test:prova
+
+line_7 = a\0x56\0x89  :  b : ds : 6
+
+line_1 = 10::67:2 

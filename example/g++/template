@@ -1,0 +1,11 @@
+#
+# Example 
+#
+
+line_1      = (a$)int[10,20]:(b)int:(c$)int:(d$)int
+line_2(3,) = (a$)short:(b$)short:(c$)short[0,1024]
+line_3      = (a$)char:(b$)char:(c$)char
+line_4      = (a$)u_8
+line_5      = (a)ipv4:(b)host
+line_6      = (a)str:(b)str"^[a-z]+$"
+line_7	    = (h)str:(f$)str:(g)str:(l$)int

@@ -1,0 +1,23 @@
+#
+# test: this file is parsed by test.c through apg.par.c 
+#
+
+line_1 = \0x10 : 20: \0x00ff : 40
+
+line_2 = \010 : \0100 : 50
+line_2 = \010 : \0100 : 50 
+line_2 = \010 : \0100 : 50
+#line_2 = 1 : 2 : 3
+
+line_3 =  c : \0x5f : \0x5f
+
+line_4 = \0x34
+
+line_5 = 12.34.5.2 : www.openbsd.org 
+
+line_6 = mailto\072bonelli\0100antifork.org : 'author' 
+line_2 = \010 : \0100 : 50
+
+line_6 = 'ca':prova
+
+line_7 = 'ba' 
