@@ -123,7 +123,7 @@ extract_segment(char *ptr_db, FILE * where, int chapter, int paragraph, char *co
 	if (!entry_ptr)
 		fatalerr("internal err: extract_segment() index_nb is a NULL pointer");
 
-	for   (entry_ptr = index_db; entry_ptr->next ; entry_ptr = entry_ptr->next)
+	for (entry_ptr = index_db; entry_ptr->next ; entry_ptr = entry_ptr->next)
 		if ((entry_ptr->chapter == chapter) && (entry_ptr->paragraph == paragraph)) {
 			/* This points to the selected frame */
 			if (comm != NULL && *comm != '\0') {
@@ -138,7 +138,6 @@ extract_segment(char *ptr_db, FILE * where, int chapter, int paragraph, char *co
 			fprintf(where, "%s", char_ptr);
 			return 0;
 		}
-	}
 
 	fatalerr("internal err: extract_segment() index=(%d,%d) not found", chapter, paragraph);
 	return -1;
