@@ -77,15 +77,15 @@ extern int apg_errno;
 #define AATIMEVAL_ARG	 struct timeval
 #define AAELAPSEDx_ARG   elapsed_val *
 
-#define AAINT_DECL(a)
-#define AAUINT_DECL(a)   
-#define AASIZE_DECL(a)    
-#define AACHARx_DECL(a)
-#define AAVOIDx_DECL(a)
-#define AAGRILLx_DECL(a)
-#define AAGRILLxx_DECL(a)
-#define AATIMEVAL_DECL(a)
-#define AAELAPSEDx_DECL(a)
+#define AAINT_DEC(a)
+#define AAUINT_DEC(a)   
+#define AASIZE_DEC(a)    
+#define AACHARx_DEC(a)
+#define AAVOIDx_DEC(a)
+#define AAGRILLx_DEC(a)
+#define AAGRILLxx_DEC(a)
+#define AATIMEVAL_DEC(a)
+#define AAELAPSEDx_DEC(a)
 
 #else
 /* GNU c */
@@ -100,15 +100,15 @@ extern int apg_errno;
 #define AATIMEVAL_ARG
 #define AAELAPSEDx_ARG    
 
-#define AAINT_DECL(a)      int a;
-#define AAUINT_DECL(a)     u_int a; 
-#define AASIZE_DECL(a)     size_t a; 
-#define AACHARx_DECL(a)    char *a;
-#define AAVOIDx_DECL(a)    void *a;
-#define AAGRILLx_DECL(a)   grill_t *a;
-#define AAGRILLxx_DECL(a)  grill_t **a;
-#define AATIMEVAL_DECL(a)  struct timeval a;
-#define AAELAPSEDx_DECL(a) elapsed_val *a;
+#define AAINT_DEC(a)      int a;
+#define AAUINT_DEC(a)     u_int a; 
+#define AASIZE_DEC(a)     size_t a; 
+#define AACHARx_DEC(a)    char *a;
+#define AAVOIDx_DEC(a)    void *a;
+#define AAGRILLx_DEC(a)   grill_t *a;
+#define AAGRILLxx_DEC(a)  grill_t **a;
+#define AATIMEVAL_DEC(a)  struct timeval a;
+#define AAELAPSEDx_DEC(a) elapsed_val *a;
 
 #endif
 
@@ -119,7 +119,7 @@ extern int apg_errno;
 
 
 typedef struct __type_line__ {
-  int	type_line;
+  int	type;
   union {
      struct {
 	int chap;

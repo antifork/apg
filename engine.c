@@ -88,7 +88,7 @@ fun_2 (FILE * fd, char *comm)
   add_cr (fd);
 
   fprintf (fd, "typedef struct __type_line__ {\n");
-  fprintf (fd, "  int\ttype_line;\n");
+  fprintf (fd, "  int\ttype;\n");
   fprintf (fd, "  union {\n");
 
   while (lp_node)
