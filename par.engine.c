@@ -67,10 +67,6 @@ int apg_errno;
 
 #define APG_ACK_CHR          0x06
 
-/* token option */
-
-#define TOKEN_REQUIRED	     0x01
-
 /* general flags */
 
 #define APG_PARSED_GRILL     0x01
@@ -96,7 +92,7 @@ int apg_errno;
 #if defined (__GNUC__) && !defined (__STRICT_ANSI__)
 int c_index[256] =
   {['#'] 1,[APG_SEPLINE] 2,[APG_SEPTOKEN] 3,['\''] 4,['\\'] 5,[' '] 6,
-    ['\t'] 6,['\n'] 7
+  ['\t'] 6,['\n'] 7
 };
 #else
 int c_index[256];
@@ -129,32 +125,27 @@ int c_index[256];
 \
 ( apg_flags &  (APG_OCT_TOKEN|APG_HEX_TOKEN) ? strtol(token,addr_endptr,0) :  strtol(token,addr_endptr,10))
 
-/* private functions, mealy tables */
-
-/* This is similar to the rotating hash, but it actually mixes the internal 
+/* This is similar to the rotating hash, but it actually mixes the internal
 state. It takes 9n+9 instructions and produces a full 4-byte result.
 Preliminary analysis suggests there are no funnels.  */
 
-static
-#ifdef __GNUC__
-  __inline
-#else
-#endif
-  unsigned long
-one_at_a_time_hash (char *key)
-{
-  int hash, i;
-  for (hash = 0, i = 0; key[i]; ++i)
-    {
-      hash += key[i];
-      hash += (hash << 10);
-      hash ^= (hash >> 6);
-    }
-  hash += (hash << 3);
-  hash ^= (hash >> 11);
-  hash += (hash << 15);
-  return (hash);
-}
+#define ONE_TIME_HASH(key)\
+\
+ ({\
+  int hash, i;\
+  for (hash = 0, i = 0; key[i]; ++i)\
+    {\
+      hash += key[i];\
+      hash += (hash << 10);\
+      hash ^= (hash >> 6);\
+    }\
+  hash += (hash << 3);\
+  hash ^= (hash >> 11);\
+  hash += (hash << 15);\
+  hash;\
+})
+
+/* private functions, mealy tables */
 
 static void
 fatalerr (char *pattern, ...)
@@ -208,7 +199,9 @@ xcalloc (nelem, elsize)
 
 
 static char *
-ioctl_buffer (char *fn, int flag)
+ioctl_buffer (fn, flag)
+     char *fn;
+     int flag;
 {
   int fd, sz;
   struct stat f_stat;
@@ -261,7 +254,7 @@ static unsigned char *p_token, *p_token_0;
 static unsigned char *p_stream;
 
 static int
-ac_0 (void)
+ac_0 ()
 {
   if (*p_stream == '\\')
     p_stream++;
@@ -272,7 +265,7 @@ ac_0 (void)
 }
 
 static int
-ac_1 (void)
+ac_1 ()
 {
   *(p_token_0++) = *(p_stream++);
 
@@ -280,7 +273,7 @@ ac_1 (void)
 }
 
 static int
-ac_2 (void)
+ac_2 ()
 {
   if (*p_stream == '\n')
     apg_buff_line++;
@@ -295,7 +288,7 @@ ac_2 (void)
 #if defined (__GNUC__) && !defined (__STRICT_ANSI__)
 char c_escape[256] =
   {['a'] '\a',['b'] '\b',['t'] '\t',['n'] '\n',['v'] '\v',['f'] '\f',
-    ['r'] '\r'
+  ['r'] '\r'
 };
 #else
 int c_escape[256];
@@ -303,7 +296,7 @@ int c_escape[256];
 
 
 static int
-ac_3 (void)
+ac_3 ()
 {
   register char c;
 
@@ -348,7 +341,7 @@ ac_3 (void)
 }
 
 static int
-ac_4 (void)
+ac_4 ()
 {
   char *eptr;
 
@@ -378,20 +371,20 @@ static const short apg_mealy_state_table[9][8] = {
   {6, 4, 6, 2, 6, 6, 8, 0}
 };
 
-static int (*apg_mealy_action_table[9][8]) (void) =
+static int (*apg_mealy_action_table[9][8]) () =
 {
   { ac_1, ac_0, ac_4, ac_4, ac_4, ac_4, ac_0, ac_0} ,
   { ac_1, ac_4, ac_2, ac_4, ac_4, ac_4, ac_0, ac_4} ,
   { ac_1, ac_2, ac_4, ac_2, ac_0, ac_3, ac_0, ac_2} ,
   { ac_1, ac_2, ac_4, ac_2, ac_0, ac_3, ac_0, ac_2} ,
-  { ac_0, ac_0, ac_0, ac_0, ac_0, ac_0, ac_0, ac_0} , 
-  { ac_1, ac_1, ac_1, ac_1, ac_0, ac_3, ac_1, ac_2} , 
+  { ac_0, ac_0, ac_0, ac_0, ac_0, ac_0, ac_0, ac_0} ,
+  { ac_1, ac_1, ac_1, ac_1, ac_0, ac_3, ac_1, ac_2} ,
   { ac_4, ac_4, ac_4, ac_4, ac_4, ac_4, ac_0, ac_4} ,
   { ac_4, ac_4, ac_2, ac_4, ac_4, ac_4, ac_0, ac_4} ,
   { ac_4, ac_2, ac_4, ac_2, ac_4, ac_4, ac_0, ac_2} };
 
 static char *
-get_token (void)
+get_token ()
 {
   register int reg_input, reg_state;
 
@@ -430,7 +423,8 @@ get_token (void)
 /* arena menagement */
 
 static grill_t *
-alloc_segment (grill_t * p)
+alloc_segment (p)
+     grill_t *p;
 {
 
   grill_t *q;
@@ -462,7 +456,7 @@ b_search (key)
 {
   register int high, i, low;
   register unsigned long hash;
-  hash = one_at_a_time_hash (key);
+  hash = ONE_TIME_HASH (key);
 
   for (low = -1, high = QMAX_ELEM + 1; high - low > 1;)
     {
@@ -478,15 +472,26 @@ b_search (key)
   fatalerr ("%s:%d: `%s' unknown line label", file_name, apg_buff_line + 1,
 	    key);
 
-  return (-1);	/* unreachable */
+  return (-1);			/* unreachable */
 
 }
 
 /* token err interface */
 
+#define APGLT	"%s:%d: label=%s,token=%d {%s}"  /* label & token */
+#define APGLTarg file_name, apg_current_line + 1, line_v[line_id].id, token_id, token
+#define APGL	"%s: label=%s"			 /* label only */
+#define APGLarg  file_name, line_v[line_id].id
+
 static void
-token_fatalerr (int line_id, int token_id, int type, int errn0, int low,
-		int high, char *token)
+token_fatalerr (line_id, token_id, type, errn0, low, high, token)
+     int line_id;
+     int token_id;
+     int type;
+     int errn0;
+     int low;
+     int high;
+     char *token;
 {
   char *p = token;
 
@@ -497,51 +502,26 @@ token_fatalerr (int line_id, int token_id, int type, int errn0, int low,
   switch (errn0)
     {
     case APG_TYPE_ERR:
-      fprintf (stderr,
-	       "%s:%d: label=%s,token=%d -> {%s} is designed to be a %s type;\n",
-	       file_name, apg_current_line + 1, line_v[line_id].id, token_id,
-	       token, types_id[type]);
+      fprintf (stderr, APGLT " is designed to be a %s type;\n", APGLTarg , types_id[type]);
       break;
     case APG_NULL_ERR:
-      fprintf (stderr,
-	       "%s:%d: label=%s,token=%d -> {%s} isn't an optional argument;\n",
-	       file_name, apg_current_line, line_v[line_id].id, token_id,
-	       token);
-
+      fprintf (stderr, APGLT " isn't an optional argument;\n", APGLTarg );
       break;
     case APG_OFFSET_ERR:
-      fprintf (stderr,
-	       "%s:%d: label=%s,token=%d -> {%s} too many tokens;\n",
-	       file_name, apg_current_line + 1, line_v[line_id].id, token_id,
-	       token);
-
+      fprintf (stderr, APGLT " too many tokens;\n", APGLTarg );
       break;
     case APG_LIMIT_ERR:
-      fprintf (stderr,
-	       "%s:%d: label=%s,token=%d -> {%s} is designed to be a %s[%d,%d]. Out of range;\n",
-	       file_name, apg_current_line + 1, line_v[line_id].id, token_id,
-	       token, types_id[type], low, high);
-
+      fprintf (stderr, APGLT " is designed to be a %s[%d,%d]. Out of range;\n", APGLTarg, types_id[type], low, high);
       break;
     case APG_ESC_ERR:
-      fprintf (stderr,
-	       "%s:%d: label=%s,token=%d -> {%s} bad escape sequence;\n",
-	       file_name, apg_current_line + 1, line_v[line_id].id, token_id,
-	       token);
+      fprintf (stderr, APGLT " bad escape sequence;\n", APGLTarg );
       break;
-
     case APG_MANY_ERR:
-      fprintf (stderr,
-	       "%s: label=%s is designed to occur no more than %d time;\n",
-	       file_name, line_v[line_id].id, high);
+      fprintf (stderr, APGL " is designed to occur no more than %d time;\n", APGLarg , high);
       break;
-
     case APG_FEW_ERR:
-      fprintf (stderr,
-	       "%s: label=%s is designed to occur at least %d time;\n",
-	       file_name, line_v[line_id].id, low);
+      fprintf (stderr, APGL " is designed to occur at least %d time;\n",  APGLarg , low);
       break;
-
     }
 
   apg_flags |= APG_FATALERR;
@@ -550,7 +530,8 @@ token_fatalerr (int line_id, int token_id, int type, int errn0, int low,
 /* ymalloc & seg_t */
 
 static void
-alloc_seg_t (char *r)
+alloc_seg_t (r)
+     char *r;
 {
   seg_t *p = tail_seg, *q;
 
@@ -568,7 +549,8 @@ alloc_seg_t (char *r)
 }
 
 static void *
-ymalloc (size_t size)
+ymalloc (size)
+     size_t size;
 {
   void *p;
 
@@ -585,7 +567,8 @@ __inline
 #else
 #endif
 static int
-strholen (char *p)
+strholen (p)
+     char *p;
 {
   register int c = 1, s = 0;
   register char *P = p;
@@ -637,7 +620,11 @@ strholen (char *p)
 #define APGE_ARG8 i, 0, 0, APG_FEW_ERR, rep_limits[i][0], 0, NULL
 
 static void
-token_analysis (char *token, int line_id, int token_id)
+token_analysis (token, line_id, token_id)
+     char *token;
+     int line_id;
+     int token_id;
+
 {
   char *endptr, *pp = NULL;
   long sp;
@@ -781,7 +768,8 @@ static char *err_table[] = {
 };
 
 char *
-apg_strerror (int errnum)
+apg_strerror (errnum)
+     int errnum;
 {
   static char *sb;
   int i = errnum;
@@ -798,7 +786,8 @@ apg_strerror (int errnum)
 /* standard api */
 
 void
-apg_free_grill (grill_t * p_ptr)
+apg_free_grill (p_ptr)
+     grill_t *p_ptr;
 {
   grill_t *s_ptr;
 
@@ -815,7 +804,7 @@ apg_free_grill (grill_t * p_ptr)
 }
 
 void
-apg_free_pragma (void)
+apg_free_pragma ()
 {
   register seg_t *p = head_seg, *q = p;
 
@@ -829,8 +818,10 @@ apg_free_pragma (void)
   head_seg = NULL;
 }
 
+
 int
-apg_get_line (grill_t ** apg_user_ptr)
+apg_get_line (apg_user_ptr)
+     grill_t **apg_user_ptr;
 {
   apg_errno = APG_EOK;
 
@@ -968,7 +959,7 @@ apg_parser (int q, ...)
 	  apg_stream->type_line = b_search (tk);
 
 	  break;
-	default:  /* token */
+	default:		/* token */
 
 	  /* shift_reg setup: (apg_token == 1 ? line_id : token_id) */
 

@@ -102,6 +102,12 @@ typedef struct __type_line__ {
 #define P(x) ()
 #endif
 
+#ifndef __cplusplus
+#ifndef __STDC__
+#define const
+#endif
+#endif
+
 char *apg_strerror P ((int));
 grill_t *apg_parser P ((int, ...));
 int apg_get_line P ((grill_t **));
