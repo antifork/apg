@@ -87,7 +87,6 @@ fun_2 (FILE * fd, char *comm)
   c_comm (fd, comm);
   add_cr (fd);
 
-  fprintf (fd, "#include <sys/types.h>\n\n"); 
   fprintf (fd, "typedef struct __type_line__ {\n");
   fprintf (fd, "  int\ttype_line;\n");
   fprintf (fd, "  union {\n");

@@ -89,7 +89,7 @@ int apg_errno;
 
 /* macros */
 
-#if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined  __cplusplus
+#if defined (__GNUC__) && !defined (__STRICT_ANSI__) 
 int c_index[256] =
   {['#'] 1,[APG_SEPLINE] 2,[APG_SEPTOKEN] 3,['\''] 4,['\\'] 5,[' '] 6,
   ['\t'] 6,['\n'] 7

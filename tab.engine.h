@@ -40,13 +40,30 @@ extern int apg_errno;
 #define APG_ENULL       2
 #define APG_EEOG        3
 
+/* Use prototypes unless the compiler is old-fashioned.  */
+#include <sys/types.h>
+#include <sys/cdefs.h>
+
+#ifndef __P
+# ifdef __STDC__
+# define __P(x) x
+# else
+# define __P(x) ()
+# endif
+#endif
+
+#if defined(__ANSI__) || defined (__STRICT_ANSI__)
+#define u_char  unsigned char
+#define u_short unsigned short
+#define u_int   unsigned int
+#define u_long  unsigned long
+#endif
+
 
 #define i_rule_label	1
 #define c_rule_label	2
 #define h_rule_label	3
 
-
-#include <sys/types.h>
 
 typedef struct __type_line__ {
   int	type_line;
@@ -95,22 +112,6 @@ typedef struct __type_line__ {
 #define h_rule_comm		line_dun.h_rule_line.comm
 
 /* prototypes */
-
-/* Use prototypes unless the compiler is old-fashioned.  */
-
-#ifndef __P
-# ifdef __STDC__
-# define __P(x) x
-# else
-# define __P(x) ()
-# endif
-#endif
-
-#ifndef __cplusplus
-#ifndef __STDC__
-#define const
-#endif
-#endif
 
 char 	*apg_strerror __P ((int));
 grill_t *apg_parser  __P ((int, ...));

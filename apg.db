@@ -42,8 +42,9 @@ extern int apg_errno;
 #define APG_ENULL       2
 #define APG_EEOG        3
 
-//-[0,2
 /* Use prototypes unless the compiler is old-fashioned.  */
+#include <sys/types.h>
+#include <sys/cdefs.h>
 
 #ifndef __P
 # ifdef __STDC__
@@ -53,12 +54,14 @@ extern int apg_errno;
 # endif
 #endif
 
-#ifndef __cplusplus
-#ifndef __STDC__
-#define const
-#endif
+#if defined(__ANSI__) || defined (__STRICT_ANSI__)
+#define u_char  unsigned char
+#define u_short unsigned short
+#define u_int   unsigned int
+#define u_long  unsigned long
 #endif
 
+//-[0,2
 char 	*apg_strerror __P ((int));
 grill_t *apg_parser  __P ((int, ...));
 int 	apg_get_line __P ((grill_t **));
@@ -226,7 +229,7 @@ int apg_errno;
 #define APG_HOST_ERR         0x09
 
 //-[1,6
-#if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined  __cplusplus
+#if defined (__GNUC__) && !defined (__STRICT_ANSI__) 
 int c_index[256] =
   {['#'] 1,[APG_SEPLINE] 2,[APG_SEPTOKEN] 3,['\''] 4,['\\'] 5,[' '] 6,
   ['\t'] 6,['\n'] 7
