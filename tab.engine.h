@@ -1,4 +1,5 @@
-/* apg.db 01/06/18 rel 02 $Id$ */
+/* $Id$ */
+/* $Date$ */
 /* 
  *  $Id$
  *  apg.tab.h
