@@ -67,21 +67,25 @@ extern int apg_errno;
 
 /* g++ / ANSI */
 
-#define AAINT_ARG       int
-#define AAUINT_ARG	u_int
-#define AASIZE_ARG      size_t 
-#define AACHAR_ARG      char *
-#define AAVOID_ARG      void *
-#define AAGRILL_ARG     grill_t *
-#define AAGRILL__ARG	grill_t **
+#define AAINT_ARG        int
+#define AAUINT_ARG	 u_int
+#define AASIZE_ARG       size_t 
+#define AACHAR$_ARG      char *
+#define AAVOID$_ARG      void *
+#define AAGRILL$_ARG     grill_t *
+#define AAGRILL$$_ARG	 grill_t **
+#define AATIMEVAL_ARG	 struct timeval
+#define AAELAPSED$_ARG   elapsed_val *
 
 #define AAINT_DECL(a)
 #define AAUINT_DECL(a)   
 #define AASIZE_DECL(a)    
-#define AACHAR_DECL(a)
-#define AAVOID_DECL(a)
-#define AAGRILL_DECL(a)
-#define AAGRILL__DECL(a)
+#define AACHAR$_DECL(a)
+#define AAVOID$_DECL(a)
+#define AAGRILL$_DECL(a)
+#define AAGRILL$$_DECL(a)
+#define AATIMEVAL_DECL(a)
+#define AAELAPSED$_DECL(a)
 
 #else
 /* GNU c */
@@ -89,18 +93,22 @@ extern int apg_errno;
 #define AAINT_ARG
 #define AAUINT_ARG       
 #define AASIZE_ARG       
-#define AACHAR_ARG    
-#define AAVOID_ARG      
-#define AAGRILL_ARG     
-#define AAGRILL__ARG 
+#define AACHAR$_ARG    
+#define AAVOID$_ARG      
+#define AAGRILL$_ARG     
+#define AAGRILL$$_ARG 
+#define AATIMEVAL_ARG
+#define AAELAPSED$_ARG    
 
-#define AAINT_DECL(a)   int a;
-#define AAUINT_DECL(a)   u_int a; 
-#define AASIZE_DECL(a)   size_t a; 
-#define AACHAR_DECL(a)  char *a;
-#define AAVOID_DECL(a)   void *a;
-#define AAGRILL_DECL(a)  grill_t *a;
-#define AAGRILL__DECL(a) grill_t **a;
+#define AAINT_DECL(a)      int a;
+#define AAUINT_DECL(a)     u_int a; 
+#define AASIZE_DECL(a)     size_t a; 
+#define AACHAR$_DECL(a)    char *a;
+#define AAVOID$_DECL(a)    void *a;
+#define AAGRILL$_DECL(a)   grill_t *a;
+#define AAGRILL$$_DECL(a)  grill_t **a;
+#define AATIMEVAL_DECL(a)  struct timeval a;
+#define AAELAPSED$_DECL(a) elapsed_val *a;
 
 #endif
 
@@ -346,8 +354,8 @@ xmalloc ( AAUINT_ARG s)
 
 
 static void *
-xrealloc (AAVOID_ARG ptr, AAUINT_ARG s)
-     AAVOID_DECL(ptr)
+xrealloc (AAVOID$_ARG ptr, AAUINT_ARG s)
+     AAVOID$_DECL(ptr)
      AAUINT_DECL(s)
 {
   void *result;
@@ -372,8 +380,8 @@ xcalloc ( AAUINT_ARG nelem, AAUINT_ARG s)
 
 
 static char *
-ioctl_buffer (AACHAR_ARG fn, AAINT_ARG flag)
-     AACHAR_DECL(fn)
+ioctl_buffer (AACHAR$_ARG fn, AAINT_ARG flag)
+     AACHAR$_DECL(fn)
      AAINT_DECL(flag)
 {
   int fd, sz;
@@ -595,8 +603,8 @@ get_token ()
 
 //-[1,8
 static grill_t *
-alloc_segment (AAGRILL_ARG p)
-     AAGRILL_DECL(p)
+alloc_segment (AAGRILL$_ARG p)
+     AAGRILL$_DECL(p)
 {
 
   grill_t *q;
@@ -623,8 +631,8 @@ static
 #else
 #endif
   int
-b_search (AACHAR_ARG key)
-     AACHAR_DECL(key)
+b_search (AACHAR$_ARG key)
+     AACHAR$_DECL(key)
 {
   register int high, i, low;
   register unsigned long hash;
@@ -674,14 +682,14 @@ token_fatalerr (AAINT_ARG line_id,
 		AAINT_ARG errn0, 
 		AAINT_ARG low, 
 		AAINT_ARG high, 
-		AACHAR_ARG token)
+		AACHAR$_ARG token)
      AAINT_DECL(line_id)
      AAINT_DECL(token_id)
      AAINT_DECL(type)
      AAINT_DECL(errn0)
      AAINT_DECL(low)
      AAINT_DECL(high)
-     AACHAR_DECL(token)
+     AACHAR$_DECL(token)
 {
   char *p = token;
 
@@ -729,8 +737,8 @@ token_fatalerr (AAINT_ARG line_id,
 
 //-[3,0
 static void
-alloc_seg_t (AACHAR_ARG r)
-     AACHAR_DECL(r)
+alloc_seg_t (AACHAR$_ARG r)
+     AACHAR$_DECL(r)
 {
   seg_t *p = tail_seg, *q;
 
@@ -765,8 +773,8 @@ __inline
 #else
 #endif
 static int
-strholen (AACHAR_ARG p)
-     AACHAR_DECL(p)
+strholen (AACHAR$_ARG p)
+     AACHAR$_DECL(p)
 {
   register int c = 1, s = 0;
   register char *_p = p;
@@ -826,8 +834,8 @@ strholen (AACHAR_ARG p)
 #define APGE_ARG8 	i, 0, 0, APG_FEW_ERR, rep_limits[i][0], 0, NULL
 
 static void
-token_analysis (AACHAR_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
-     AACHAR_DECL(token)
+token_analysis (AACHAR$_ARG token, AAINT_ARG line_id, AAINT_ARG token_id)
+     AACHAR$_DECL(token)
      AAINT_DECL(line_id)
      AAINT_DECL(token_id)
 
@@ -1155,8 +1163,8 @@ apg_strerror (AAINT_ARG errnum)
 
 //-[5,0
 void
-apg_free_grill (AAGRILL_ARG p)
-     AAGRILL_DECL (p)
+apg_free_grill (AAGRILL$_ARG p)
+     AAGRILL$_DECL (p)
 {
   grill_t *s;
 
@@ -1189,8 +1197,8 @@ apg_free_pragma ()
 
 
 int
-apg_get_line (AAGRILL__ARG apg_user_ptr)
-     AAGRILL__DECL(apg_user_ptr)
+apg_get_line (AAGRILL$$_ARG apg_user_ptr)
+     AAGRILL$$_DECL(apg_user_ptr)
 {
   apg_errno = APG_EOK;
 
@@ -1239,10 +1247,10 @@ typedef struct
 elapsed_val;
 
 int
-difftimeofday (now, old, diff)
-     struct timeval now;
-     struct timeval old;
-     elapsed_val *diff;
+difftimeofday (AATIMEVAL_ARG now, AATIMEVAL_ARG old, AAELAPSED$_ARG diff)
+     AATIMEVAL_DECL(now)
+     AATIMEVAL_DECL(old)
+     AAELAPSED$_DECL(diff)
 
 {
   register int r1, r2, r3;
@@ -1461,9 +1469,9 @@ apg_parser (q, va_alist)
 
 //-[6,0
 grill_t *
-apg_seek (AAINT_ARG t, AAGRILL_ARG p)
+apg_seek (AAINT_ARG t, AAGRILL$_ARG p)
      AAINT_DECL(t)
-     AAGRILL_DECL(p)
+     AAGRILL$_DECL(p)
 {
   register grill_t *_p = p;
 
