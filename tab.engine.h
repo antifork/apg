@@ -156,6 +156,7 @@ typedef struct __type_line__ {
 
 /* prototypes */
 
+/* We don't care about __THROW gcc 2.8.x optimizations */
 #ifdef   __THROW
 #undef   __THROW
 #define  __THROW
