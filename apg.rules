@@ -1,0 +1,113 @@
+#
+#  apg.rules: engine extraction rules: apg.db.
+#
+#  !ALERT: DO NOT MODIFY!
+#
+#  Copyright (c) 1999 Bonelli Nicola <bonelli@antifork.org>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+#  
+
+
+#
+#  (chap)int:(parag)int:(bit_type)short:(bit_apg)short:(comm)str
+#
+#   chap = 0xff -> internal routine  (parag)
+#		   else -> segment extraction (chap,parag)
+#
+
+h_rule = 0     : 0  : \0xffff : \0xffff 
+h_rule = 0     : 1  : \0xffff : \0xffff : ''			# header
+h_rule = \0xff : 1  : \0xffff : \0xffff : ''			# apg line labels
+h_rule = \0xff : 2  : \0xffff : \0xffff : ''			# type def grill_t
+h_rule = \0xff : 3  : \0xffff : \0xffff : ''			# symbolic links
+h_rule = 0     : 2  : \0xffff : \0xffff : 'prototypes' 
+h_rule = 0     : 3  : \0xffff : \0x04   : 'protot. advanced' 
+h_rule = 0     : 4  : \0xffff : \0xffff : 'parser header side'	# #ifdef APG_PARSER_C
+
+h_rule = 0     : 5  : \0xffff : \0xffff : 'includes'
+h_rule = 0     : 6  : \0x8000 : \0xffff : ''			# #include <regex.h>
+h_rule = 0     : 7  : \0xffff : \0xffff : 'apg types'
+h_rule = 0     : 8  : \0xffff : \0xffff : 'apg type size'
+h_rule = 0     : 9  : \0xffff : \0xffff : 'apg type id'
+h_rule = \0xff : 4  : \0xffff : \0xffff : 'apg table'
+h_rule = \0xff : 5  : \0xffff : \0xffff : 'apg offset'
+
+h_rule = 0     : 10 : \0xffff : \0xffff : 'typedef: seg_t and line_t'            
+h_rule = \0xff : 6  : \0xffff : \0xffff : 'line_t list'
+h_rule = \0xff : 7  : \0x8000 : \0xffff : 'regex list'
+
+h_rule = \0xff : 8  : \0xffff : \0x40   : 'rep limits'          # rep limits
+h_rule = \0xff : 9  : \0xffff : \0xffff : 'custom delimiters'   
+
+h_rule = 0     : 11 : \0xffff : \0xffff : '' 
+
+#
+#  (chap)int:(parag)int:(bit_type)short:(bit_apg)short:(comm)str
+#
+
+c_rule = 0 : 0  : \0xffff : \0xffff
+c_rule = 1 : 0  : \0xffff : \0xffff : ''
+c_rule = 1 : 1  : \0xffff : \0xffff : 'standard includes'
+c_rule = 1 : 2  : \0xffff : \0xffff : ''
+c_rule = 1 : 3  : \0xffff : \0xffff : 'mealy prototypes'
+c_rule = 1 : 4  : \0xffff : \0xffff : 'static variables'
+c_rule = 1 : 5  : \0xffff : \0xffff : 'common defines and internal flags'
+c_rule = 1 : 6  : \0xffff : \0xffff : 'macros'
+c_rule = 1 : 7  : \0xffff : \0xffff : 'private functions, mealy tables'
+c_rule = 1 : 8  : \0xffff : \0xffff : 'arena menagement'
+
+c_rule = 2 : 0  : \0xffff : \0xffff : 'token err interface'
+c_rule = 2 : 1  : \0x180  : \0xffff : '' 			# ip | host 
+c_rule = 2 : 2  : \0x80   : \0xffff : ''			# host
+c_rule = 2 : 10 : \0xffff : \0xffff : ''
+
+
+c_rule = 3 : 0  : \0xffff : \0xffff : 'ymalloc & seg_t' 	
+c_rule = 3 : 1  : \0x40   : \0xffff : 'strings function'        
+c_rule = 3 : 2  : \0xffff : \0xffff : 'apg type checks'
+c_rule = 3 : 3  : \0x3f   : \0xffff : '' 
+c_rule = 3 : 4  : \0x40   : \0xffff : ''		        # str 
+c_rule = 3 : 5  : \0x8000 : \0xffff : 'regexec'                 # regexec
+c_rule = 3 : 6  : \0x40   : \0xffff : ''                        # str
+c_rule = 3 : 7  : \0x180  : \0xffff : 'host/ipv4 regmacro'      # common macro
+c_rule = 3 : 8  : \0x80   : \0xffff : '' 		        # host
+c_rule = 3 : 9  : \0x180  : \0xffff : ''                        # ipv4|host 
+c_rule = 3 : 99 : \0xffff : \0xffff : ''		        # EOfunction 
+
+
+c_rule = 4 : 0  : \0xffff : \0xffff : 'error api'
+
+c_rule = 5 : 0  : \0xffff : \0xffff : 'standard api'
+c_rule = 5 : 1  : \0xffff : \0x04   : 
+c_rule = 5 : 2  : \0xffff : \0xffff : 'parser'
+c_rule = 5 : 3  : \0xffff : \0x04   :
+c_rule = 5 : 4  : \0xffff : \0xffff :
+c_rule = 5 : 5  : \0xffff : \0x40   : 'man rep'
+c_rule = 5 : 6  : \0xffff : \0xffff : ''
+c_rule = 5 : 7  : \0xffff : \0x40   : 'min rep'
+c_rule = 5 : 8  : \0xffff : \0xffff : ''
+
+c_rule = 5 : 9  : \0xffff : \0x04   :
+c_rule = 5 :10  : \0xffff : \0xffff :
+
+c_rule = 6 : 0  : \0xffff : \0x04   : 'advanced api'
+
+i_rule = 7     : 0  : \0xffff : \0x80   : 'classic front-end'
+i_rule = \0xff : 10 : \0xffff : \0x80   : ''
+i_rule = 7     : 1  : \0xffff : \0x80   : ''
+i_rule = \0xff : 11 : \0xffff : \0x80   : ''
+i_rule = 7     : 2  : \0xffff : \0x80   : ''

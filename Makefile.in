@@ -1,0 +1,119 @@
+#
+#  $Id$
+#
+#  Copyright (c) 1999 Bonelli Nicola <bonelli@antifork.org>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+#
+
+CC          = @CC@ 
+CFLAGS      = -g @CFLAGS@ -I. #-include /usr/include/almepro.h 
+LDFLAGS     = @LDFLAGS@ 
+LIBS        = @LIBS@ -lfl #-lalmepro 
+DEFS        = @DEFS@
+INSTALL     = @INSTALL@ 
+LEX	    = @V_LEX@
+YACC        = @V_YACC@
+
+prefix 	    = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+mandir      = @mandir@
+datadir	    = @datadir@
+srcdir	    = @srcdir@
+shtool      = @SHTOOL@
+
+
+all : phase-1 phase-2 phase-3 apg
+
+
+phase-1:
+	@echo ;\
+	echo "#1: building a pre-version" ;\
+	echo
+	make apg
+
+phase-2:
+	@echo ;\
+	echo "#2: running apg to create par.engine.internal.c <par.engine.h>" ;\
+	echo
+	mv -f tab.engine.h tab.engine.h.old
+	mv -f par.engine.c par.engine.c.old
+	if ! \
+	`./apg -d apg.db \
+	-r apg.rules \
+	-s par.engine.c \
+	-i tab.engine.h \
+	-t parser.template` ; \
+	then echo "Irrecoverable error during the #2 step. Contact the author\
+specifying your system type and os version!" ; \
+	mv -f tab.engine.h.old tab.engine.h;\
+	mv -f par.engine.c.old par.engine.c;\
+	exit 1; \
+	fi
+
+phase-3:
+	@echo ;\
+	echo "#3: making apg";\
+	echo
+	rm par.engine.o
+.c.o:
+	$(CC) $(CFLAGS) $(DEFS) -c $< -o $@ 
+
+SRC	= apg.c db.c tree.c engine.c par.engine.c misc.c usage.c @APC_GNU_ADDON_SRC@
+GRAMSRC = grammar.c lexical.c 
+
+OBJS 	= $(GRAMSRC:.c=.o) $(SRC:.c=.o)
+ 
+apg:    locale.h $(OBJS)
+	$(CC) -o apg $(OBJS) $(LIBS) 	
+
+locale.o: locale.h
+locale.h: 
+	@./credits
+	@./make_locale $@ $(datadir)
+
+lexical.c: $(srcdir)/lexical.l
+	@rm -f $@
+	$(LEX) -t $< > $$$$.$@; mv $$$$.$@ $@
+
+lexical.o: grammar.tab.h lexical.c
+
+grammar.tab.h: grammar.c
+
+grammar.c: $(srcdir)/grammar.y
+	@rm -f grammar.c grammar.tab.h
+	$(YACC) -d $<
+	mv y.tab.c grammar.c
+	mv y.tab.h grammar.tab.h
+
+install:
+	$(shtool)  mkdir -f $(datadir)/apg
+	$(INSTALL) -c -m 0755 -g bin ./apg $(bindir) 
+	$(INSTALL) -c -m 0644 -g bin ./apg.db $(datadir)/apg	
+	$(INSTALL) -c -m 0644 -g bin ./apg.rules $(datadir)/apg
+	$(INSTALL) -c -m 0644 ./apg.1 $(mandir)/man1 
+clean:
+	rm -f *~ apg *.o locale.h grammar.c grammar.tab.h lexical.c  
+
+examples:
+	cd example && make;
+distclean:
+	cd example && make clean;
+
+	rm -f *~ apg *.cache *.log *.o Makefile config.h locale.h grammar.c \
+	grammar.tab.h lexical.c
+

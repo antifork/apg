@@ -1,0 +1,10 @@
+#
+# Example 
+#
+
+line_1      = (a$)int[10,20]:(b$)int
+line_2	    = (a)short[0,5000]:(b)short
+line_3      = (a$)char
+line_4      = (a)u_8
+line_5      = (a$)ipv4:(b)ipv4
+line_6      = (a)str:(b$)str:(c)str[0,10]

@@ -1,0 +1,12 @@
+
+# robust test
+
+line_1  = 15:\0xff
+line_2  = 5 :\0123
+line_3  = 'c'
+line_4  = 9
+line_5  = 192.168.0.0: 127.0.0.1 
+line_6  = robust\ test:regex
+
+
+

@@ -1,0 +1,16 @@
+#
+# test: this file is parsed by test.c through apg.par.c 
+#
+
+line_1 = \0x10 : 20: \0x00ff : 40
+
+line_2 = \010 : \0100 : 50
+
+line_3 =  s : \0x55 : \0x5f
+
+line_4 = \0x34
+
+line_5 = 12.34.5.6 : www.openbsd.org 
+
+line_6 = bonelli\0100antifork.org : 'mail' 		# :-)
+
