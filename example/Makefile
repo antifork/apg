@@ -5,7 +5,9 @@ all:
 	cd ansi-care && make
 
 	cd debug && make
-	cd robust && make	
+	cd robust && make
+	cd g++ && make
+	
 clean:
 	cd classic && make clean
 	cd advanced && make clean
@@ -13,4 +15,6 @@ clean:
 	cd ansi-care && make clean
 
 	cd debug && make clean
-	cd robust && make clean     
+	cd robust && make clean 
+	cd g++ && make clean
+    
