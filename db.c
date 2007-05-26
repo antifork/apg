@@ -29,7 +29,6 @@
 void fatalerr(char *,...);
 char *touch_db(int);
 
-
 extern ientry *index_db;
 extern char apg_db[];
 
@@ -115,12 +114,11 @@ create_index(char *ptr)
 int
 extract_segment(char *ptr_db, FILE * where, int chapter, int paragraph, char *comm, int l)
 {
+	ientry *entry_ptr;
 	char *char_ptr;
 	int c = 0;
 
-	ientry *entry_ptr;
-
-	if (!entry_ptr)
+	if (!index_db)
 		fatalerr("internal err: extract_segment() index_nb is a NULL pointer");
 
 	for (entry_ptr = index_db; entry_ptr->next ; entry_ptr = entry_ptr->next)

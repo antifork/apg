@@ -68,7 +68,11 @@ add_regex(char *r)
 	new_ptr->next = NULL;
 	for (; p_ptr != NULL && p_ptr->next != NULL; p_ptr = p_ptr->next);
 
-	(p_ptr != NULL ? p_ptr->next : root_regex) = new_ptr;
+        if (p_ptr != NULL)
+                p_ptr->next = new_ptr;
+        else
+                root_regex = new_ptr;
+
 }
 
 

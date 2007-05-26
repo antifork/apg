@@ -61,12 +61,6 @@ extern int apg_errno;
 #define u_long  unsigned long
 #endif
 
-/* undef __THROW for g++ compatibility */
-#ifdef   __THROW
-#undef   __THROW
-#define  __THROW
-#endif
-
 #define c_rule_label	1
 #define h_rule_label	2
 #define i_rule_label	3
@@ -121,7 +115,6 @@ typedef struct __type_line__ {
 /* prototypes */
 
 #line 70 "/usr/local/share/apg/apg.db"
-/* undef __THROW for g++ compatibility */
 void apg_free_grill __P((grill_t *));
 void apg_free_pragma __P((void));
 char *apg_strerror __P((int));

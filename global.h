@@ -37,10 +37,10 @@
 #define INIT(x...)
 #endif
 
-EXTERN char apg_separator[8] INIT("#=:'\\ \t\n");
+EXTERN char apg_separator[8]    INIT("#=:'\\ \t\n");
 EXTERN char apg_source[BUFFLEN] INIT("apg.par.c");
 EXTERN char apg_header[BUFFLEN] INIT("apg.tab.h");
-EXTERN char apg_if[BUFFLEN] INIT("apg.fe.c");
+EXTERN char apg_if[BUFFLEN]     INIT("apg.fe.c");
 EXTERN char filein[BUFFLEN];
 EXTERN char apg_db[BUFFLEN];
 EXTERN char apg_rules[BUFFLEN];
